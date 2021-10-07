@@ -25,13 +25,35 @@
                 color: #8e8e8e;
                 font-size: 14px;
             }
-            &:focus{
+            &:focus {
                 outline: none;
             }
         }
     }
     .list-icon {
         width: 25%;
-        align-items: right;
+        text-align: right;
+        height: 100%;
+        padding-right: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: right;
+        a {
+            margin: 0 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            svg {
+                width: 28px;
+                height: 28px;
+            }
+        }
+        .account {
+            margin: 0 5px;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
     }
 }
