@@ -16,6 +16,7 @@ const privateRoute = {
     component: CreatePost,
     requiredLogin: true,
   },
+
 };
 
 export default privateRoute;
