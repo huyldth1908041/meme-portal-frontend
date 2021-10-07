@@ -2,7 +2,6 @@ import { AppFooter, AppHeader } from '../containers';
 import { privateRoute } from '../routes';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useProfileHandler, useProfileState } from '../states/profile';
-import { logout } from '../states/profile/reducer';
 
 function PrivateRoute({ component: Component, authed, requiredLogin, ...rest }) {
   return (
