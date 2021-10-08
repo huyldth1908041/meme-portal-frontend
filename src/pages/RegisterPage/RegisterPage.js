@@ -7,6 +7,13 @@ import './style.scss';
 
 const RegisterPage = () => {
   const validationSchema = Yup.object().shape({
+    phonenumber: Yup.number()
+      .required('Phone number is required number')
+      .positive('Phone number is positive number')
+      .integer('Phone number is an integer')
+      .typeError('Phone number is required number')
+      .min(8, 'Phone number must be at least 8 characters')
+      .max(15, 'Phone number must not exceed 15 characters'),
     fullname: Yup.string().required('Full Name is required'),
     email: Yup.string().required('Email is required').email('Email is invalid'),
     password: Yup.string()
@@ -78,6 +85,17 @@ const RegisterPage = () => {
               className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
             />
             <div className='invalid-feedback'>{errors.confirmPassword?.message}</div>
+          </div>
+
+          <div className='form-group'>
+            <label>Phone Number</label>
+            <input
+              name='phonenumber'
+              type='number'
+              {...register('phonenumber', { required: 'This is required' })}
+              className={`form-control ${errors.phonenumber ? 'is-invalid' : ''}`}
+            />
+            <div className='invalid-feedback'>{errors.phonenumber?.message}</div>
           </div>
 
           <div className='button-group'>
