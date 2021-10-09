@@ -1,0 +1,89 @@
+.post-controller {
+  padding: 20px;
+  .post {
+    border-radius: 15px;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .post-header {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      .post-logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .post-name-time {
+        text-align: left;
+        padding-left: 20px;
+        .post-name {
+          padding-bottom: 5px;
+          font-weight: bold;
+          font-size: 18px;
+        }
+        .post-time {
+          color: grey;
+        }
+      }
+    }
+    .post-detail {
+      width: 100%;
+      text-align: left;
+      display: flex;
+      padding-top: 10px;
+      .post-title {
+        text-align: left;
+        font-weight: bold;
+      }
+    }
+    .post-image {
+      width: 100%;
+      margin: 10px 20px 20px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      img {
+        width: auto;
+        height: 350px;
+      }
+    }
+    .post-emotion {
+      width: 95%;
+      display: flex;
+      justify-content: space-between;
+      .post-emotion-up {
+        display: flex;
+        .post-emotion-like,
+        .post-emotion-vote {
+          display: flex;
+          align-items: center;
+          font-weight: 600;
+          color: #636b75;
+          margin-right: 100px;
+          svg {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+    .post-emotion-share {
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      color: #636b75;
+      svg {
+        margin-right: 10px;
+      }
+    }
+  }
+}
