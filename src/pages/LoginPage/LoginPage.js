@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as Yup from 'yup';
+import { useAuthentication } from '../../hooks';
+import { toast } from 'react-hot-toast';
+import { Link, useHistory } from 'react-router-dom';
+import { privateRoute } from '../../routes';
 
 const LoginPage = () => {
+  const { login, isLoggedIn } = useAuthentication();
+  const history = useHistory();
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (isLoggedIn) history.push(privateRoute.home.path);
+  }, [isLoggedIn, history]);
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('Email is invalid'),
     password: Yup.string()
@@ -19,8 +29,25 @@ const LoginPage = () => {
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
-  const onSubmit = (data) => {
-    console.log(JSON.stringify(data, null, 2));
+  const onSubmit = async (data) => {
+    const loginPromise = new Promise(async (resolve, reject) => {
+      try {
+        setLoading(true);
+        await login(data.email, data.password);
+        history.push(privateRoute.home.path);
+        resolve();
+      } catch (err) {
+        const msg = err.message || 'wrong username or password';
+        reject(msg);
+      } finally {
+        setLoading(false);
+      }
+    });
+    await toast.promise(loginPromise, {
+      loading: 'Logging in...',
+      success: (res) => `login success !`,
+      error: (err) => `login failed: ${err.toString()} !`,
+    });
   };
 
   return (
@@ -53,9 +80,15 @@ const LoginPage = () => {
             <div className='invalid-feedback'>{errors.password?.message}</div>
           </div>
           <div className='button-group'>
-            <button type='submit' className='btn btn-primary' style={{width: '100%' }}>
-              Login
+            <button type='submit' className='btn btn-primary' style={{ width: '100%' }} disabled={loading}>
+              {loading ? 'Logging In' : 'Log In '}
             </button>
+          </div>
+          <div>
+            New here ?
+            <Link to='/register'>
+              Register now
+            </Link>
           </div>
         </form>
       </div>

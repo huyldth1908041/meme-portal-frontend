@@ -1,31 +1,47 @@
-/* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { AiOutlineHome, AiOutlineHeart, AiOutlineCompass } from 'react-icons/ai';
 import './style.scss';
+import { privateRoute } from '../../routes';
+import { Link } from 'react-router-dom';
+import { useAuthentication } from '../../hooks';
 
 function Header() {
+  const { user, logout } = useAuthentication();
+
   return (
     <div className='header-content'>
-      <div className='logo'>asbdjasd</div>
+      <div className='logo'>MEME PORTAL</div>
       <div className='search'>
         <input type='text' placeholder='Search' />
       </div>
       <div className='list-icon'>
-        <a href='#'>
+        <Link to={privateRoute.home.path}>
           <AiOutlineHome />
-        </a>
-        <a href='#'>
+        </Link>
+        <Link to={privateRoute.home.path}>
           <AiOutlineHeart />
-        </a>
-        <a href='#'>
+        </Link>
+        <Link to={privateRoute.home.path}>
           <AiOutlineCompass />
-        </a>
-        <div className='account'>
-          <img src='/images/profile.jpeg' height='100%' width='100%' />
-        </div>
+        </Link>
+        {
+          user && (
+            <>
+              <div className='account'>
+                <img src={user.avatar || '/images/default-avatar.jpg'} height='100%' width='100%' alt='profile' />
+              </div>
+              <div>
+                {user.fullName}
+              </div>
+              <div>
+                <button onClick={logout}>Logout</button>
+              </div>
+            </>
+          )
+        }
       </div>
     </div>
   );
 }
+
 export default Header;

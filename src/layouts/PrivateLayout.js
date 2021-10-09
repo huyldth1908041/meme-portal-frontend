@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { AppFooter, AppHeader } from '../containers';
+import { AppHeader } from '../containers';
 import { privateRoute } from '../routes';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { useProfileHandler, useProfileState } from '../states/profile';
+import { useProfileHandler } from '../states/profile';
+import { useAuthentication } from '../hooks';
 
 function PrivateRoute({ component: Component, authed, requiredLogin, ...rest }) {
   return (
@@ -16,10 +17,7 @@ function PrivateRoute({ component: Component, authed, requiredLogin, ...rest }) 
 }
 
 const PrivateLayout = () => {
-  const {isLoggedIn}  = useProfileState();
-  console.log(isLoggedIn);
-  //logout functions for demo purpose only
-  const {onLogout} = useProfileHandler();
+  const { isLoggedIn } = useAuthentication();
   return (
     <div className='App Private-Layout'>
       <AppHeader />

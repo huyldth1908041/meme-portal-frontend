@@ -27,8 +27,8 @@ const PostItem = () => {
   ];
   return (
     <div className='post-controller'>
-      {contentFixed.map((post) => (
-        <div className='post'>
+      {contentFixed.map((post, id) => (
+        <div className='post' key={id}>
           <div className='post-header'>
             <div className='post-logo'>
               <img src={post.logoUrl} />
@@ -39,7 +39,8 @@ const PostItem = () => {
             </div>
           </div>
           <div className='post-detail'>
-            <div className='post-title'>{post.title}</div>&nbsp;-&nbsp;{post.description}
+            <div className='post-title'>{post.title}</div>
+            &nbsp;-&nbsp;{post.description}
           </div>
           <div className='post-image'>
             <img src={post.pngUrl} />

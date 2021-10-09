@@ -18,6 +18,7 @@ const privateRoute = {
     requiredLogin: true,
   },
 
+
 };
 
 export default privateRoute;
