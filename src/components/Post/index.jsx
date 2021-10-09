@@ -18,6 +18,15 @@ const Post = () => {
         'https://thosuaxe.info/wp-content/uploads/2021/03/M%E1%BB%99t-trong-nh%E1%BB%AFng-Memes-kinh-%C4%91i%E1%BB%83n-nh%E1%BA%A5t-tr%C3%AAn-internet.jpg',
       pngUrl: 'https://static2.yan.vn/YanNews/2167221/202003/meme-la-gi-meme-bat-nguon-tu-dau-28eba17b.png',
     },
+    {
+      name: 'LinhCao',
+      time: '2 minutes ago',
+      title: 'This is title',
+      description: 'This is description',
+      logoUrl:
+        'https://thosuaxe.info/wp-content/uploads/2021/03/M%E1%BB%99t-trong-nh%E1%BB%AFng-Memes-kinh-%C4%91i%E1%BB%83n-nh%E1%BA%A5t-tr%C3%AAn-internet.jpg',
+      pngUrl: 'https://static2.yan.vn/YanNews/2167221/202003/meme-la-gi-meme-bat-nguon-tu-dau-28eba17b.png',
+    },
   ];
   useEffect(() => {
     axios
