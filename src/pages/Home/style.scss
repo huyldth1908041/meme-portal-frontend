@@ -1,0 +1,16 @@
+.home-body {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: #fafafa;
+    .body-sideleft {
+        width: 25%;
+    }
+    .body {
+        width: 700px;
+        overflow: hidden;
+    }
+    .body-sideright {
+        width: 25%;
+    }
+}
