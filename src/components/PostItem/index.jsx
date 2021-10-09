@@ -1,13 +1,10 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/alt-text */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { AiOutlineLike } from 'react-icons/ai';
 import { BsArrowUpCircle, BsShare } from 'react-icons/bs';
-import axios from 'axios';
 import './style.scss';
 
-const Post = () => {
-  const [content, setContent] = useState([]);
+const PostItem = () => {
   const contentFixed = [
     {
       name: 'LinhCao',
@@ -28,22 +25,6 @@ const Post = () => {
       pngUrl: 'https://static2.yan.vn/YanNews/2167221/202003/meme-la-gi-meme-bat-nguon-tu-dau-28eba17b.png',
     },
   ];
-  useEffect(() => {
-    axios
-      .post('/content', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(({ data }) => {
-        if (data.success) {
-          setContent(data.content);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  });
   return (
     <div className='post-controller'>
       {contentFixed.map((post) => (
@@ -85,4 +66,4 @@ const Post = () => {
   );
 };
 
-export default Post;
+export default PostItem;
