@@ -2,7 +2,6 @@
 import { AppHeader } from '../containers';
 import { privateRoute } from '../routes';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { useProfileHandler } from '../states/profile';
 import { useAuthentication } from '../hooks';
 
 function PrivateRoute({ component: Component, authed, requiredLogin, ...rest }) {
@@ -19,10 +18,10 @@ function PrivateRoute({ component: Component, authed, requiredLogin, ...rest }) 
 const PrivateLayout = () => {
   const { isLoggedIn } = useAuthentication();
   return (
-    <div className='App Private-Layout'>
+    <div>
       <AppHeader />
       {/* <button onClick={() => onLogout()}>Logout</button> */}
-      <div className='App-Body'>
+      <div>
         <Switch>
           {Object.values(privateRoute)
             //.filter(({ requiredLogin }) => !requiredLogin || isLoggedIn)

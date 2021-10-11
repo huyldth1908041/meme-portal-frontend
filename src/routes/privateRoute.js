@@ -12,8 +12,7 @@ const privateRoute = {
     component: Explore,
   },
   create: {
-    path: '/create/:type',
-    url: (type) => `/create/${type}`,
+    path: '/create',
     component: CreatePost,
     requiredLogin: true,
   },
