@@ -3,6 +3,7 @@ import React from 'react';
 import { AiOutlineLike } from 'react-icons/ai';
 import { BsArrowUpCircle, BsShare } from 'react-icons/bs';
 import './style.scss';
+import moment from 'moment';
 
 const PostItem = ({ item }) => {
   return (
@@ -10,11 +11,13 @@ const PostItem = ({ item }) => {
       <div className='post'>
         <div className='post-header'>
           <div className='post-logo'>
-            <img src={item.creator.avatar} />
+            <img src={item.creator.avatar || '/images/default-avatar.jpg'} />
           </div>
           <div className='post-name-time'>
-            <div className='post-name'>{item.creator.name}</div>
-            <div className='post-time'>{item.time}</div>
+            <div className='post-name'>{item.creator.fullName}</div>
+            <div className='post-time'>
+              {moment(item.createdAt, 'YYYY-MM-DD[T]hh:mm:ssZ').fromNow()}
+            </div>
           </div>
         </div>
         <div className='post-detail'>
@@ -28,7 +31,7 @@ const PostItem = ({ item }) => {
           <div className='post-emotion-up'>
             <div className='post-emotion-like'>
               <AiOutlineLike />
-              {item.likesCount}
+              {item.likeCounts}
             </div>
             <div className='post-emotion-vote'>
               <BsArrowUpCircle />
