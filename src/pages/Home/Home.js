@@ -7,7 +7,7 @@ import { List, Skeleton } from 'antd';
 import InfiniteScroll from 'react-infinite-scroller';
 
 const Home = () => {
-  const [dataSearch, setDataSearch] = React.useState({
+  const [dataSearch] = React.useState({
     limit: 10,
     status: 1,
     page: 1,
