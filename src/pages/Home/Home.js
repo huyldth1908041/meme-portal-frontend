@@ -9,7 +9,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 const Home = () => {
   const [dataSearch, setDataSearch] = React.useState({
     limit: 10,
-    status: 0,
+    status: 1,
     page: 1,
   });
   const {
