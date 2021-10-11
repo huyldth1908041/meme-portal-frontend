@@ -1,6 +1,7 @@
 import axios from 'axios';
 import queryString from 'query-string';
-import { API_URL } from '../constants';
+import { API_URL, PROFILE_STORAGE_KEY } from '../constants';
+import { getLocalStorageObject } from '../utils';
 
 
 const axiosClient = axios.create({
@@ -11,7 +12,14 @@ const axiosClient = axios.create({
   paramsSerializer: params => queryString.stringify(params),
 });
 
-
+axiosClient.interceptors.request.use((config) => {
+  const user = getLocalStorageObject(PROFILE_STORAGE_KEY);
+  if (user) {
+    const token = user.accessToken;
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 axiosClient.interceptors.response.use((response) => {
   if (response && response.data) {
     return response.data;

@@ -40,11 +40,12 @@
     .post-detail {
       width: 100%;
       text-align: left;
-      display: flex;
+      display: block;
       padding-top: 10px;
       .post-title {
         text-align: left;
         font-weight: bold;
+        margin-bottom: 10px;
       }
     }
     .post-image {
