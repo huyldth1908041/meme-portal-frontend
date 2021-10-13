@@ -53,7 +53,6 @@ const Home = () => {
       <div className='body-sideleft' />
       <div className='body-content'>
         <SimpleTabs tabs={tabs} contents={[content, content]} />
-        <DropdownMenu />
       </div>
       <div className='body-sideright' />
     </div>
