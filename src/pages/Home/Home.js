@@ -1,45 +1,61 @@
 import React from 'react';
 import PostItem from '../../components/PostItem';
 import './style.scss';
-
-const contentFixed = [
-  {
-    id: 1,
-    creator: {
-      name: 'Linh Cao',
-      avatar: 'https://iupac.org/wp-content/uploads/2018/05/default-avatar.png',
-    },
-    time: '2 minutes ago',
-    title: 'This is title',
-    description: 'This is description',
-    image:
-      'https://thosuaxe.info/wp-content/uploads/2021/03/M%E1%BB%99t-trong-nh%E1%BB%AFng-Memes-kinh-%C4%91i%E1%BB%83n-nh%E1%BA%A5t-tr%C3%AAn-internet.jpg',
-    likesCount: 0,
-  },
-  {
-    id: 2,
-    creator: {
-      name: 'Linh Cao',
-      avatar: 'https://iupac.org/wp-content/uploads/2018/05/default-avatar.png',
-    },
-    time: '2 minutes ago',
-    title: 'This is title',
-    description: 'This is description',
-    image:
-      'https://thosuaxe.info/wp-content/uploads/2021/03/M%E1%BB%99t-trong-nh%E1%BB%AFng-Memes-kinh-%C4%91i%E1%BB%83n-nh%E1%BA%A5t-tr%C3%AAn-internet.jpg',
-    likesCount: 0,
-  },
-];
+import { useInfiniteQuery } from 'react-query';
+import memeServices from '../../services/memeServices';
+import { List, Skeleton } from 'antd';
+import InfiniteScroll from 'react-infinite-scroller';
 
 const Home = () => {
-
+  const [dataSearch] = React.useState({
+    limit: 10,
+    status: 1,
+    page: 1,
+  });
+  const {
+      data: { pages = [] } = {},
+      fetchNextPage,
+      hasNextPage,
+      isFetching,
+    } = useInfiniteQuery(['memeServices.searchMemes', dataSearch],
+    ({ queryKey, pageParam: page }) => memeServices.searchMemes({ ...queryKey[1], page }),
+    {
+      getNextPageParam: ({ data: { last, number } }) => {
+        if (last === true) return undefined;
+        //api page number count from 0
+        let pageNumber = number + 1;
+        return pageNumber + 1;
+      },
+    },
+    )
+  ;
+  const listMemes = pages.reduce((previous, current) => previous.concat(current.data.content), []);
   return (
     <div className='home-body'>
       <div className='body-sideleft' />
       <div className='body'>
-        {contentFixed.map(item => {
-          return <PostItem item={item} key={item.id} />;
-        })}
+        {listMemes.length && (
+          <InfiniteScroll
+            loadMore={fetchNextPage}
+            hasMore={hasNextPage}>
+            <List
+              dataSource={listMemes}
+              renderItem={item => (
+                <PostItem item={item}/>
+              )}
+            />
+
+          </InfiniteScroll>
+        )}
+        {isFetching ? (
+          Array.from(Array(5).keys()).map(i => (
+            <Skeleton avatar paragraph={{ rows: 4 }} key={i}/>),
+          )
+        ) : (
+          listMemes.length === 0 && (
+            <p>No post found</p>
+          )
+        )}
       </div>
       <div className='body-sideright' />
     </div>

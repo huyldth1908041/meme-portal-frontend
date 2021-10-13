@@ -35,7 +35,7 @@ const PrivateLayout = () => {
                 path={path}
                 component={component} />
             ))}
-          {/* <Redirect from='/' to={privateRoute.explore.path} /> */}
+           <Redirect from='/' to={privateRoute.home.path} />
         </Switch>
       </div>
       {/* <AppFooter /> */}

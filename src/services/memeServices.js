@@ -20,6 +20,10 @@ const memeServices = {
     const url = '/posts';
     return await axiosClient.post(url, data);
   },
+  searchMemes: async (params = {}) => {
+    const url = '/posts';
+    return await axiosClient.get(url, { params });
+  },
 };
 
 export default memeServices;
