@@ -10,6 +10,7 @@ import { useAuthentication } from '../../hooks';
 import { useQuery } from 'react-query';
 import memeServices from '../../services/memeServices';
 import Fire from '../../services/fire,js';
+import moment from 'moment';
 
 
 const Wrapper = styled.div`
@@ -83,15 +84,15 @@ const CreatePost = () => {
   const emptyPreview = useMemo(() => ({
     id: 1,
     creator: {
-      name: user.username,
+      fullName: user.fullName,
       avatar: user.avatar || '/images/default-avatar.jpg',
     },
-    time: 'just now',
+    createdAt: moment(),
     title: '',
     description: '',
     image:
       '',
-    likesCount: 0,
+    likeCounts: 0,
   }), [user]);
   const [form] = Form.useForm();
   const [file, setFile] = useState();
