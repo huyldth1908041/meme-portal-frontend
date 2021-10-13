@@ -1,105 +1,146 @@
 .header-content {
-    width: 100%;
-    height: 50px;
-    display: flex;
-    flex-direction: row;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #fafbfd;
+  border-bottom: 1px solid #dbdbdb;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+
+  .logo {
+    width: 25%;
     align-items: center;
-    background-color: #fafbfd;
-    border-bottom: 1px solid #dbdbdb;
-    .logo {
-        width: 25%;
-        align-items: center;
-        padding-left: 30px;
-    }
-    .search {
-        width: 50%;
+    padding-left: 30px;
+  }
+
+  .search {
+    width: 50%;
+    text-align: center;
+
+    input {
+      width: 40%;
+      height: 25px;
+      border: 1px solid #dbdbdb;
+      background-color: #fafafa;
+      color: black;
+      font-size: 14px;
+
+      &::placeholder {
         text-align: center;
-        input {
-            width: 40%;
-            height: 25px;
-            border: 1px solid #dbdbdb;
-            background-color: #fafafa;
-            color: black;
-            font-size: 14px;
-            &::placeholder {
-                text-align: center;
-                color: #8e8e8e;
-                font-size: 14px;
-            }
-            &:focus {
-                outline: none;
-            }
-        }
+        color: #8e8e8e;
+        font-size: 14px;
+      }
+
+      &:focus {
+        outline: none;
+      }
     }
-    .list-icon {
-        width: 25%;
-        text-align: right;
-        height: 100%;
-        padding-right: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: right;
-        a {
-            margin: 0 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            svg {
-                width: 28px;
-                height: 28px;
-            }
-        }
-        button {
-            padding: 0;
-            border: none;
-            display: flex;
-            background: none;
-        }
-        .account {
-            margin: 0 5px;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin-right: 10px;
-        }
-        .name {
-            white-space: nowrap;
-            position: relative;
-        }
-        .dropdown-content {
-            position: absolute;
-            top: 50px;
-            right: 5px;
-            width: 140px;
-            height: 80px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            align-items: center;
-            padding: 5px 10px;
-            border: 1px solid black;
-            background-color: #dbdbdb;
-            a {
-                color: black;
-                svg {
-                    width: 20px;
-                    height: 20px;
-                    margin-right: 10px;
-                }
-                &:hover {
-                    color: rgb(133, 133, 133);
-                }
-            }
-            button {
-                outline: none;
-                border: none;
-                background-color: #dbdbdb;
-                &:hover {
-                    color: rgb(133, 133, 133);
-                }
-            }
-        }
+  }
+
+  .list-icon {
+    width: 25%;
+    text-align: right;
+    height: 100%;
+    padding-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+
+    a {
+      margin: 0 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        width: 28px;
+        height: 28px;
+      }
     }
+
+    button {
+      padding: 0;
+      border: none;
+      display: flex;
+      background: none;
+    }
+
+    .account {
+      margin: 0 5px;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 10px;
+    }
+
+    .name {
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .header-content-container {
+      position: relative;
+    }
+
+    .dropdown-content {
+      position: absolute;
+      top: 40px;
+      left: 2px;
+      width: 140px;
+      height: 80px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      padding: 5px 10px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+      a {
+        color: black;
+
+        svg {
+          width: 20px;
+          height: 20px;
+          margin-right: 10px;
+        }
+
+        &:hover {
+          color: rgb(133, 133, 133);
+        }
+      }
+
+      button {
+        outline: none;
+        border: none;
+        background-color: transparent;
+        line-height: 12px;
+
+        &:hover {
+          color: rgb(133, 133, 133);
+        }
+      }
+    }
+
+    .header-btn {
+      font-size: 16px;
+      background: #F5A962;
+      padding: 5px 15px;
+      border-radius: 7px;
+      font-weight: 600;
+      color: #111;
+      margin-left: 20px;
+    }
+
+    .button-icon {
+      margin-right: 10px;
+      height: 16px;
+      width: 16px;
+    }
+  }
 }
