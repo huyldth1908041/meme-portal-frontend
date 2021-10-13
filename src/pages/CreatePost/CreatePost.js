@@ -9,7 +9,7 @@ import PostItem from '../../components/PostItem';
 import { useAuthentication } from '../../hooks';
 import { useQuery } from 'react-query';
 import memeServices from '../../services/memeServices';
-import Fire from '../../services/fire,js';
+import Fire from '../../services/fire';
 import moment from 'moment';
 
 const Wrapper = styled.div`
