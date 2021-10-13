@@ -6,7 +6,6 @@ import { privateRoute } from '../../routes';
 import { Link } from 'react-router-dom';
 import { useAuthentication } from '../../hooks';
 import { BiExit } from 'react-icons/all';
-import { Button } from 'antd';
 
 function Header() {
   const { user, logout } = useAuthentication();
