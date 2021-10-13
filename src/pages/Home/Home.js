@@ -3,7 +3,7 @@ import PostItem from '../../components/PostItem';
 import './style.scss';
 import { useInfiniteQuery } from 'react-query';
 import memeServices from '../../services/memeServices';
-import SimpleTabs from '../../components/TabMaterial';
+//import SimpleTabs from '../../components/TabMaterial';
 import { List, Skeleton } from 'antd';
 import InfiniteScroll from 'react-infinite-scroller';
 
@@ -31,31 +31,30 @@ const Home = () => {
     },
   );
   const listMemes = pages.reduce((previous, current) => previous.concat(current.data.content), []);
-  const content = (
-    <>
-      {listMemes.length && (
-        <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
-          <List dataSource={listMemes} renderItem={(item) => <PostItem item={item} />} />
-        </InfiniteScroll>
-      )}
-      {isFetching
-        ? Array.from(Array(5).keys()).map((i) => <Skeleton avatar paragraph={{ rows: 4 }} key={i} />)
-        : listMemes.length === 0 && <p>No post found</p>}
-    </>
-  );
-  const tabs = [
-    { label: 'Hot Memes', tab: 'hot-memes' },
-    { label: 'New Memes', tab: 'new-memes' },
-  ];
+
+  // const tabs = [
+  //   { label: 'Hot Memes', tab: 'hot-memes' },
+  //   { label: 'New Memes', tab: 'new-memes' },
+  // ];
   return (
     <div className='home-body'>
       <div className='body-sideleft' />
       <div className='body-content'>
-        <SimpleTabs tabs={tabs} contents={[content, content]} />
+        <>
+          {listMemes.length && (
+            <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
+              <List dataSource={listMemes} renderItem={(item) => <PostItem item={item} />} />
+            </InfiniteScroll>
+          )}
+          {isFetching
+            ? Array.from(Array(5).keys()).map((i) => <Skeleton avatar paragraph={{ rows: 4 }} key={i} />)
+            : listMemes.length === 0 && <p>No post found</p>}
+        </>
       </div>
       <div className='body-sideright' />
     </div>
   );
-};
+}
+;
 
 export default Home;
