@@ -4,7 +4,6 @@ import './style.scss';
 import { useInfiniteQuery } from 'react-query';
 import memeServices from '../../services/memeServices';
 import SimpleTabs from '../../components/TabMaterial';
-import DropdownMenu from '../../components/Dropdown';
 import { List, Skeleton } from 'antd';
 import InfiniteScroll from 'react-infinite-scroller';
 
