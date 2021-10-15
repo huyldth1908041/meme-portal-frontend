@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import store from './states';
 import { Toaster } from 'react-hot-toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import ScrollToTopButton from './components/ScrollToTopButton/ScrollToTopButton';
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ function App() {
           </Switch>
         </Router>
         <Toaster />
+        <ScrollToTopButton />
       </QueryClientProvider>
     </Provider>
   );

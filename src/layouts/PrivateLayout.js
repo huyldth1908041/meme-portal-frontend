@@ -21,7 +21,7 @@ const PrivateLayout = () => {
     <div>
       <AppHeader />
       {/* <button onClick={() => onLogout()}>Logout</button> */}
-      <div style={{marginTop: '40px'}}>
+      <div style={{ marginTop: '40px' }}>
         <Switch>
           {Object.values(privateRoute)
             //.filter(({ requiredLogin }) => !requiredLogin || isLoggedIn)
@@ -35,7 +35,7 @@ const PrivateLayout = () => {
                 path={path}
                 component={component} />
             ))}
-           <Redirect from='/' to={privateRoute.home.path} />
+          <Redirect from='/' to={privateRoute.hotPost.path} />
         </Switch>
       </div>
       {/* <AppFooter /> */}
