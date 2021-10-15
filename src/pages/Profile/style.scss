@@ -1,5 +1,5 @@
 .profile-controller {
-    width: 1000px;
+    width: 700px;
     margin: auto;
     .profile-header {
         width: 100%;
@@ -7,27 +7,43 @@
         display: flex;
         align-items: center;
         font-size: 18px;
-        .profile-avatar {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin-right: 30px;
-            img {
-                width: 100%;
-                height: 100%;
+        justify-content: space-between;
+        .profile-information {
+            display: flex;
+            align-items: center;
+            .profile-avatar {
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+                overflow: hidden;
+                margin-right: 30px;
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
             }
-        }
-        .profile-name {
-            .profile-fullname {
-                font-size: 28px;
-                margin-bottom: 10px;
-            }
-            button {
-                align-items: center;
+            .profile-name {
+                .profile-fullname {
+                    font-size: 30px;
+                    margin-bottom: 10px;
+                }
+                button {
+                    align-items: center;
+                }
             }
         }
         .profile-activity {
+            margin-right: 20px;
+            text-align: right;
+            font-size: 18px;
+        }
+    }
+    .profile-content {
+        margin-top: 10px;
+        .content-header{
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
         }
     }
 }
