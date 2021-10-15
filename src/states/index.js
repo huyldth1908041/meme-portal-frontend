@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { profileReducer } from './profile';
+import { searchReducer } from './search';
 
 const rootReducer = {
-  profile: profileReducer,
+  search: searchReducer,
   //add more reducer later
 };
 const store = configureStore({

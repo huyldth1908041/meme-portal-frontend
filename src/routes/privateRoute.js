@@ -1,15 +1,18 @@
-import { Explore } from '../pages/Explore';
 import { Home } from '../pages/Home';
 import { CreatePost } from '../pages/CreatePost';
 
 const privateRoute = {
   home: {
-    path: '/',
+    path: '/hot',
     component: Home,
   },
-  explore: {
-    path: '/explore',
-    component: Explore,
+  hotPost: {
+    path: '/hot',
+    component: Home,
+  },
+  newPost: {
+    path: '/new',
+    component: Home,
   },
   create: {
     path: '/create',

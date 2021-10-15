@@ -6,8 +6,10 @@ import { privateRoute } from '../../routes';
 import { Link } from 'react-router-dom';
 import { useAuthentication } from '../../hooks';
 import { BiExit } from 'react-icons/all';
+import { useSearchHandler } from '../../states/search';
 
 function Header() {
+  const { onSendSearch } = useSearchHandler();
   const { user, logout } = useAuthentication();
   const [openProfile, setOpenProfile] = useState(false);
   const ref = useRef();
@@ -34,7 +36,7 @@ function Header() {
         <Link to={privateRoute.home.path}>MEME PORTAL</Link>
       </div>
       <div className='search'>
-        <input type='text' placeholder='Search' />
+        <input type='text' placeholder='Search' onChange={e => onSendSearch(e.target.value)} />
       </div>
       <div className='list-icon'>
         <Link to={privateRoute.home.path}>
@@ -48,7 +50,7 @@ function Header() {
         </Link>
         {user ? (
           <div className='d-flex justify-content-center align-items-center'>
-            <div ref={ref} className="header-content-container">
+            <div ref={ref} className='header-content-container'>
               <button onClick={toggleProfile}>
                 <div className='account'>
                   <img src={user.avatar || '/images/default-avatar.jpg'} height='100%' width='100%' alt='profile' />
