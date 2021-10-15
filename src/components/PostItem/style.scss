@@ -1,7 +1,7 @@
 .post-controller {
   .post {
     border-radius: 15px;
-    padding: 20px;
+    padding: 15px 20px 20px;
     background-color: white;
     border: 1px solid #dbdbdb;
     display: flex;
@@ -12,10 +12,10 @@
     .post-header {
       width: 100%;
       display: flex;
-      flex-direction: row;
+      align-items: center;
       .post-logo {
-        width: 40px;
-        height: 40px;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
         overflow: hidden;
         img {
@@ -27,7 +27,6 @@
         text-align: left;
         padding-left: 20px;
         .post-name {
-          padding-bottom: 5px;
           font-weight: bold;
           font-size: 18px;
         }
@@ -45,6 +44,7 @@
         text-align: left;
         font-weight: bold;
         margin-bottom: 10px;
+        font-size: 16px;
       }
     }
     .post-image {
