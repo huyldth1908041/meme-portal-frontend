@@ -1,5 +1,6 @@
 import { Home } from '../pages/Home';
 import { CreatePost } from '../pages/CreatePost';
+import { PostDetail } from '../pages/PostDetail';
 
 const privateRoute = {
   home: {
@@ -18,6 +19,12 @@ const privateRoute = {
     path: '/create',
     component: CreatePost,
     requiredLogin: true,
+  },
+
+  postDetail: {
+    path: '/post/:id',
+    url: (id) => `/post/${id}`,
+    component: PostDetail,
   },
 
 
