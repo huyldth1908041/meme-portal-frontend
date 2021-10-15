@@ -3,6 +3,7 @@ import { AppHeader } from '../containers';
 import { privateRoute } from '../routes';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useAuthentication } from '../hooks';
+import styled from 'styled-components';
 
 function PrivateRoute({ component: Component, authed, requiredLogin, ...rest }) {
   return (
@@ -15,13 +16,17 @@ function PrivateRoute({ component: Component, authed, requiredLogin, ...rest }) 
   );
 }
 
+const PageWrapper = styled.div`
+  margin-top: 50px;
+`;
+
 const PrivateLayout = () => {
   const { isLoggedIn } = useAuthentication();
   return (
     <div>
       <AppHeader />
       {/* <button onClick={() => onLogout()}>Logout</button> */}
-      <div style={{ marginTop: '50px' }}>
+      <PageWrapper>
         <Switch>
           {Object.values(privateRoute)
             //.filter(({ requiredLogin }) => !requiredLogin || isLoggedIn)
@@ -37,7 +42,7 @@ const PrivateLayout = () => {
             ))}
           <Redirect from='/' to={privateRoute.hotPost.path} />
         </Switch>
-      </div>
+      </PageWrapper>
       {/* <AppFooter /> */}
     </div>
   );

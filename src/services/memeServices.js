@@ -24,6 +24,10 @@ const memeServices = {
     const url = '/posts';
     return await axiosClient.get(url, { params });
   },
+  postDetail: async (id) => {
+    const url = `/posts/${id}`;
+    return await axiosClient.get(url);
+  },
 };
 
 export default memeServices;

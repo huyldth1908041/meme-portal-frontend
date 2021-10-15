@@ -1,6 +1,7 @@
 import { Home } from '../pages/Home';
 import { CreatePost } from '../pages/CreatePost';
 import { Profile } from '../pages/Profile';
+import { PostDetail } from '../pages/PostDetail';
 
 const privateRoute = {
   home: {
@@ -24,6 +25,12 @@ const privateRoute = {
     path: '/profile',
     component: Profile,
     requiredLogin: true,
+  },
+
+  postDetail: {
+    path: '/post/:id',
+    url: (id) => `/post/${id}`,
+    component: PostDetail,
   },
 
 
