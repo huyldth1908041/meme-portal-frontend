@@ -21,7 +21,7 @@ const PrivateLayout = () => {
     <div>
       <AppHeader />
       {/* <button onClick={() => onLogout()}>Logout</button> */}
-      <div style={{ marginTop: '40px' }}>
+      <div style={{ marginTop: '50px' }}>
         <Switch>
           {Object.values(privateRoute)
             //.filter(({ requiredLogin }) => !requiredLogin || isLoggedIn)
