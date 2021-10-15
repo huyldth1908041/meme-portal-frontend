@@ -4,6 +4,8 @@ import { AiOutlineLike } from 'react-icons/ai';
 import { BsArrowUpCircle, BsShare } from 'react-icons/bs';
 import './style.scss';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
+import { privateRoute } from '../../routes';
 
 const PostItem = ({ item }) => {
   return (
@@ -25,7 +27,9 @@ const PostItem = ({ item }) => {
           <p>{item.description}</p>
         </div>
         <div className='post-image'>
-          <img src={item.image} />
+          <Link to={privateRoute.postDetail.url(item.id)}>
+            <img src={item.image} />
+          </Link>
         </div>
         <div className='post-emotion'>
           <div className='post-emotion-up'>
