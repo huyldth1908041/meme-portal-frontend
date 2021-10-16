@@ -9,7 +9,7 @@ const TopCreatorItem = ({ lisPerson }) => {
         <button>See all</button>
       </div>
       {lisPerson.map((person) => (
-        <div className='creator'>
+        <div className='creator' key={person.id}>
           <div className='creator-logo'>
             <img src={person.avatar || '/images/default-avatar.jpg'} alt='' />
           </div>

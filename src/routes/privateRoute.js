@@ -1,5 +1,6 @@
 import { Home } from '../pages/Home';
 import { CreatePost } from '../pages/CreatePost';
+import { Profile } from '../pages/Profile';
 import { PostDetail } from '../pages/PostDetail';
 
 const privateRoute = {
@@ -18,6 +19,11 @@ const privateRoute = {
   create: {
     path: '/create',
     component: CreatePost,
+    requiredLogin: true,
+  },
+  profile: {
+    path: '/profile',
+    component: Profile,
     requiredLogin: true,
   },
 

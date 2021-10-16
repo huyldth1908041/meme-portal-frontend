@@ -36,7 +36,7 @@ function Header() {
         <Link to={privateRoute.home.path}>MEME PORTAL</Link>
       </div>
       <div className='search'>
-        <input type='text' placeholder='Search' onChange={e => onSendSearch(e.target.value)} />
+        <input type='text' placeholder='Search' onChange={(e) => onSendSearch(e.target.value)} />
       </div>
       <div className='list-icon'>
         <Link to={privateRoute.home.path}>
@@ -58,12 +58,13 @@ function Header() {
                 <div className='name'>{user.fullName}</div>
               </button>
               {openProfile && (
-                <div className='dropdown-content'>
-                  <Link to={privateRoute.home.path}>
+                <div className='dropdown-content' onClick={() => setOpenProfile(false)}>
+                  <Link to={privateRoute.profile.path}>
                     <BsPersonCircle /> Profile
                   </Link>
                   <button onClick={() => logout()}>
-                    <BiExit className='button-icon' />Logout
+                    <BiExit className='button-icon' />
+                    Logout
                   </button>
                 </div>
               )}
