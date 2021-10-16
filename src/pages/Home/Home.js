@@ -76,10 +76,12 @@ const Home = () => {
 
   const lisPerson = [
     {
+      id: 1,
       fullName: 'JohnJohnJohnJohnJohn John',
       follower: 'Mike + 2',
     },
     {
+      id: 2,
       fullName: 'John',
       follower: 'Mike + 2',
     },
