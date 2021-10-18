@@ -32,6 +32,10 @@ const memeServices = {
     const url = `/posts/topCreator`;
     return await axiosClient.get(url);
   },
+  updateProfile: async (id, body) => {
+    const url = `/users/${id}`;
+    return await axiosClient.put(url, body);
+  },
 };
 
 export default memeServices;

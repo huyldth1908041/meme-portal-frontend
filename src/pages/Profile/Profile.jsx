@@ -4,6 +4,8 @@ import { MdModeEditOutline } from 'react-icons/md';
 import { useAuthentication } from '../../hooks';
 import { UserPosts } from './components';
 import { Tabs, Box, Chip, Typography, Tab } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import { privateRoute } from '../../routes';
 
 
 const Profile = () => {
@@ -51,9 +53,11 @@ const Profile = () => {
           </div>
           <div className='profile-name'>
             <div className='profile-fullname'>{user?.fullName || 'No name'}</div>
-            <button className='btn btn-primary'>
-              <MdModeEditOutline /> Edit Profile
-            </button>
+            <Link to={privateRoute.profileUpdate.path} style={{ color: '#fff' }}>
+              <button className='btn btn-primary'>
+                <MdModeEditOutline /> Edit Profile
+              </button>
+            </Link>
           </div>
         </div>
         <div className='profile-activity'>

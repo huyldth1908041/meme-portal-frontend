@@ -2,6 +2,7 @@ import { Home } from '../pages/Home';
 import { CreatePost } from '../pages/CreatePost';
 import { Profile } from '../pages/Profile';
 import { PostDetail } from '../pages/PostDetail';
+import { ProfileUpdate } from '../pages/ProfileUpdate';
 
 const privateRoute = {
   home: {
@@ -32,8 +33,11 @@ const privateRoute = {
     url: (id) => `/post/${id}`,
     component: PostDetail,
   },
-
-
+  profileUpdate: {
+    path: '/profile/edit',
+    requiredLogin: true,
+    component: ProfileUpdate,
+  },
 };
 
 export default privateRoute;

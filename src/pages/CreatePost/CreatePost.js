@@ -12,13 +12,13 @@ import memeServices from '../../services/memeServices';
 import Fire from '../../services/fire';
 import moment from 'moment';
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   width: 80%;
   margin: 0 auto;
   padding: 20px;
 `;
 
-const StyledTextInput = styled(Input)`
+export const StyledTextInput = styled(Input)`
   border: 1px solid #111;
   border-radius: 7px;
   outline: none;
@@ -35,7 +35,7 @@ const StyledTextArea = styled(Input.TextArea)`
   height: 500px;
 `;
 
-const StyledSelect = styled(Select)`
+export const StyledSelect = styled(Select)`
   outline: none;
   height: 50px;
 
@@ -46,7 +46,7 @@ const StyledSelect = styled(Select)`
   }
 `;
 
-const FloatLabel = styled.label`
+export const FloatLabel = styled.label`
   position: absolute;
   top: -15px;
   left: 25px;
@@ -55,13 +55,13 @@ const FloatLabel = styled.label`
   font-weight: 600;
 `;
 
-const FormItemWrapper = styled.div`
+export const FormItemWrapper = styled.div`
   margin-bottom: 40px;
   margin-top: 30px;
   position: relative;
 `;
 
-const SubmitBtn = styled.button`
+export const SubmitBtn = styled.button`
   width: 100%;
   height: 50px;
   background: #cfb675;
