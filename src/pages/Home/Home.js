@@ -74,18 +74,6 @@ const Home = () => {
   );
   const listMemes = pages.reduce((previous, current) => previous.concat(current.data.content), []);
 
-  const lisPerson = [
-    {
-      id: 1,
-      fullName: 'JohnJohnJohnJohnJohn John',
-      follower: 'Mike + 2',
-    },
-    {
-      id: 2,
-      fullName: 'John',
-      follower: 'Mike + 2',
-    },
-  ];
   return (
     <div className='home-body'>
       <div className='body-sideleft' />
@@ -138,7 +126,7 @@ const Home = () => {
         </>
       </div>
       <div className='body-sideright'>
-        <TopCreatorItem lisPerson={lisPerson} />
+        <TopCreatorItem />
       </div>
     </div>
   );
