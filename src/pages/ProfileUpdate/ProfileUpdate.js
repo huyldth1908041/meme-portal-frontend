@@ -159,7 +159,7 @@ const ProfileUpdate = () => {
                   <Form.Item
                     name='birthday'
                     rules={[{ required: true, message: 'Please pick a date' }]}
-                    initialValue={moment(user.birthday, 'YYYY-MM-DD[T]hh:mm:ssZ')}
+                    initialValue={user.birthday && moment(user.birthday)}
                   >
                     <StyledDatePicker format='DD/MM/YYYY' />
                   </Form.Item>
