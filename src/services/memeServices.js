@@ -28,6 +28,10 @@ const memeServices = {
     const url = `/posts/${id}`;
     return await axiosClient.get(url);
   },
+  topCreator: async () => {
+    const url = `/posts/topCreator`;
+    return await axiosClient.get(url);
+  },
 };
 
 export default memeServices;
