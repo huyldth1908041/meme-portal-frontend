@@ -60,6 +60,7 @@ const Home = () => {
     fetchNextPage,
     hasNextPage,
     isFetching,
+    isError,
   } = useInfiniteQuery(
     ['memeServices.searchMemes', dataSearch],
     ({ queryKey, pageParam: page }) => memeServices.searchMemes({ ...queryKey[1], page }),
@@ -104,25 +105,30 @@ const Home = () => {
             All
           </StyledButton>
           {categories.length > 0 &&
-            categories.map((cat) => (
-              <StyledButton
-                onClick={() => handleChangeCategory(cat)}
-                key={cat.id}
-                className={category === cat.name && 'active'}
-              >
-                {cat.name}
-              </StyledButton>
-            ))}
+          categories.map((cat) => (
+            <StyledButton
+              onClick={() => handleChangeCategory(cat)}
+              key={cat.id}
+              className={category === cat.name && 'active'}
+            >
+              {cat.name}
+            </StyledButton>
+          ))}
         </ButtonWrapper>
         <>
-          {listMemes.length > 0 && (
-            <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
-              <List dataSource={listMemes} renderItem={(item) => <PostItem item={item} />} />
-            </InfiniteScroll>
-          )}
-          {isFetching
-            ? Array.from(Array(5).keys()).map((i) => <Skeleton avatar paragraph={{ rows: 4 }} key={i} />)
-            : !listMemes.length && <p>No post found</p>}
+          {
+            isFetching ? (
+              Array.from(Array(5).keys()).map((i) => <Skeleton avatar paragraph={{ rows: 4 }} key={i} />)
+            ) : isError ? (<p>Some error has occured</p>) : (
+              listMemes.length > 0 ? (
+                <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
+                  <List dataSource={listMemes} renderItem={(item) => <PostItem item={item} />} />
+                </InfiniteScroll>
+              ) : (
+                <p>No post found</p>
+              )
+            )
+          }
         </>
       </div>
       <div className='body-sideright'>

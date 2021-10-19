@@ -18,6 +18,7 @@ const UserPosts = ({ params, onUpdateCounter }) => {
     fetchNextPage,
     hasNextPage,
     isFetching,
+    isError,
   } = useInfiniteQuery(
     ['memeServices.searchMemes', params],
     ({ queryKey, pageParam: page }) => memeServices.searchMemes({ ...dataSearch, ...queryKey[1], page }),
@@ -38,14 +39,19 @@ const UserPosts = ({ params, onUpdateCounter }) => {
 
   return (
     <>
-      {listMemes.length > 0 && (
-        <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
-          <List dataSource={listMemes} renderItem={(item) => <PostItem item={item} />} />
-        </InfiniteScroll>
-      )}
-      {isFetching
-        ? Array.from(Array(5).keys()).map((i) => <Skeleton avatar paragraph={{ rows: 4 }} key={i} />)
-        : !listMemes.length && <p>No post found</p>}
+      {
+        isFetching ? (
+          Array.from(Array(5).keys()).map((i) => <Skeleton avatar paragraph={{ rows: 4 }} key={i} />)
+        ) : isError ? (<p>Some error has occured</p>) : (
+          listMemes.length > 0 ? (
+            <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
+              <List dataSource={listMemes} renderItem={(item) => <PostItem item={item} />} />
+            </InfiniteScroll>
+          ) : (
+            <p>No post found</p>
+          )
+        )
+      }
     </>
   );
 };

@@ -6,12 +6,18 @@ import { UserPosts } from './components';
 import { Tabs, Box, Chip, Typography, Tab } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { privateRoute } from '../../routes';
+import { useQuery } from 'react-query';
+import memeServices from '../../services/memeServices';
+import { Skeleton } from 'antd';
 
 
 const Profile = () => {
   const { user } = useAuthentication();
+  const userId = user.id;
+  const { data = {}, isLoading, error } = useQuery(['memeServices.userDetail', userId],
+    ({ queryKey }) => memeServices.userDetail(queryKey[1]));
   const [counter, setCounter] = React.useState({});
-
+  const { data: apiUser = {} } = data;
   const onUpdateVerifiedCounter = React.useCallback((num) => setCounter((cur) => ({ ...cur, verified: num })), []);
   const onUpdatePendingCounter = React.useCallback((num) => setCounter((cur) => ({ ...cur, pending: num })), []);
   const onUpdateHotCounter = React.useCallback((num) => setCounter((cur) => ({ ...cur, hot: num })), []);
@@ -46,26 +52,30 @@ const Profile = () => {
   };
   return (
     <div className='profile-controller'>
-      <div className='profile-header'>
-        <div className='profile-information'>
-          <div className='profile-avatar'>
-            <img src={user?.avatar || '/images/default-avatar.jpg'} alt='' />
+      {
+        isLoading ? (<Skeleton/>) : error ? (<p>Som error has occured</p>) : (
+          <div className='profile-header'>
+            <div className='profile-information'>
+              <div className='profile-avatar'>
+                <img src={apiUser?.avatar || '/images/default-avatar.jpg'} alt='' />
+              </div>
+              <div className='profile-name'>
+                <div className='profile-fullname'>{apiUser?.fullName || 'No name'}</div>
+                <Link to={privateRoute.profileUpdate.path} style={{ color: '#fff' }}>
+                  <button className='btn btn-primary'>
+                    <MdModeEditOutline /> Edit Profile
+                  </button>
+                </Link>
+              </div>
+            </div>
+            <div className='profile-activity'>
+              <div className='profile-post'>{0} posts</div>
+              <div className='profile-comment'>{apiUser?.comment || 0} comments</div>
+              <div className='profile-token'>{apiUser?.tokenBalance || 0} tokens</div>
+            </div>
           </div>
-          <div className='profile-name'>
-            <div className='profile-fullname'>{user?.fullName || 'No name'}</div>
-            <Link to={privateRoute.profileUpdate.path} style={{ color: '#fff' }}>
-              <button className='btn btn-primary'>
-                <MdModeEditOutline /> Edit Profile
-              </button>
-            </Link>
-          </div>
-        </div>
-        <div className='profile-activity'>
-          <div className='profile-post'>{0} posts</div>
-          <div className='profile-comment'>{user?.comment || 0} comments</div>
-          <div className='profile-token'>{user?.tokenBalance || 0} tokens</div>
-        </div>
-      </div>
+        )
+      }
       <div className='profile-content'>
         <div className='content-header'>Posts Created</div>
 
