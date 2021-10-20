@@ -242,7 +242,7 @@ const CreatePost = () => {
           <div style={{ paddingLeft: 20 }}>
             <Text size='heading-m'>Preview</Text>
           </div>
-          <PostItem item={{ ...preview, image: image }} />
+          <PostItem item={{ ...preview, image: image }} isPreview={true}/>
         </Col>
       </Row>
     </Wrapper>
