@@ -45,7 +45,7 @@ const UserPosts = ({ params, onUpdateCounter }) => {
         ) : isError ? (<p>Some error has occured</p>) : (
           listMemes.length > 0 ? (
             <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
-              <List dataSource={listMemes} renderItem={(item) => <PostItem item={item} />} />
+              <List dataSource={listMemes} renderItem={(item) => <PostItem item={item} isPreview={false}/>} />
             </InfiniteScroll>
           ) : (
             <p>No post found</p>
