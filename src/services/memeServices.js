@@ -49,6 +49,18 @@ const memeServices = {
     const url = '/posts/likePost';
     return await axiosClient.post(url, body);
   },
+  getListCommentOfAPost: async (id, params = {}) => {
+    const url = `/posts/${id}/comments`;
+    return await axiosClient.get(url, { params });
+  },
+  postAComment: async (id, body) => {
+    const url = `/posts/${id}/comments`;
+    return await axiosClient.post(url, body);
+  },
+  fetchReplyComment: async (commentId, params = {}) => {
+    const url = `/posts/comments/${commentId}/replyComments`;
+    return await axiosClient.get(url, { params });
+  },
 };
 
 export default memeServices;

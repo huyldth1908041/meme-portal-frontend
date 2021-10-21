@@ -1,11 +1,16 @@
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { Avatar, Button, Col,  Form, Image, Input, Row, Skeleton } from 'antd';
-import { AiFillLike,  BiUpvote } from 'react-icons/all';
+import { Avatar, Button, Col, Form, Image, List, Row, Skeleton } from 'antd';
+import { AiFillLike, BiComment, BiUpvote } from 'react-icons/all';
 import { toast } from 'react-hot-toast';
-import { useQuery } from 'react-query';
+import { useInfiniteQuery, useQuery } from 'react-query';
 import memeServices from '../../services/memeServices';
 import moment from 'moment';
+import { AiOutlineLike } from 'react-icons/ai';
+import React, { useEffect, useRef, useState } from 'react';
+import { useAuthentication } from '../../hooks';
+import CommentItem from '../../components/CommentItem';
+import { TextareaAutosize } from '@material-ui/core';
 
 const PageWrapper = styled.div`
   width: 70%;
@@ -65,7 +70,6 @@ const CommentBox = styled.div`
 `;
 const CommentContainer = styled.div`
   width: 100%;
-  min-height: 200px;
   max-height: 370px;
   overflow: auto;
 
@@ -125,61 +129,149 @@ const PostEmotion = styled.div`
     color: #8ec0f5;
   }
 `;
-const CommentItem = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
+const LoadMoreButton = styled.button`
+  display: block;
+  width: fit-content;
+  margin: 10px auto;
+  color: #008EDE;
 `;
-const CommentContent = styled.div`
-  max-width: 250px;
-  margin-left: 10px;
-  border: 1px solid #FFA6D5;
-  padding: 5px;
-  border-radius: 10px;
+const CommentInput = styled(TextareaAutosize)`
+  width: 100%;
+  padding: 10px;
+  border-radius: 7px;
 
-  > p:first-child {
-    font-weight: 600;
-    margin-bottom: 5px;
-  }
-`;
-const CommentAction = styled.div`
-  display: flex;
-  font-size: 14px;
-  font-weight: 600;
-
-  svg {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    cursor: pointer;
-    background: #8ec0f5;
-    color: #fff;
-    padding: 5px;
-    margin-left: 5px;
+  &::-webkit-scrollbar {
+    width: 7px;
   }
 
-  > div {
-    margin: 0 10px;
+  /* Track */
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Handle */
+
+  ::-webkit-scrollbar-thumb {
+    background: #6B6C6E;
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
   }
 `;
+
 const PostDetail = () => {
+  const { user } = useAuthentication();
+  const [form] = Form.useForm();
   const { id } = useParams();
-  const { data = {}, isLoading, error } = useQuery(['memeServices.postDetail', id],
+  const commentBox = useRef(null);
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'auto',
+    });
+  }, []);
+  const { data = {}, isLoading, error, refetch: reFetchPostDeail } = useQuery(['memeServices.postDetail', id],
     ({ queryKey }) => memeServices.postDetail(queryKey[1]));
   const { data: postItem = {} } = data;
-  const handleComment = (values) => {
-    console.log(values);
+  const {
+    data: likeCountData = {},
+    refetch,
+  } = useQuery(['memeServices.getLikeCount', id],
+    ({ queryKey }) => memeServices.getLikeCount(queryKey[1]));
+  const { data: { likeCount = 0, hasLikedYet = false } = {} } = likeCountData;
+  const [dataSearch] = React.useState({
+    limit: 10,
+    status: 1,
+    page: 1,
+  });
+  const {
+    data: { pages = [] } = {},
+    fetchNextPage: fetchNextPageComment,
+    hasNextPage: hasNextPageComments,
+    isFetching: isFetchingComments,
+    isError: isErrorComment,
+    refetch: reFetchComment,
+  } = useInfiniteQuery(
+    ['memeServices.getListCommentOfAPost', dataSearch, id],
+    ({ queryKey, pageParam: page }) => memeServices.getListCommentOfAPost(queryKey[2], { ...queryKey[1], page }),
+    {
+      getNextPageParam: ({ data: { last, number } }) => {
+        if (last === true) return undefined;
+        //api page number count from 0
+        let pageNumber = number + 1;
+        return pageNumber + 1;
+      },
+      refetchOnWindowFocus: false,
+    },
+  );
+  const listComments = pages.reduce((previous, current) => previous.concat(current.data.content), []);
+  const [isCommenting, setIsCommenting] = useState(false);
+  const handleComment = async (values) => {
+    if (!user) {
+      toast.error('Please login to like post');
+      return;
+    }
+    const commentPromise = new Promise(async (resolve, reject) => {
+      try {
+        setIsCommenting(true);
+        await memeServices.postAComment(id, values);
+        form.resetFields();
+        await reFetchComment();
+        await reFetchPostDeail();
+        commentBox.current.scrollTop = 0;
+        resolve();
+      } catch (err) {
+        reject(err);
+      } finally {
+        setIsCommenting(false);
+      }
+    });
+    await toast.promise(commentPromise, {
+      loading: 'Saving....',
+      success: 'Comment success',
+      error: err => `comment failed: ${err.message}`,
+    });
   };
   const handleCommentFailed = () => {
-    console.log('here');
     toast.error('please enter comment content!');
+  };
+  const handleLikePost = async () => {
+    if (!user) {
+      toast.error('Please login to like post');
+      return;
+    }
+    const likePostPromise = new Promise(async (resolve, reject) => {
+      try {
+        await memeServices.likeAPost({ postId: id });
+        await refetch();
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+    await toast.promise(likePostPromise, {
+      loading: 'Saving....',
+      success: 'Like success',
+      error: err => `liked failed: ${err.message}`,
+    });
+  };
+  const handleChange = e => {
+    if (e.which === 13 && !e.shiftKey) {
+      e.preventDefault();
+      form.submit();
+    }
   };
   return (
     <PageWrapper>
       {
         isLoading ? (
           <Skeleton />
-        ) : error  ? (
+        ) : error ? (
           <p>Not found</p>
         ) : (<Row gutter={24}>
           <Col span={16}>
@@ -206,106 +298,61 @@ const PostDetail = () => {
             </CreatorBox>
             <EmotionContainer>
               <PostEmotion>
-                12 <AiFillLike />
+                {hasLikedYet ? <AiFillLike style={{ color: 'blue' }} /> : <AiOutlineLike />}
+                {likeCount}
               </PostEmotion>
               <PostEmotion>
-                24 Comments
+                <BiComment style={{ color: '#111' }} /> {postItem.commentCounts || 0}
               </PostEmotion>
               <PostEmotion>
                 12 push
               </PostEmotion>
             </EmotionContainer>
             <FlexBox style={{ marginTop: '20px' }}>
-              <StyledButton type='primary' icon={<AiFillLike />}>Like</StyledButton>
+              <StyledButton
+                type='primary'
+                icon={<AiFillLike />}
+                onClick={handleLikePost}
+                disabled={hasLikedYet}
+              >
+                {hasLikedYet ? 'Liked' : 'Like'}
+              </StyledButton>
               <StyledButton type='primary' icon={<BiUpvote />}>Push</StyledButton>
             </FlexBox>
             <CommentBox>
-              <CommentContainer>
-                <CommentItem>
-                  <Avatar src={'/images/default-avatar.jpg'} size={50} />
-                  <CommentContent>
-                    <FlexBox>
-                      <p style={{ fontWeight: 600 }}>Lưu Đức huy</p>
-                      <p>15m ago</p>
-                    </FlexBox>
-                    <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis distinctio ea et ipsam,
-                      nemo
-                      sunt
-                      unde. Iste labore quos sit!</p>
-                    <CommentAction>
-                      <div>
-                        12 <AiFillLike />
-                      </div>
-                      <div>
-                        Reply
-                      </div>
-                    </CommentAction>
-                  </CommentContent>
-
-                </CommentItem>
-                <CommentItem>
-                  <Avatar src={'/images/default-avatar.jpg'} size={50} />
-                  <CommentContent>
-                    <FlexBox>
-                      <p style={{ fontWeight: 600 }}>Lưu Đức huy</p>
-                      <p>15m ago</p>
-                    </FlexBox>
-                    <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis distinctio ea et ipsam,
-                      nemo
-                      sunt
-                      unde. Iste labore quos sit!</p>
-                    <CommentAction>
-                      <div>
-                        12 <AiFillLike />
-                      </div>
-                      <div>
-                        Reply
-                      </div>
-                    </CommentAction>
-                  </CommentContent>
-
-                </CommentItem>
-                <CommentItem>
-                  <Avatar src={'/images/default-avatar.jpg'} size={50} />
-                  <CommentContent>
-                    <FlexBox>
-                      <p style={{ fontWeight: 600 }}>Lưu Đức huy</p>
-                      <p>15m ago</p>
-                    </FlexBox>
-                    <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis distinctio ea et ipsam,
-                      nemo
-                      sunt
-                      unde. Iste labore quos sit!</p>
-                    <CommentAction>
-                      <div>
-                        12 <AiFillLike />
-                      </div>
-                      <div>
-                        Reply
-                      </div>
-                    </CommentAction>
-                  </CommentContent>
-
-                </CommentItem>
+              <CommentContainer ref={commentBox}>
+                {
+                  isFetchingComments ? (
+                    Array.from(Array(5).keys()).map((i) => <Skeleton avatar paragraph={{ rows: 4 }} key={i} />)
+                  ) : isErrorComment ? (<p>Some error has occured</p>) : (
+                    listComments.length > 0 && (
+                      <List dataSource={listComments}
+                            renderItem={(item) => <CommentItem comment={item} reFetchPostDeail={reFetchPostDeail} />} />
+                    )
+                  )
+                }
+                {
+                  hasNextPageComments && (<LoadMoreButton onClick={fetchNextPageComment}>Load more</LoadMoreButton>)
+                }
               </CommentContainer>
               <Form
                 name='commentForm'
                 onFinish={handleComment}
                 onFinishFailed={handleCommentFailed}
+                form={form}
               >
                 <Form.Item
-                  name='comment'
+                  name='content'
                   rules={[{ required: true, message: 'Comment content cant not be blank' }]}
                 >
-                  <Input type='text' placeholder={'Enter your comment...'} />
+                  <CommentInput
+                    maxRows={5}
+                    placeholder='Enter your comment...'
+                    onKeyPress={handleChange}
+                    disabled={isCommenting}
+                  />
                 </Form.Item>
               </Form>
-              {/*<Form.Item>*/}
-              {/*  <Button type='submit'>*/}
-              {/*    Send*/}
-              {/*  </Button>*/}
-              {/*</Form.Item>*/}
-
             </CommentBox>
           </StyledCol>
         </Row>)
