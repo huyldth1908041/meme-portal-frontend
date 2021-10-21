@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useCallback, useState } from 'react';
 import { AiOutlineLike } from 'react-icons/ai';
-import { BsArrowUpCircle, BsShare } from 'react-icons/bs';
+import { BsShare } from 'react-icons/bs';
 import './style.scss';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { privateRoute } from '../../routes';
-import { AiFillLike } from 'react-icons/all';
+import { AiFillLike, BiComment } from 'react-icons/all';
 import memeServices from '../../services/memeServices';
 import { useAuthentication } from '../../hooks';
 import { toast } from 'react-hot-toast';
@@ -104,8 +104,8 @@ const PostItem = ({ item, isPreview }) => {
               }
             </div>
             <div className='post-emotion-vote'>
-              <BsArrowUpCircle />
-              34
+              <BiComment />
+              {item.commentCounts || 0}
             </div>
           </div>
           <div className='post-emotion-share'>
