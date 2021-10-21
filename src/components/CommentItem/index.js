@@ -1,5 +1,5 @@
 import { Avatar, Comment, Form, List, Skeleton } from 'antd';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import { AiOutlineLike } from 'react-icons/ai';
@@ -9,8 +9,10 @@ import { toast } from 'react-hot-toast';
 import { useAuthentication } from '../../hooks';
 import { useParams } from 'react-router-dom';
 import { useInfiniteQuery } from 'react-query';
+import ReplyCommentItem from '../ReplyCommentItem';
+import { AiFillLike } from 'react-icons/all';
 
-const CommentAuthor = styled.p`
+export const CommentAuthor = styled.p`
   font-size: 16px;
   font-weight: 600;
   color: #111;
@@ -23,7 +25,7 @@ const StyledComment = styled(Comment)`
     padding: 10px;
   }
 `;
-const LikeButton = styled.button`
+export const LikeButton = styled.button`
   font-size: 16px;
   display: flex;
   justify-content: center;
@@ -38,7 +40,7 @@ const LikeButton = styled.button`
 const ReplyButton = styled.button`
   font-size: 14px;
 `;
-const CommentTime = styled.p`
+export const CommentTime = styled.p`
   font-size: 12px;
   margin-left: 5px;
 `;
@@ -86,6 +88,46 @@ const CommentItem = ({ comment, reFetchPostDeail }) => {
   const [form] = Form.useForm();
   const [isOpenReply, setIsOpenReply] = useState(false);
   const [dataSearch] = React.useState({ limit: 5, status: 1, page: 1 });
+  const [likeCount, setLikeCount] = useState(comment.likeCount);
+  const [hasLikedYet, setHasLikedYet] = useState(false);
+  const fetchLikeCount = useCallback(async () => {
+    try {
+      const data = await memeServices.getCommentLikeCount(comment.id);
+      setLikeCount(data.data.likeCount);
+      setHasLikedYet(data.data.hasLikedYet);
+    } catch (err) {
+      setLikeCount(0);
+      setHasLikedYet(false);
+    }
+  }, [comment]);
+  useEffect(() => {
+    fetchLikeCount();
+  }, [fetchLikeCount]);
+  const handleLikePostComment = async () => {
+    if (!user) {
+      toast.error('Please login to continue');
+      return;
+    }
+    const likeCommentPromise = new Promise(async (resolve, reject) => {
+      try {
+        const res = await memeServices.likeAComment({ commentId: comment.id });
+        setHasLikedYet(res.data.hasLikedYet);
+        setLikeCount(res.data.likeCount);
+        resolve();
+      } catch (err) {
+        if (err.statusCode === 400) {
+          await fetchLikeCount();
+        }
+        reject(err);
+      }
+    });
+    await toast.promise(likeCommentPromise, {
+      loading: 'Saving....',
+      success: 'Like success',
+      error: err => `liked failed: ${err.message}`,
+    });
+  };
+
   const {
     data: { pages = [] } = {},
     fetchNextPage,
@@ -152,7 +194,9 @@ const CommentItem = ({ comment, reFetchPostDeail }) => {
   return (
     <StyledComment
       actions={[
-        <LikeButton key='like-button'>{comment.likeCount}<AiOutlineLike /></LikeButton>,
+        <LikeButton key='like-button' onClick={handleLikePostComment} disabled={hasLikedYet}>
+          {likeCount}{!hasLikedYet ? <AiOutlineLike /> : <AiFillLike />}
+        </LikeButton>,
         <ReplyButton key='reply-button' onClick={handleOpenReply}>{comment.replyCount} Reply</ReplyButton>,
       ]}
       author={<CommentAuthor>{comment.user.fullName}</CommentAuthor>}
@@ -169,20 +213,7 @@ const CommentItem = ({ comment, reFetchPostDeail }) => {
           <ReplyCommentContainer>
             {isFetching ? (<Skeleton />) : isError ? (<p>Some error has occured</p>) :
               listComments.length > 0 && (
-                <List dataSource={listComments} renderItem={(item) => <StyledComment
-                  actions={[
-                    <LikeButton key='like-button'>{item.likeCount}<AiOutlineLike /></LikeButton>,
-                  ]}
-                  author={<CommentAuthor>{item.user.fullName}</CommentAuthor>}
-                  avatar={<Avatar src={item.user.avatar || '/images/default-avatar.jpg'}
-                                  alt={item.user.fullName} />}
-                  content={
-                    <p>
-                      {item.content}
-                    </p>
-                  }
-                  datetime={<CommentTime>{moment(item.createdAt, 'YYYY-MM-DD[T]hh:mm:ssZ').fromNow()}</CommentTime>}
-                />} />
+                <List dataSource={listComments} renderItem={(item) => (<ReplyCommentItem comment={item} />)} />
               )
             }
             {hasNextPage && (<LoadMoreButton onClick={handleLoadMore}>Load more...</LoadMoreButton>)}
