@@ -5,58 +5,17 @@ import './style.scss';
 import { privateRoute } from '../../routes';
 import { Link } from 'react-router-dom';
 import { useAuthentication } from '../../hooks';
-import { BiExit, IoNotificationsOutline } from 'react-icons/all';
+import { BiExit } from 'react-icons/all';
 import { useSearchHandler } from '../../states/search';
-import { Dropdown, Menu } from 'antd';
-import styled from 'styled-components';
-import NotificationItem from '../../components/NotificationItem';
-import Fire from '../../services/fire';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
+import NotificationBar from '../../components/NotificationBar';
 
-const StyledMenu = styled(Menu)`
-  width: 350px;
-`;
-const NotificationChip = styled.span`
-  display: block;
-  position: absolute;
-  top: -7px;
-  right: -9px;
-  z-index: 10;
-  font-size: 12px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: red;
-  color: #fff;
-`;
 
 function Header() {
   const { onSendSearch } = useSearchHandler();
   const { user, logout } = useAuthentication();
   const [openProfile, setOpenProfile] = useState(false);
   const ref = useRef();
-  const notificationRef = Fire.create.fireStore.collection(user.username);
-  const query = notificationRef.orderBy('createdAt', 'desc').limit(5);
-  const [notifications = []] = useCollectionData(query, { idField: 'id' });
-  const activeNotifications = notifications.filter(notification => notification.status > 0);
-  const handleNotificationClicked = async (item) => {
-    await notificationRef.doc(item.id).update({ ...item, status: -1 });
-  };
-  const menu = (
-    <StyledMenu>
-      {
-        notifications && notifications.length > 0 ? notifications.map(item => (
-          <Menu.Item key={item.id} onClick={async () => await handleNotificationClicked(item)}>
-            <NotificationItem item={item} />
-          </Menu.Item>
-        )) : (
-          <Menu.Item key='no-notification'>
-            <p>You dont have any notification yet</p>
-          </Menu.Item>
-        )
-      }
-    </StyledMenu>
-  );
+
 
   const toggleProfile = () => {
     setOpenProfile(!openProfile);
@@ -88,12 +47,7 @@ function Header() {
         </Link>
         {user ? (
           <>
-            <Dropdown overlay={menu} trigger='click' placement='bottomCenter'>
-              <button>
-                <IoNotificationsOutline />
-                {activeNotifications.length > 0 && <NotificationChip>{activeNotifications.length}</NotificationChip>}
-              </button>
-            </Dropdown>
+            <NotificationBar />
             <div className='d-flex justify-content-center align-items-center'>
               <div ref={ref} className='header-content-container'>
                 <button onClick={toggleProfile}>
