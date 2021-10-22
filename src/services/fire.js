@@ -1,4 +1,6 @@
 import firebase from 'firebase/compat';
+import 'firebase/firestore';
+import 'firebase/storage';
 
 class Fire {
   constructor() {
@@ -22,6 +24,10 @@ class Fire {
 
   get storage() {
     return firebase.storage();
+  }
+
+  get fireStore() {
+    return firebase.firestore();
   }
 
   uploadImage = (file) => {
