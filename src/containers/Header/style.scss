@@ -50,11 +50,13 @@
     align-items: center;
     justify-content: right;
 
-    a {
+    a, button {
+      color: #111;
       margin: 0 5px;
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
 
       svg {
         width: 28px;
@@ -81,6 +83,10 @@
     .name {
       white-space: nowrap;
       position: relative;
+      max-width: 160px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      font-weight: 600;
     }
 
     .header-content-container {
@@ -100,6 +106,8 @@
       align-items: center;
       padding: 5px 10px;
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      z-index: 10;
+      background: #fff;
 
       a {
         color: black;
