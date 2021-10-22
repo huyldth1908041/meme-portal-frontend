@@ -62,6 +62,7 @@ const PostContent = styled.div`
 `;
 const StyledImage = styled(Image)`
   max-height: 500px;
+  min-height: 400px;
   min-width: 100%;
 `;
 const CommentBox = styled.div`
