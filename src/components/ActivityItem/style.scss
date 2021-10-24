@@ -1,0 +1,54 @@
+.activity-controller {
+  width: 700px;
+  margin: auto;
+  padding: 20px 0 10px;
+  .activity-content {
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    .activity-date {
+      font-size: 22px;
+      font-weight: bold;
+      padding-bottom: 10px;
+    }
+    .activity {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      justify-content: space-between;
+      .activity-left {
+        display: flex;
+        align-items: center;
+        .activity-avatar {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          overflow: hidden;
+          margin-right: 20px;
+          img {
+            width: 100%;
+          }
+        }
+        .activity-action {
+          .activity-action-name {
+            display: flex;
+            align-items: center;
+            font-size: 17px;
+            .activity-name {
+              padding-right: 4px;
+              font-weight: bold;
+            }
+          }
+          .activity-description {
+            font-size: 15px;
+          }
+        }
+      }
+      .activity-time {
+        float: right;
+        color: grey;
+      }
+    }
+  }
+}

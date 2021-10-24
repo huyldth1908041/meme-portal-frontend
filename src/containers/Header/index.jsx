@@ -5,7 +5,7 @@ import './style.scss';
 import { privateRoute } from '../../routes';
 import { Link } from 'react-router-dom';
 import { useAuthentication } from '../../hooks';
-import { BiExit } from 'react-icons/all';
+import { BiExit, BsListUl } from 'react-icons/all';
 import { useSearchHandler } from '../../states/search';
 import NotificationBar from '../../components/NotificationBar';
 
@@ -60,6 +60,9 @@ function Header() {
                   <div className='dropdown-content' onClick={() => setOpenProfile(false)}>
                     <Link to={privateRoute.profile.path}>
                       <BsPersonCircle /> Profile
+                    </Link>
+                    <Link to={privateRoute.recentlyActivities.path}>
+                      <BsListUl /> Recent Activity
                     </Link>
                     <button onClick={() => logout()}>
                       <BiExit className='button-icon' />

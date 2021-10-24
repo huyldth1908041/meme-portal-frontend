@@ -3,6 +3,7 @@ import { CreatePost } from '../pages/CreatePost';
 import { Profile } from '../pages/Profile';
 import { PostDetail } from '../pages/PostDetail';
 import { ProfileUpdate } from '../pages/ProfileUpdate';
+import { RecentActivities } from '../pages/RecentActivities';
 
 const privateRoute = {
   home: {
@@ -25,6 +26,11 @@ const privateRoute = {
   profile: {
     path: '/profile',
     component: Profile,
+    requiredLogin: true,
+  },
+  recentlyActivities: {
+    path: '/recently-activities',
+    component: RecentActivities,
     requiredLogin: true,
   },
 
