@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './style.scss';
 import { MdModeEditOutline } from 'react-icons/md';
 import { useAuthentication } from '../../hooks';
 import { UserPosts } from './components';
 import { Tabs, Box, Chip, Typography, Tab } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { privateRoute } from '../../routes';
 import { useQuery } from 'react-query';
 import memeServices from '../../services/memeServices';
@@ -13,7 +13,13 @@ import { Skeleton } from 'antd';
 
 const Profile = () => {
   const { user } = useAuthentication();
-  const userId = user.id;
+  let userId = user.id;
+  const { id } = useParams();
+  let isOtherProfile = false;
+  if (id && +userId !== +id) {
+    userId = id;
+    isOtherProfile = true;
+  }
   const { data = {}, isLoading, error } = useQuery(['memeServices.userDetail', userId],
     ({ queryKey }) => memeServices.userDetail(queryKey[1]));
   const [counter, setCounter] = React.useState({});
@@ -22,9 +28,9 @@ const Profile = () => {
   const onUpdatePendingCounter = React.useCallback((num) => setCounter((cur) => ({ ...cur, pending: num })), []);
   const onUpdateHotCounter = React.useCallback((num) => setCounter((cur) => ({ ...cur, hot: num })), []);
 
-  const paramsVerified = React.useMemo(() => ({ status: 1, creatorId: user.id }), [user]);
-  const paramsPending = React.useMemo(() => ({ status: 0, creatorId: user.id }), [user]);
-  const paramsHot = React.useMemo(() => ({ status: 2, creatorId: user.id }), [user]);
+  const paramsVerified = React.useMemo(() => ({ status: 1, creatorId: userId }), [userId]);
+  const paramsPending = React.useMemo(() => ({ status: 0, creatorId: userId }), [userId]);
+  const paramsHot = React.useMemo(() => ({ status: 2, creatorId: userId }), [userId]);
 
   const tabs = [
     {
@@ -33,12 +39,7 @@ const Profile = () => {
       label: 'New Posts',
       component: <UserPosts params={paramsVerified} onUpdateCounter={onUpdateVerifiedCounter} />,
     },
-    {
-      id: 2,
-      code: 'pending',
-      label: 'Pending Posts',
-      component: <UserPosts params={paramsPending} onUpdateCounter={onUpdatePendingCounter} />,
-    },
+
     {
       id: 3,
       code: 'hot',
@@ -46,14 +47,28 @@ const Profile = () => {
       component: <UserPosts params={paramsHot} onUpdateCounter={onUpdateHotCounter} />,
     },
   ];
+  if (!isOtherProfile) {
+    tabs.push({
+      id: 2,
+      code: 'pending',
+      label: 'Pending Posts',
+      component: <UserPosts params={paramsPending} onUpdateCounter={onUpdatePendingCounter} />,
+    });
+  }
   const [activeTab, setActiveTab] = React.useState(tabs[0].code);
   const handleChangeTab = (_, nextTab) => {
     setActiveTab(nextTab);
   };
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'auto',
+    });
+  }, []);
   return (
     <div className='profile-controller'>
       {
-        isLoading ? (<Skeleton/>) : error ? (<p>Som error has occured</p>) : (
+        isLoading ? (<Skeleton />) : error ? (<p>Som error has occured</p>) : (
           <div className='profile-header'>
             <div className='profile-information'>
               <div className='profile-avatar'>
@@ -61,11 +76,17 @@ const Profile = () => {
               </div>
               <div className='profile-name'>
                 <div className='profile-fullname'>{apiUser?.fullName || 'No name'}</div>
-                <Link to={privateRoute.profileUpdate.path} style={{ color: '#fff' }}>
-                  <button className='btn btn-primary'>
-                    <MdModeEditOutline /> Edit Profile
-                  </button>
-                </Link>
+                {
+                  !isOtherProfile ? (
+                    <Link to={privateRoute.profileUpdate.path} style={{ color: '#fff' }}>
+                      <button className='btn btn-primary'>
+                        <MdModeEditOutline /> Edit Profile
+                      </button>
+                    </Link>
+                  ) : (
+                    <button className='btn btn-primary'>Send token</button>
+                  )
+                }
               </div>
             </div>
             <div className='profile-activity'>

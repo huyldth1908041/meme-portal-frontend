@@ -44,6 +44,12 @@ const privateRoute = {
     requiredLogin: true,
     component: TokenHistoryPage,
   },
+  userProfile: {
+    path: '/profile/:id',
+    component: Profile,
+    url: (id) => `/profile/${id}`,
+    requiredLogin: true,
+  }
 };
 
 export default privateRoute;
