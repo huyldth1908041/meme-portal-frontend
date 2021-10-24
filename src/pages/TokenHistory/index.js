@@ -1,0 +1,1 @@
+export { default as TokenHistoryPage } from './TokenHistory';

@@ -5,17 +5,15 @@ import './style.scss';
 import { privateRoute } from '../../routes';
 import { Link } from 'react-router-dom';
 import { useAuthentication } from '../../hooks';
-import { BiExit, BsListUl } from 'react-icons/all';
+import { BiExit, BsListUl, GrTransaction } from 'react-icons/all';
 import { useSearchHandler } from '../../states/search';
 import NotificationBar from '../../components/NotificationBar';
-
 
 function Header() {
   const { onSendSearch } = useSearchHandler();
   const { user, logout } = useAuthentication();
   const [openProfile, setOpenProfile] = useState(false);
   const ref = useRef();
-
 
   const toggleProfile = () => {
     setOpenProfile(!openProfile);
@@ -63,6 +61,10 @@ function Header() {
                     </Link>
                     <Link to={privateRoute.recentlyActivities.path}>
                       <BsListUl /> Recent Activity
+                    </Link>
+                    <Link to={privateRoute.tokenHistory.path}>
+                      <GrTransaction />
+                      Token history
                     </Link>
                     <button onClick={() => logout()}>
                       <BiExit className='button-icon' />
