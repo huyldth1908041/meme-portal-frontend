@@ -3,6 +3,8 @@ import './style.scss';
 import { useQuery } from 'react-query';
 import memeServices from '../../services/memeServices';
 import { Skeleton } from 'antd';
+import { Link } from 'react-router-dom';
+import { privateRoute } from '../../routes';
 
 const TopTokenItem = () => {
   const {
@@ -18,7 +20,7 @@ const TopTokenItem = () => {
         {
           isLoading ? (<Skeleton />) : error ? (<p>Sone error has occurred</p>) : (
             topTokenOwners.length && topTokenOwners.map((item, id) => (
-              <div className='token-owner' key={item.user.id}>
+              <Link className='token-owner' key={item.user.id} to={privateRoute.userProfile.url(item.user.id)}>
                 <div className='token-owner-left'>
                   <div className='token-owner-position'>{id + 1}</div>
                   <div className='token-owner-logo'>
@@ -29,7 +31,7 @@ const TopTokenItem = () => {
                   <div className='token-owner-name'>{item.user.fullName}</div>
                   <div className='token-owner-token'>{item.tokenBalance}</div>
                 </div>
-              </div>
+              </Link>
             ))
           )
         }

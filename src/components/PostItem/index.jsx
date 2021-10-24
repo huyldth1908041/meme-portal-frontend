@@ -60,10 +60,14 @@ const PostItem = ({ item, isPreview }) => {
       <div className='post'>
         <div className='post-header'>
           <div className='post-logo'>
-            <img src={item.creator.avatar || '/images/default-avatar.jpg'} />
+            <Link to={privateRoute.userProfile.url(item.creator.id)}>
+              <img src={item.creator.avatar || '/images/default-avatar.jpg'} alt='avatar' />
+            </Link>
+
           </div>
           <div className='post-name-time'>
-            <div className='post-name'>{item.creator.fullName}</div>
+            <Link className='post-name'
+                  to={privateRoute.userProfile.url(item.creator.id)}>{item.creator.fullName}</Link>
             <div className='post-time'>
               {moment(item.createdAt, 'YYYY-MM-DD[T]hh:mm:ssZ').fromNow()}
             </div>
