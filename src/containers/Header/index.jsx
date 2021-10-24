@@ -36,7 +36,7 @@ function Header() {
   return (
     <div className='header-content'>
       <div className='logo'>
-        <Link to={privateRoute.home.path}>MEME PORTAL</Link>
+        <Link to={privateRoute.home.path}>HÀI CODE</Link>
       </div>
       <div className='search'>
         <input type='text' placeholder='Search' onChange={(e) => onSendSearch(e.target.value)} />

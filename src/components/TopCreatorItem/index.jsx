@@ -6,7 +6,7 @@ import { Skeleton } from 'antd';
 
 
 const TopCreatorItem = () => {
-  const { isLoading, data = {} } = useQuery([memeServices.topCreator], () => memeServices.topCreator());
+  const { isLoading, data = {} } = useQuery(["memeServices.topCreator"], () => memeServices.topCreator());
   const { data: topCreators = [] } = data;
   return (
     <div className='creator-controller'>
