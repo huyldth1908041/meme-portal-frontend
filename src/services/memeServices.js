@@ -70,6 +70,10 @@ const memeServices = {
     const url = `/posts/comments/${commentId}/replyComments`;
     return await axiosClient.get(url, { params });
   },
+  getTopTokenHolder: async () => {
+    const url = `/users/topToken`;
+    return await axiosClient.get(url);
+  },
 };
 
 export default memeServices;

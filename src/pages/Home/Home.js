@@ -11,6 +11,7 @@ import { parse, stringify } from 'query-string';
 import { useHistory } from 'react-router-dom';
 import { privateRoute } from '../../routes';
 import TopCreatorItem from '../../components/TopCreatorItem';
+import TopTokenItem from '../../components/TopTokenItem';
 
 const ButtonWrapper = styled.div`
   width: 100%;
@@ -77,7 +78,9 @@ const Home = () => {
 
   return (
     <div className='home-body'>
-      <div className='body-sideleft' />
+      <div className='body-sideleft'>
+        <TopTokenItem />
+      </div>
       <div className='body-content'>
         <ButtonWrapper>
           {tabs.map((item) => {
