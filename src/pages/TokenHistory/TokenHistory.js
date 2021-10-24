@@ -53,7 +53,7 @@ const TokenHistory = () => {
     {
       keepPreviousData: true,
     });
-  const { data: { content: apiTokenHistory = [], totalElements = 0 } } = tokenHistoryData;
+  const { data: { content: apiTokenHistory = [], totalElements = 0 } = {} } = tokenHistoryData;
   const handlePageChanged = (page, _) => {
     setDataSearch({ ...dataSearch, page: page });
   };
