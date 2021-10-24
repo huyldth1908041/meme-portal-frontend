@@ -74,6 +74,10 @@ const memeServices = {
     const url = `/users/topToken`;
     return await axiosClient.get(url);
   },
+  getTokenHistory: async (params = {}) => {
+    const url = `/tokens/history`;
+    return await axiosClient.get(url, { params });
+  },
 };
 
 export default memeServices;
