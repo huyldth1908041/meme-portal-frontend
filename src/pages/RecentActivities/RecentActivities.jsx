@@ -1,5 +1,6 @@
 import React from 'react';
 import ActivityItem from '../../components/ActivityItem';
+import './style.scss';
 
 const RecentActivities = () => {
   const item = [
@@ -17,6 +18,7 @@ const RecentActivities = () => {
   ];
   return (
     <div className='recentActivities-controller'>
+      <div className='header'>Recently Activities</div>
       <ActivityItem item={item} />
     </div>
   );
