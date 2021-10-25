@@ -10,7 +10,6 @@ export const useSearchState = () => {
 export const useSearchHandler = () => {
   const dispatch = useDispatch();
   const onSendSearch = useCallback((query) => {
-    console.log();
     dispatch(sendSearch({ query }));
   }, [dispatch]);
 
