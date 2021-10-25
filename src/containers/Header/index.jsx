@@ -3,20 +3,31 @@ import { AiOutlineHome, AiOutlineLogin, AiOutlineCloudUpload } from 'react-icons
 import { BsPersonCircle } from 'react-icons/bs';
 import './style.scss';
 import { privateRoute } from '../../routes';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useAuthentication } from '../../hooks';
 import { BiExit, GrTransaction } from 'react-icons/all';
-import { useSearchHandler } from '../../states/search';
 import NotificationBar from '../../components/NotificationBar';
+import memeServices from '../../services/memeServices';
+import SelectDebounce from '../../components/SelectDebounce/SelectDebounce';
 
 
 function Header() {
-  const { onSendSearch } = useSearchHandler();
   const { user, logout } = useAuthentication();
   const [openProfile, setOpenProfile] = useState(false);
   const ref = useRef();
-
-
+  const [postId, setPostId] = useState();
+  const history = useHistory();
+  const fetchPostList = async (title) => {
+    try {
+      const res = await memeServices.searchMemes({ page: 1, limit: 10, title: title, status: 1 });
+      return res.data.content.map((post) => ({
+        label: `${post.title}`,
+        value: post.id,
+      }));
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
   const toggleProfile = () => {
     setOpenProfile(!openProfile);
   };
@@ -39,7 +50,16 @@ function Header() {
         <Link to={privateRoute.home.path}>HÀI CODE</Link>
       </div>
       <div className='search'>
-        <input type='text' placeholder='Search' onChange={(e) => onSendSearch(e.target.value)} />
+        {/*<input type='text' placeholder='Search' onChange={(e) => onSendSearch(e.target.value)} />*/}
+        <SelectDebounce
+          value={postId}
+          placeholder='Search post..'
+          fetchOptions={fetchPostList}
+          onChange={(newValue) => {
+            setPostId(newValue);
+            history.push(privateRoute.postDetail.url(newValue.value));
+          }}
+        />
       </div>
       <div className='list-icon'>
         <Link to={privateRoute.home.path}>
