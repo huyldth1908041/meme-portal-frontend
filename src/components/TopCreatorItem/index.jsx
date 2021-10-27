@@ -25,7 +25,9 @@ const TopCreatorItem = () => {
           <div className='creator' key={item.user.id}>
             <div className='creator-logo'>
               <Link to={privateRoute.userProfile.url(item.user.id)}>
-                <img src={item.user.avatar || '/images/default-avatar.jpg'} alt='' />
+                <img
+                  src={(!item.user.avatar || item.user.avatar === 'null') ? '/images/default-avatar.jpg' : item.user.avatar}
+                  alt='' />
               </Link>
             </div>
             <div className='creator-detail'>
