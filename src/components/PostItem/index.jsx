@@ -55,6 +55,10 @@ const PostItem = ({ item, isPreview }) => {
     });
   };
   const handleSharePost = async () => {
+    if(!user) {
+      toast.error('please login to continue');
+      return
+    }
     //check share
     let canShare = false;
     try {
