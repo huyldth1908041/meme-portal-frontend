@@ -78,6 +78,14 @@ const memeServices = {
     const url = `/tokens/history`;
     return await axiosClient.get(url, { params });
   },
+  checkShare: async (id) => {
+    const url = `/posts/${id}/checkShare`;
+    return await axiosClient.post(url);
+  },
+  saveSharePost: async (id) => {
+    const url = `/posts/${id}/share`;
+    return await axiosClient.post(url);
+  },
 };
 
 export default memeServices;
