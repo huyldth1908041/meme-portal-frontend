@@ -3,6 +3,8 @@ import './style.scss';
 import { MdModeEditOutline } from 'react-icons/md';
 import { useAuthentication } from '../../hooks';
 import { UserPosts } from './components';
+import ModalToken from '../../components/ModalToken';
+import { Modal } from 'antd';
 import { Tabs, Box, Chip, Typography, Tab } from '@material-ui/core';
 import { Link, useParams } from 'react-router-dom';
 import { privateRoute } from '../../routes';
@@ -10,9 +12,10 @@ import { useQuery } from 'react-query';
 import memeServices from '../../services/memeServices';
 import { Skeleton } from 'antd';
 
-
 const Profile = () => {
   const { user } = useAuthentication();
+  const [displayModal, setDisplayModal] = React.useState(false);
+  const [displayOTP, setDisplayOTP] = React.useState(false);
   let userId = user.id;
   const { id } = useParams();
   let isOtherProfile = false;
@@ -20,8 +23,11 @@ const Profile = () => {
     userId = id;
     isOtherProfile = true;
   }
-  const { data = {}, isLoading, error } = useQuery(['memeServices.userDetail', userId],
-    ({ queryKey }) => memeServices.userDetail(queryKey[1]));
+  const {
+    data = {},
+    isLoading,
+    error,
+  } = useQuery(['memeServices.userDetail', userId], ({ queryKey }) => memeServices.userDetail(queryKey[1]));
   const [counter, setCounter] = React.useState({});
   const { data: apiUser = {} } = data;
   const onUpdateVerifiedCounter = React.useCallback((num) => setCounter((cur) => ({ ...cur, verified: num })), []);
@@ -59,6 +65,17 @@ const Profile = () => {
   const handleChangeTab = (_, nextTab) => {
     setActiveTab(nextTab);
   };
+  const sendToken = (e) => {
+    setDisplayModal(true);
+  };
+  const handleOk = () => {
+    setDisplayOTP(true);
+  };
+
+  const handleCancel = () => {
+    setDisplayModal(false);
+    setDisplayOTP(false);
+  };
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -67,36 +84,43 @@ const Profile = () => {
   }, []);
   return (
     <div className='profile-controller'>
-      {
-        isLoading ? (<Skeleton />) : error ? (<p>Som error has occured</p>) : (
-          <div className='profile-header'>
-            <div className='profile-information'>
-              <div className='profile-avatar'>
-                <img src={apiUser?.avatar || '/images/default-avatar.jpg'} alt='' />
-              </div>
-              <div className='profile-name'>
-                <div className='profile-fullname'>{apiUser?.fullName || 'No name'}</div>
-                {
-                  !isOtherProfile ? (
-                    <Link to={privateRoute.profileUpdate.path} style={{ color: '#fff' }}>
-                      <button className='btn btn-primary'>
-                        <MdModeEditOutline /> Edit Profile
-                      </button>
-                    </Link>
-                  ) : (
-                    <button className='btn btn-primary'>Send token</button>
-                  )
-                }
-              </div>
+      <div className='modal-token'>
+        <Modal title='Give Tokens to member' visible={displayModal} onOk={handleOk} onCancel={handleCancel}>
+          {displayOTP ? <ModalToken type='otp' /> : <ModalToken type='send-token' user={apiUser} />}
+        </Modal>
+      </div>
+      {isLoading ? (
+        <Skeleton />
+      ) : error ? (
+        <p>Som error has occured</p>
+      ) : (
+        <div className='profile-header'>
+          <div className='profile-information'>
+            <div className='profile-avatar'>
+              <img src={apiUser?.avatar || '/images/default-avatar.jpg'} alt='' />
             </div>
-            <div className='profile-activity'>
-              <div className='profile-post'>{0} posts</div>
-              <div className='profile-comment'>{apiUser?.comment || 0} comments</div>
-              <div className='profile-token'>{apiUser?.tokenBalance || 0} tokens</div>
+            <div className='profile-name'>
+              <div className='profile-fullname'>{apiUser?.fullName || 'No name'}</div>
+              {!isOtherProfile ? (
+                <Link to={privateRoute.profileUpdate.path} style={{ color: '#fff' }}>
+                  <button className='btn btn-primary'>
+                    <MdModeEditOutline /> Edit Profile
+                  </button>
+                </Link>
+              ) : (
+                <button className='btn btn-primary' onClick={sendToken}>
+                  Send token
+                </button>
+              )}
             </div>
           </div>
-        )
-      }
+          <div className='profile-activity'>
+            <div className='profile-post'>{0} posts</div>
+            <div className='profile-comment'>{apiUser?.comment || 0} comments</div>
+            <div className='profile-token'>{apiUser?.tokenBalance || 0} tokens</div>
+          </div>
+        </div>
+      )}
       <div className='profile-content'>
         <div className='content-header'>Posts Created</div>
 
