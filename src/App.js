@@ -7,9 +7,10 @@ import store from './states';
 import { Toaster } from 'react-hot-toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import ScrollToTopButton from './components/ScrollToTopButton/ScrollToTopButton';
+import { initFacebookSdk } from './utils';
 
 const queryClient = new QueryClient();
-
+initFacebookSdk().then(App);
 function App() {
   return (
     <Provider store={store}>
