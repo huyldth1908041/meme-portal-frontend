@@ -3,19 +3,17 @@ import './style.scss';
 import { MdModeEditOutline } from 'react-icons/md';
 import { useAuthentication } from '../../hooks';
 import { UserPosts } from './components';
-import ModalToken from '../../components/ModalToken';
-import { Modal } from 'antd';
 import { Tabs, Box, Chip, Typography, Tab } from '@material-ui/core';
 import { Link, useParams } from 'react-router-dom';
 import { privateRoute } from '../../routes';
 import { useQuery } from 'react-query';
 import memeServices from '../../services/memeServices';
 import { Skeleton } from 'antd';
+import ModalTransferToken from '../../components/ModalTransferToken';
 
 const Profile = () => {
   const { user } = useAuthentication();
   const [displayModal, setDisplayModal] = React.useState(false);
-  const [displayOTP, setDisplayOTP] = React.useState(false);
   let userId = user.id;
   const { id } = useParams();
   let isOtherProfile = false;
@@ -69,12 +67,11 @@ const Profile = () => {
     setDisplayModal(true);
   };
   const handleOk = () => {
-    setDisplayOTP(true);
+    setDisplayModal(false);
   };
 
   const handleCancel = () => {
     setDisplayModal(false);
-    setDisplayOTP(false);
   };
   useEffect(() => {
     window.scrollTo({
@@ -85,9 +82,12 @@ const Profile = () => {
   return (
     <div className='profile-controller'>
       <div className='modal-token'>
-        <Modal title='Give Tokens to member' visible={displayModal} onOk={handleOk} onCancel={handleCancel}>
-          {displayOTP ? <ModalToken type='otp' /> : <ModalToken type='send-token' user={apiUser} />}
-        </Modal>
+        <ModalTransferToken
+          visible={displayModal}
+          receiver={apiUser}
+          handleCancel={handleCancel}
+          handleOk={handleOk}
+          senderId={user.id} />
       </div>
       {isLoading ? (
         <Skeleton />
