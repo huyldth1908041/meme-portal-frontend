@@ -1,12 +1,11 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useCallback, useState } from 'react';
 import { AiOutlineLike } from 'react-icons/ai';
-import { BsShare } from 'react-icons/bs';
 import './style.scss';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { privateRoute } from '../../routes';
-import { AiFillLike, BiComment } from 'react-icons/all';
+import { AiFillLike, BiComment, FaFacebook } from 'react-icons/all';
 import memeServices from '../../services/memeServices';
 import { useAuthentication } from '../../hooks';
 import { toast } from 'react-hot-toast';
@@ -15,7 +14,8 @@ const PostItem = ({ item, isPreview }) => {
   const { user } = useAuthentication();
   const [likeCount, setLikeCount] = useState(item.likeCounts);
   const [hasLikedYet, setHasLikedYet] = useState(false);
-
+  const [disableShareButton, setDisableShareButton] = useState(false);
+  const [shareCount, setShareCount] = useState(item.shareCounts);
   const fetchLikeCount = useCallback(async () => {
     if (isPreview) {
       return;
@@ -54,7 +54,46 @@ const PostItem = ({ item, isPreview }) => {
       error: err => `liked failed: ${err.message}`,
     });
   };
-
+  const handleSharePost = async () => {
+    if(!user) {
+      toast.error('please login to continue');
+      return
+    }
+    //check share
+    let canShare = false;
+    try {
+      const resp = await memeServices.checkShare(item.id);
+      canShare = resp.data.canShare;
+    } catch (err) {
+      toast.error('some error has occured');
+    }
+    if (!canShare) {
+      toast.error('You have reached share limit for this post, try again tomorrow');
+      setDisableShareButton(true);
+      return;
+    }
+    window.FB.ui(
+      {
+        method: 'feed',
+        name: 'Facebook Dialogs',
+        link: `https://meme-portal-frontend.vercel.app/post/${item.id}`,
+      },
+       function(response) {
+        if (typeof response !== 'undefined') {
+          memeServices.saveSharePost(item.id).then(resp => {
+            const newShareCount = resp.data.shareCount
+            setShareCount(newShareCount)
+            setDisableShareButton(true)
+            toast.success("Shared success")
+          }).catch(err => {
+            toast.error("share failed: " + err.message)
+          })
+        } else {
+          toast.error('post not shared: user denied to share');
+        }
+      },
+    );
+  };
   return (
     <div className='post-controller'>
       <div className='post'>
@@ -113,8 +152,19 @@ const PostItem = ({ item, isPreview }) => {
             </div>
           </div>
           <div className='post-emotion-share'>
-            <BsShare />
-            Share
+            {
+              isPreview ? (
+                <button>
+                  <FaFacebook />
+                  0 Share
+                </button>
+              ) : (
+                <button onClick={handleSharePost} disabled={disableShareButton}>
+                  <FaFacebook />
+                  {shareCount} Share
+                </button>
+              )
+            }
           </div>
         </div>
       </div>
