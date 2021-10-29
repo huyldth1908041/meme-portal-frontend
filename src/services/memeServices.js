@@ -96,6 +96,11 @@ const memeServices = {
     const url = `/posts/${id}/share`;
     return await axiosClient.post(url);
   },
+
+  pushMeme: async (body) => {
+    const url = `/tokens/push`;
+    return await axiosClient.post(url, body);
+  }
 };
 
 export default memeServices;

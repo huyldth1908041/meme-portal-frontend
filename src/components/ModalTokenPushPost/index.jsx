@@ -6,13 +6,13 @@ import { useQuery } from 'react-query';
 import memeServices from '../../services/memeServices';
 import { toast } from 'react-hot-toast';
 
-const ModalTokenPushPost = ({ senderId, receiver, visible, handleOk, handleCancel }) => {
+const ModalTokenPushPost = ({ postItem, pusherId, visible, handleOk, handleCancel }) => {
   const {
     data = {},
     isLoading,
     error,
-  } = useQuery(['memeServices.userDetail', senderId], ({ queryKey }) => memeServices.userDetail(queryKey[1]));
-  const { data: sender = {} } = data;
+  } = useQuery(['memeServices.userDetail', pusherId], ({ queryKey }) => memeServices.userDetail(queryKey[1]));
+  const { data: pusher = {} } = data;
   const [showVerify, setShowVerify] = useState(false);
   const [otp, setOtp] = useState('');
   const [transactionId, setTransactionId] = useState(0);
@@ -44,6 +44,7 @@ const ModalTokenPushPost = ({ senderId, receiver, visible, handleOk, handleCance
         });
         setShowVerify(false);
         handleOk();
+        window.location.reload();
         resolve();
       } catch (err) {
         reject(err);
@@ -62,10 +63,9 @@ const ModalTokenPushPost = ({ senderId, receiver, visible, handleOk, handleCance
     const transferTokenPromise = new Promise(async (resolve, reject) => {
       try {
         setLoading(true);
-        const resp = await memeServices.transferToken({
+        const resp = await memeServices.pushMeme({
           amount: +values.amount,
-          reason: values.reason,
-          receiverId: receiver.id,
+          postId: postItem.id,
         });
         const txId = resp.data.id;
         setTransactionId(+txId);
@@ -76,10 +76,11 @@ const ModalTokenPushPost = ({ senderId, receiver, visible, handleOk, handleCance
       } finally {
         setLoading(false);
       }
+
     });
     await toast.promise(transferTokenPromise, {
       loading: 'processing...',
-      error: (err) => `error: ${err.message}`,
+      error: err => `error: ${err.message}`,
       success: 'transaction created',
     });
   };
@@ -89,28 +90,28 @@ const ModalTokenPushPost = ({ senderId, receiver, visible, handleOk, handleCance
 
   return (
     <Modal
-      title='Give tokens to push post'
+      title='Use tokens to push post'
       visible={visible}
       onOk={handleOk}
       onCancel={handleCancel}
       footer={
         showVerify
           ? [
-              <Button key='back' onClick={handleCancelVerify} disabled={loading}>
-                Cancel
-              </Button>,
-              <Button key='submit' type='primary' onClick={handleVerifyTransaction} disabled={loading}>
-                {loading ? 'Verifying...' : 'Send'}
-              </Button>,
-            ]
+            <Button key='back' onClick={handleCancelVerify} disabled={loading}>
+              Cancel
+            </Button>,
+            <Button key='submit' type='primary' onClick={handleVerifyTransaction} disabled={loading}>
+              {loading ? 'Verifying...' : 'Send'}
+            </Button>,
+          ]
           : [
-              <Button key='back' onClick={handleCancel} disabled={loading}>
-                Cancel
-              </Button>,
-              <Button key='submit' type='primary' onClick={handleTransfer} disabled={loading}>
-                {loading ? 'Processing' : 'Transfer'}
-              </Button>,
-            ]
+            <Button key='back' onClick={handleCancel} disabled={loading}>
+              Cancel
+            </Button>,
+            <Button key='submit' type='primary' onClick={handleTransfer} disabled={loading}>
+              {loading ? 'Processing' : 'Push'}
+            </Button>,
+          ]
       }
     >
       {showVerify ? (
@@ -143,11 +144,13 @@ const ModalTokenPushPost = ({ senderId, receiver, visible, handleOk, handleCance
             <p>Some error has occurred</p>
           ) : (
             <div className='modal-content-token'>
-              <div className='modal-user'>Need {receiver?.upHotTokenNeeded} tokens to be hot post</div>
-              <div className='modal-valid-token'>Your valid Token: {sender.tokenBalance}</div>
+              <div className='modal-user'>
+                This post need {postItem.upHotTokenNeeded.toLocaleString()} tokens to be a hot meme
+              </div>
+              <div className='modal-valid-token'>Your valid Token: {pusher.tokenBalance.toLocaleString()}</div>
               <div className='modal-title'>Insert tokens you want to donate to the above content</div>
               <div className='modal-subtitle'>
-                The number of tokens you donate will help improve the speed of hot news faster
+                The number of tokens you donate will help improve the speed of hot meme faster
               </div>
               <Form name='transferToken' onFinish={handleFinish} onFinishFailed={handleFinishFailed} form={form}>
                 <Form.Item name='amount' rules={[{ required: true, message: 'Please enter amount' }]}>

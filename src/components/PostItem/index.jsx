@@ -8,8 +8,8 @@ import { privateRoute } from '../../routes';
 import { AiFillLike, BiComment, FaFacebook, BsArrowUpCircle } from 'react-icons/all';
 import memeServices from '../../services/memeServices';
 import { useAuthentication } from '../../hooks';
-import ModalTransferToken from '../../components/ModalTokenPushPost';
 import { toast } from 'react-hot-toast';
+import ModalTokenPushPost from '../../components/ModalTokenPushPost';
 
 const PostItem = ({ item, isPreview }) => {
   const { user } = useAuthentication();
@@ -81,7 +81,7 @@ const PostItem = ({ item, isPreview }) => {
         name: 'Facebook Dialogs',
         link: `https://meme-portal-frontend.vercel.app/post/${item.id}`,
       },
-      function (response) {
+      function(response) {
         if (typeof response !== 'undefined') {
           memeServices
             .saveSharePost(item.id)
@@ -102,6 +102,10 @@ const PostItem = ({ item, isPreview }) => {
   };
 
   const sendToken = (e) => {
+    if (!user) {
+      toast.error('Please login to continue');
+      return;
+    }
     setDisplayModal(true);
   };
   const handleOk = () => {
@@ -114,12 +118,12 @@ const PostItem = ({ item, isPreview }) => {
   return (
     <div className='post-controller'>
       <div className='modal-token'>
-        <ModalTransferToken
+        <ModalTokenPushPost
           visible={displayModal}
-          // receiver={apiUser}
           handleCancel={handleCancel}
           handleOk={handleOk}
-          senderId={user.id}
+          pusherId={user.id}
+          postItem={item}
         />
       </div>
       <div className='post'>
@@ -137,7 +141,12 @@ const PostItem = ({ item, isPreview }) => {
               <div className='post-time'>{moment(item.createdAt, 'YYYY-MM-DD[T]hh:mm:ssZ').fromNow()}</div>
             </div>
           </div>
-          <div className='post-header-right'>Need <b>1000</b> tokens more to be hot Post</div>
+          {
+            item.status === 1 && (
+              <div className='post-header-right'>
+                Need <b>{item.upHotTokenNeeded.toLocaleString()}</b> tokens more to be hot Post
+              </div>)
+          }
         </div>
         <div className='post-detail'>
           <div className='post-title'>{item.title}</div>
@@ -173,9 +182,13 @@ const PostItem = ({ item, isPreview }) => {
               <BiComment />
               {item.commentCounts || 0}
             </div>
-            <div className='post-emotion-push' onClick={sendToken}>
-              <BsArrowUpCircle /> Push
-            </div>
+            {
+              item.status === 1 && (
+                <button className='post-emotion-push' onClick={sendToken}>
+                  <BsArrowUpCircle /> Push
+                </button>
+              )
+            }
           </div>
           <div className='post-emotion-share'>
             {isPreview ? (

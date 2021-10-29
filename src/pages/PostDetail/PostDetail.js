@@ -11,6 +11,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAuthentication } from '../../hooks';
 import CommentItem from '../../components/CommentItem';
 import { TextareaAutosize } from '@material-ui/core';
+import ModalTokenPushPost from '../../components/ModalTokenPushPost';
 
 const PageWrapper = styled.div`
   width: 70%;
@@ -38,6 +39,10 @@ const CreatorBox = styled.div`
 
   > div {
     margin-left: 10px;
+  }
+
+  div.up-hot-token {
+    margin-left: 30px;
   }
 
   p {
@@ -170,6 +175,7 @@ const PostDetail = () => {
   const [form] = Form.useForm();
   const { id } = useParams();
   const commentBox = useRef(null);
+  const [displayModal, setDisplayModal] = React.useState(false);
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -267,6 +273,22 @@ const PostDetail = () => {
       form.submit();
     }
   };
+
+  const handlePush = () => {
+    if (!user) {
+      toast.error('Please login to continue');
+      return;
+    }
+    setDisplayModal(true);
+  };
+  const handleOk = () => {
+    setDisplayModal(false);
+  };
+
+  const handleCancel = () => {
+    setDisplayModal(false);
+  };
+
   return (
     <PageWrapper>
       {
@@ -305,9 +327,18 @@ const PostDetail = () => {
               <PostEmotion>
                 <BiComment style={{ color: '#111' }} /> {postItem.commentCounts || 0}
               </PostEmotion>
-              <PostEmotion>
-                12 push
-              </PostEmotion>
+              {
+                postItem.status === 1 && (
+                  <>
+                    <PostEmotion>
+                      {postItem.pushCount} push
+                    </PostEmotion>
+                    <div className='up-hot-token'>
+                      <b>{postItem.upHotTokenNeeded} </b> tokens to be hot
+                    </div>
+                  </>
+                )
+              }
             </EmotionContainer>
             <FlexBox style={{ marginTop: '20px' }}>
               <StyledButton
@@ -318,7 +349,20 @@ const PostDetail = () => {
               >
                 {hasLikedYet ? 'Liked' : 'Like'}
               </StyledButton>
-              <StyledButton type='primary' icon={<BiUpvote />}>Push</StyledButton>
+              {
+                postItem.status === 1 && (
+                  <>
+                    <StyledButton type='primary' icon={<BiUpvote />} onClick={handlePush}>Push</StyledButton>
+                    <ModalTokenPushPost
+                      visible={displayModal}
+                      handleCancel={handleCancel}
+                      handleOk={handleOk}
+                      pusherId={user.id}
+                      postItem={postItem}
+                    />
+                  </>
+                )
+              }
             </FlexBox>
             <CommentBox>
               <CommentContainer ref={commentBox}>
