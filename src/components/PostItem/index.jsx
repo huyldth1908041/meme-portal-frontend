@@ -5,7 +5,7 @@ import './style.scss';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { privateRoute } from '../../routes';
-import { AiFillLike, BiComment, FaFacebook, BsFillArrowUpCircleFill } from 'react-icons/all';
+import { AiFillLike, BiComment, FaFacebook, BsArrowUpCircle } from 'react-icons/all';
 import memeServices from '../../services/memeServices';
 import { useAuthentication } from '../../hooks';
 import ModalTransferToken from '../../components/ModalTokenPushPost';
@@ -124,17 +124,20 @@ const PostItem = ({ item, isPreview }) => {
       </div>
       <div className='post'>
         <div className='post-header'>
-          <div className='post-logo'>
-            <Link to={privateRoute.userProfile.url(item.creator.id)}>
-              <img src={item.creator.avatar || '/images/default-avatar.jpg'} alt='avatar' />
-            </Link>
+          <div className='post-header-left'>
+            <div className='post-logo'>
+              <Link to={privateRoute.userProfile.url(item.creator.id)}>
+                <img src={item.creator.avatar || '/images/default-avatar.jpg'} alt='avatar' />
+              </Link>
+            </div>
+            <div className='post-name-time'>
+              <Link className='post-name' to={privateRoute.userProfile.url(item.creator.id)}>
+                {item.creator.fullName}
+              </Link>
+              <div className='post-time'>{moment(item.createdAt, 'YYYY-MM-DD[T]hh:mm:ssZ').fromNow()}</div>
+            </div>
           </div>
-          <div className='post-name-time'>
-            <Link className='post-name' to={privateRoute.userProfile.url(item.creator.id)}>
-              {item.creator.fullName}
-            </Link>
-            <div className='post-time'>{moment(item.createdAt, 'YYYY-MM-DD[T]hh:mm:ssZ').fromNow()}</div>
-          </div>
+          <div className='post-header-right'>Need <b>1000</b> tokens more to be hot Post</div>
         </div>
         <div className='post-detail'>
           <div className='post-title'>{item.title}</div>
@@ -170,10 +173,8 @@ const PostItem = ({ item, isPreview }) => {
               <BiComment />
               {item.commentCounts || 0}
             </div>
-            <div className='post-emotion-push'>
-              <button className='btn btn-primary' onClick={sendToken}>
-                <BsFillArrowUpCircleFill /> Push
-              </button>
+            <div className='post-emotion-push' onClick={sendToken}>
+              <BsArrowUpCircle /> Push
             </div>
           </div>
           <div className='post-emotion-share'>

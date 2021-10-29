@@ -143,14 +143,14 @@ const ModalTokenPushPost = ({ senderId, receiver, visible, handleOk, handleCance
             <p>Some error has occurred</p>
           ) : (
             <div className='modal-content-token'>
-              <div className='modal-user'>Need 1000 tokens to be hot post</div>
+              <div className='modal-user'>Need {receiver?.upHotTokenNeeded} tokens to be hot post</div>
               <div className='modal-valid-token'>Your valid Token: {sender.tokenBalance}</div>
               <div className='modal-title'>Insert tokens you want to donate to the above content</div>
               <div className='modal-subtitle'>
                 The number of tokens you donate will help improve the speed of hot news faster
               </div>
               <Form name='transferToken' onFinish={handleFinish} onFinishFailed={handleFinishFailed} form={form}>
-                <Form.Item name='amount' rules={[{ required: true, message: 'please enter amount' }]}>
+                <Form.Item name='amount' rules={[{ required: true, message: 'Please enter amount' }]}>
                   <div className='modal-input-token'>
                     <input type='number' placeholder='50 tokens' />
                   </div>

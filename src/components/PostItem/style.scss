@@ -13,26 +13,38 @@
       width: 100%;
       display: flex;
       align-items: center;
-      .post-logo {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        overflow: hidden;
-        img {
-          width: 100%;
-          height: 100%;
+      justify-content: space-between;
+      .post-header-left {
+        display: flex;
+        align-items: center;
+        .post-logo {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          overflow: hidden;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .post-name-time {
+          text-align: left;
+          padding-left: 20px;
+          .post-name {
+            font-weight: bold;
+            font-size: 18px;
+            color: #111;
+          }
+          .post-time {
+            color: grey;
+          }
         }
       }
-      .post-name-time {
-        text-align: left;
-        padding-left: 20px;
-        .post-name {
-          font-weight: bold;
+      .post-header-right {
+        width: 150px;
+        font-size: 16px;
+        b{
           font-size: 18px;
-          color: #111;
-        }
-        .post-time {
-          color: grey;
         }
       }
     }
@@ -68,21 +80,18 @@
       .post-emotion-up {
         display: flex;
         .post-emotion-like,
-        .post-emotion-vote {
+        .post-emotion-vote,
+        .post-emotion-push {
           display: flex;
           align-items: center;
           font-weight: 600;
           color: #636b75;
           font-size: 20px;
-          margin-right: 100px;
+          margin-right: 40px;
           svg {
             margin-right: 10px;
           }
         }
-      }
-      .post-emotion-push{
-        display: flex;
-      align-items: center;
       }
     }
     .post-emotion-share {
