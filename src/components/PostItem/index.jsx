@@ -5,10 +5,11 @@ import './style.scss';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { privateRoute } from '../../routes';
-import { AiFillLike, BiComment, FaFacebook } from 'react-icons/all';
+import { AiFillLike, BiComment, FaFacebook, BsArrowUpCircle } from 'react-icons/all';
 import memeServices from '../../services/memeServices';
 import { useAuthentication } from '../../hooks';
 import { toast } from 'react-hot-toast';
+import ModalTokenPushPost from '../../components/ModalTokenPushPost';
 
 const PostItem = ({ item, isPreview }) => {
   const { user } = useAuthentication();
@@ -16,6 +17,8 @@ const PostItem = ({ item, isPreview }) => {
   const [hasLikedYet, setHasLikedYet] = useState(false);
   const [disableShareButton, setDisableShareButton] = useState(false);
   const [shareCount, setShareCount] = useState(item.shareCounts);
+  const [displayModal, setDisplayModal] = React.useState(false);
+
   const fetchLikeCount = useCallback(async () => {
     if (isPreview) {
       return;
@@ -51,13 +54,13 @@ const PostItem = ({ item, isPreview }) => {
     await toast.promise(likePostPromise, {
       loading: 'Saving....',
       success: 'Like success',
-      error: err => `liked failed: ${err.message}`,
+      error: (err) => `liked failed: ${err.message}`,
     });
   };
   const handleSharePost = async () => {
-    if(!user) {
+    if (!user) {
       toast.error('please login to continue');
-      return
+      return;
     }
     //check share
     let canShare = false;
@@ -78,93 +81,126 @@ const PostItem = ({ item, isPreview }) => {
         name: 'Facebook Dialogs',
         link: `https://meme-portal-frontend.vercel.app/post/${item.id}`,
       },
-       function(response) {
+      function(response) {
         if (typeof response !== 'undefined') {
-          memeServices.saveSharePost(item.id).then(resp => {
-            const newShareCount = resp.data.shareCount
-            setShareCount(newShareCount)
-            setDisableShareButton(true)
-            toast.success("Shared success")
-          }).catch(err => {
-            toast.error("share failed: " + err.message)
-          })
+          memeServices
+            .saveSharePost(item.id)
+            .then((resp) => {
+              const newShareCount = resp.data.shareCount;
+              setShareCount(newShareCount);
+              setDisableShareButton(true);
+              toast.success('Shared success');
+            })
+            .catch((err) => {
+              toast.error('share failed: ' + err.message);
+            });
         } else {
           toast.error('post not shared: user denied to share');
         }
       },
     );
   };
+
+  const sendToken = (e) => {
+    if (!user) {
+      toast.error('Please login to continue');
+      return;
+    }
+    setDisplayModal(true);
+  };
+  const handleOk = () => {
+    setDisplayModal(false);
+  };
+
+  const handleCancel = () => {
+    setDisplayModal(false);
+  };
   return (
     <div className='post-controller'>
+      <div className='modal-token'>
+        <ModalTokenPushPost
+          visible={displayModal}
+          handleCancel={handleCancel}
+          handleOk={handleOk}
+          pusherId={user.id}
+          postItem={item}
+        />
+      </div>
       <div className='post'>
         <div className='post-header'>
-          <div className='post-logo'>
-            <Link to={privateRoute.userProfile.url(item.creator.id)}>
-              <img src={item.creator.avatar || '/images/default-avatar.jpg'} alt='avatar' />
-            </Link>
-
-          </div>
-          <div className='post-name-time'>
-            <Link className='post-name'
-                  to={privateRoute.userProfile.url(item.creator.id)}>{item.creator.fullName}</Link>
-            <div className='post-time'>
-              {moment(item.createdAt, 'YYYY-MM-DD[T]hh:mm:ssZ').fromNow()}
+          <div className='post-header-left'>
+            <div className='post-logo'>
+              <Link to={privateRoute.userProfile.url(item.creator.id)}>
+                <img src={item.creator.avatar || '/images/default-avatar.jpg'} alt='avatar' />
+              </Link>
+            </div>
+            <div className='post-name-time'>
+              <Link className='post-name' to={privateRoute.userProfile.url(item.creator.id)}>
+                {item.creator.fullName}
+              </Link>
+              <div className='post-time'>{moment(item.createdAt, 'YYYY-MM-DD[T]hh:mm:ssZ').fromNow()}</div>
             </div>
           </div>
+          {
+            item.status === 1 && (
+              <div className='post-header-right'>
+                Need <b>{item.upHotTokenNeeded.toLocaleString()}</b> tokens more to be hot Post
+              </div>)
+          }
         </div>
         <div className='post-detail'>
           <div className='post-title'>{item.title}</div>
           <p>{item.description}</p>
         </div>
         <div className='post-image'>
-          {
-            isPreview ? (
+          {isPreview ? (
+            <img src={item.image} />
+          ) : (
+            <Link to={privateRoute.postDetail.url(item.id)}>
               <img src={item.image} />
-            ) : (
-              <Link to={privateRoute.postDetail.url(item.id)}>
-                <img src={item.image} />
-              </Link>
-            )
-          }
+            </Link>
+          )}
         </div>
         <div className='post-emotion'>
           <div className='post-emotion-up'>
             <div className='post-emotion-like'>
-              {
-                isPreview ? (
-                  <>
-                    <AiOutlineLike />
-                    {likeCount}
-                  </>
-                ) : (
-                  <>
-                    <button onClick={handleLikePost} disabled={hasLikedYet}>
-                      {hasLikedYet ? <AiFillLike style={{ color: 'blue' }} /> : <AiOutlineLike />}
-                    </button>
-                    {likeCount}
-                  </>
-                )
-              }
+              {isPreview ? (
+                <>
+                  <AiOutlineLike />
+                  {likeCount}
+                </>
+              ) : (
+                <>
+                  <button onClick={handleLikePost} disabled={hasLikedYet}>
+                    {hasLikedYet ? <AiFillLike style={{ color: 'blue' }} /> : <AiOutlineLike />}
+                  </button>
+                  {likeCount}
+                </>
+              )}
             </div>
             <div className='post-emotion-vote'>
               <BiComment />
               {item.commentCounts || 0}
             </div>
-          </div>
-          <div className='post-emotion-share'>
             {
-              isPreview ? (
-                <button>
-                  <FaFacebook />
-                  0 Share
-                </button>
-              ) : (
-                <button onClick={handleSharePost} disabled={disableShareButton}>
-                  <FaFacebook />
-                  {shareCount} Share
+              item.status === 1 && (
+                <button className='post-emotion-push' onClick={sendToken}>
+                  <BsArrowUpCircle /> Push
                 </button>
               )
             }
+          </div>
+          <div className='post-emotion-share'>
+            {isPreview ? (
+              <button>
+                <FaFacebook />0 Share
+              </button>
+            ) : (
+              <button onClick={handleSharePost} disabled={disableShareButton}>
+                <FaFacebook />
+                {shareCount} Share
+              </button>
+            )}
           </div>
         </div>
       </div>
