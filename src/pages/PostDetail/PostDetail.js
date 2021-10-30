@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { Avatar, Button, Col, Form, Image, List, Row, Skeleton } from 'antd';
+import { Avatar, Button, Col, Form, Image, List, Row, Skeleton, Tabs } from 'antd';
 import { AiFillLike, BiComment, BiUpvote } from 'react-icons/all';
 import { toast } from 'react-hot-toast';
 import { useInfiniteQuery, useQuery } from 'react-query';
@@ -12,6 +12,7 @@ import { useAuthentication } from '../../hooks';
 import CommentItem from '../../components/CommentItem';
 import { TextareaAutosize } from '@material-ui/core';
 import ModalTokenPushPost from '../../components/ModalTokenPushPost';
+import { LikeListTab, PushListTab } from './components';
 
 const PageWrapper = styled.div`
   width: 70%;
@@ -169,13 +170,17 @@ const CommentInput = styled(TextareaAutosize)`
     background: #555;
   }
 `;
-
+const TabContainer = styled.div`
+  width: 100%;
+  padding: 20px;
+`;
 const PostDetail = () => {
   const { user } = useAuthentication();
   const [form] = Form.useForm();
   const { id } = useParams();
   const commentBox = useRef(null);
   const [displayModal, setDisplayModal] = React.useState(false);
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -296,112 +301,128 @@ const PostDetail = () => {
           <Skeleton />
         ) : error ? (
           <p>Not found</p>
-        ) : (<Row gutter={24}>
-          <Col span={16}>
+        ) : (
+          <>
+            <Row gutter={24}>
+              <Col span={16}>
 
-            <PostHeader>
-              <FlexBox>
-                <PostTitle>{postItem.title}</PostTitle>
-              </FlexBox>
-              <DescriptionBox>{postItem.description}</DescriptionBox>
-            </PostHeader>
-            <PostContent>
-              <StyledImage src={postItem.image} preview={false} />
+                <PostHeader>
+                  <FlexBox>
+                    <PostTitle>{postItem.title}</PostTitle>
+                  </FlexBox>
+                  <DescriptionBox>{postItem.description}</DescriptionBox>
+                </PostHeader>
+                <PostContent>
+                  <StyledImage src={postItem.image} preview={false} />
 
-            </PostContent>
+                </PostContent>
 
-          </Col>
-          <StyledCol span={8}>
-            <CreatorBox>
-              <Avatar src={postItem.creator.avatar || '/images/default-avatar.jpg'} size={50} />
-              <div>
-                <p>{postItem.creator.fullName}</p>
-                <p>{moment(postItem.createdAt, 'YYYY-MM-DD[T]hh:mm:ssZ').fromNow()}</p>
-              </div>
-            </CreatorBox>
-            <EmotionContainer>
-              <PostEmotion>
-                {hasLikedYet ? <AiFillLike style={{ color: 'blue' }} /> : <AiOutlineLike />}
-                {likeCount}
-              </PostEmotion>
-              <PostEmotion>
-                <BiComment style={{ color: '#111' }} /> {postItem.commentCounts || 0}
-              </PostEmotion>
-              {
-                postItem.status === 1 && (
-                  <>
-                    <PostEmotion>
-                      {postItem.pushCount} push
-                    </PostEmotion>
-                    <div className='up-hot-token'>
-                      <b>{postItem.upHotTokenNeeded} </b> tokens to be hot
-                    </div>
-                  </>
-                )
-              }
-            </EmotionContainer>
-            <FlexBox style={{ marginTop: '20px' }}>
-              <StyledButton
-                type='primary'
-                icon={<AiFillLike />}
-                onClick={handleLikePost}
-                disabled={hasLikedYet}
-              >
-                {hasLikedYet ? 'Liked' : 'Like'}
-              </StyledButton>
-              {
-                postItem.status === 1 && (
-                  <>
-                    <StyledButton type='primary' icon={<BiUpvote />} onClick={handlePush}>Push</StyledButton>
-                    <ModalTokenPushPost
-                      visible={displayModal}
-                      handleCancel={handleCancel}
-                      handleOk={handleOk}
-                      pusherId={user.id}
-                      postItem={postItem}
-                    />
-                  </>
-                )
-              }
-            </FlexBox>
-            <CommentBox>
-              <CommentContainer ref={commentBox}>
-                {
-                  isFetchingComments ? (
-                    Array.from(Array(5).keys()).map((i) => <Skeleton avatar paragraph={{ rows: 4 }} key={i} />)
-                  ) : isErrorComment ? (<p>Some error has occured</p>) : (
-                    listComments.length > 0 && (
-                      <List dataSource={listComments}
-                            renderItem={(item) => <CommentItem comment={item} reFetchPostDeail={reFetchPostDeail} />} />
+              </Col>
+              <StyledCol span={8}>
+                <CreatorBox>
+                  <Avatar src={postItem.creator.avatar || '/images/default-avatar.jpg'} size={50} />
+                  <div>
+                    <p>{postItem.creator.fullName}</p>
+                    <p>{moment(postItem.createdAt, 'YYYY-MM-DD[T]hh:mm:ssZ').fromNow()}</p>
+                  </div>
+                </CreatorBox>
+                <EmotionContainer>
+                  <PostEmotion>
+                    {hasLikedYet ? <AiFillLike style={{ color: 'blue' }} /> : <AiOutlineLike />}
+                    {likeCount}
+                  </PostEmotion>
+                  <PostEmotion>
+                    <BiComment style={{ color: '#111' }} /> {postItem.commentCounts || 0}
+                  </PostEmotion>
+                  {
+                    postItem.status === 1 && (
+                      <>
+                        <PostEmotion>
+                          {postItem.pushCount} push
+                        </PostEmotion>
+                        <div className='up-hot-token'>
+                          <b>{postItem.upHotTokenNeeded} </b> tokens to be hot
+                        </div>
+                      </>
                     )
-                  )
-                }
-                {
-                  hasNextPageComments && (<LoadMoreButton onClick={fetchNextPageComment}>Load more</LoadMoreButton>)
-                }
-              </CommentContainer>
-              <Form
-                name='commentForm'
-                onFinish={handleComment}
-                onFinishFailed={handleCommentFailed}
-                form={form}
-              >
-                <Form.Item
-                  name='content'
-                  rules={[{ required: true, message: 'Comment content cant not be blank' }]}
-                >
-                  <CommentInput
-                    maxRows={5}
-                    placeholder='Enter your comment...'
-                    onKeyPress={handleChange}
-                    disabled={isCommenting}
-                  />
-                </Form.Item>
-              </Form>
-            </CommentBox>
-          </StyledCol>
-        </Row>)
-      }
+                  }
+                </EmotionContainer>
+                <FlexBox style={{ marginTop: '20px' }}>
+                  <StyledButton
+                    type='primary'
+                    icon={<AiFillLike />}
+                    onClick={handleLikePost}
+                    disabled={hasLikedYet}
+                  >
+                    {hasLikedYet ? 'Liked' : 'Like'}
+                  </StyledButton>
+                  {
+                    postItem.status === 1 && (
+                      <>
+                        <StyledButton type='primary' icon={<BiUpvote />} onClick={handlePush}>Push</StyledButton>
+                        <ModalTokenPushPost
+                          visible={displayModal}
+                          handleCancel={handleCancel}
+                          handleOk={handleOk}
+                          pusherId={user.id}
+                          postItem={postItem}
+                        />
+                      </>
+                    )
+                  }
+                </FlexBox>
+                <CommentBox>
+                  <CommentContainer ref={commentBox}>
+                    {
+                      isFetchingComments ? (
+                        Array.from(Array(5).keys()).map((i) => <Skeleton avatar paragraph={{ rows: 4 }} key={i} />)
+                      ) : isErrorComment ? (<p>Some error has occured</p>) : (
+                        listComments.length > 0 && (
+                          <List dataSource={listComments}
+                                renderItem={(item) => <CommentItem comment={item}
+                                                                   reFetchPostDeail={reFetchPostDeail} />} />
+                        )
+                      )
+                    }
+                    {
+                      hasNextPageComments && (<LoadMoreButton onClick={fetchNextPageComment}>Load more</LoadMoreButton>)
+                    }
+                  </CommentContainer>
+                  <Form
+                    name='commentForm'
+                    onFinish={handleComment}
+                    onFinishFailed={handleCommentFailed}
+                    form={form}
+                  >
+                    <Form.Item
+                      name='content'
+                      rules={[{ required: true, message: 'Comment content cant not be blank' }]}
+                    >
+                      <CommentInput
+                        maxRows={5}
+                        placeholder='Enter your comment...'
+                        onKeyPress={handleChange}
+                        disabled={isCommenting}
+                      />
+                    </Form.Item>
+                  </Form>
+                </CommentBox>
+              </StyledCol>
+            </Row>
+            <Tabs defaultActiveKey='1'>
+              <Tabs.TabPane tab='Likes' key='1'>
+                <TabContainer>
+                  <LikeListTab postId={postItem.id} />
+                </TabContainer>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab='Push' key='3'>
+                <TabContainer>
+                  <PushListTab postId={postItem.id} />
+                </TabContainer>
+              </Tabs.TabPane>
+            </Tabs>
+          </>
+        )}
 
     </PageWrapper>
   );

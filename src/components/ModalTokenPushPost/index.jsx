@@ -150,12 +150,12 @@ const ModalTokenPushPost = ({ postItem, pusherId, visible, handleOk, handleCance
               <div className='modal-valid-token'>Your valid Token: {pusher.tokenBalance.toLocaleString()}</div>
               <div className='modal-title'>Insert tokens you want to donate to the above content</div>
               <div className='modal-subtitle'>
-                The number of tokens you donate will help improve the speed of hot meme faster
+                You can only send total 200 tokens to this post
               </div>
               <Form name='transferToken' onFinish={handleFinish} onFinishFailed={handleFinishFailed} form={form}>
                 <Form.Item name='amount' rules={[{ required: true, message: 'Please enter amount' }]}>
                   <div className='modal-input-token'>
-                    <input type='number' placeholder='50 tokens' />
+                    <input type='number' placeholder='enter tokens amount' />
                   </div>
                 </Form.Item>
               </Form>
