@@ -360,13 +360,17 @@ const PostDetail = () => {
                     postItem.status === 1 && (
                       <>
                         <StyledButton type='primary' icon={<BiUpvote />} onClick={handlePush}>Push</StyledButton>
-                        <ModalTokenPushPost
-                          visible={displayModal}
-                          handleCancel={handleCancel}
-                          handleOk={handleOk}
-                          pusherId={user.id}
-                          postItem={postItem}
-                        />
+                        {
+                          user && (
+                            <ModalTokenPushPost
+                              visible={displayModal}
+                              handleCancel={handleCancel}
+                              handleOk={handleOk}
+                              pusherId={user.id}
+                              postItem={postItem}
+                            />
+                          )
+                        }
                       </>
                     )
                   }
