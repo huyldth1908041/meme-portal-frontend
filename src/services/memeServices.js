@@ -100,7 +100,15 @@ const memeServices = {
   pushMeme: async (body) => {
     const url = `/tokens/push`;
     return await axiosClient.post(url, body);
-  }
+  },
+  getListPushed: async (id, params = {}) => {
+    const url = `/posts/${id}/push`;
+    return await axiosClient.get(url, { params });
+  },
+  getListLike: async (id, params = {}) => {
+    const url = `/posts/${id}/like`;
+    return await axiosClient.get(url, { params });
+  },
 };
 
 export default memeServices;

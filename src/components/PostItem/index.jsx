@@ -117,15 +117,6 @@ const PostItem = ({ item, isPreview }) => {
   };
   return (
     <div className='post-controller'>
-      <div className='modal-token'>
-        <ModalTokenPushPost
-          visible={displayModal}
-          handleCancel={handleCancel}
-          handleOk={handleOk}
-          pusherId={user.id}
-          postItem={item}
-        />
-      </div>
       <div className='post'>
         <div className='post-header'>
           <div className='post-header-left'>
@@ -184,9 +175,24 @@ const PostItem = ({ item, isPreview }) => {
             </div>
             {
               item.status === 1 && (
-                <button className='post-emotion-push' onClick={sendToken}>
-                  <BsArrowUpCircle /> Push
-                </button>
+                <>
+                  <button className='post-emotion-push' onClick={sendToken}>
+                    <BsArrowUpCircle /> Push
+                  </button>
+                  {
+                    user && (
+                      <div className='modal-token'>
+                        <ModalTokenPushPost
+                          visible={displayModal}
+                          handleCancel={handleCancel}
+                          handleOk={handleOk}
+                          pusherId={user.id}
+                          postItem={item}
+                        />
+                      </div>
+                    )
+                  }
+                </>
               )
             }
           </div>
