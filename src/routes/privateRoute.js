@@ -4,6 +4,7 @@ import { Profile } from '../pages/Profile';
 import { PostDetail } from '../pages/PostDetail';
 import { ProfileUpdate } from '../pages/ProfileUpdate';
 import { TokenHistoryPage } from '../pages/TokenHistory';
+import { MemeEditor } from '../pages/MemeEditor';
 
 const privateRoute = {
   home: {
@@ -49,7 +50,11 @@ const privateRoute = {
     component: Profile,
     url: (id) => `/profile/${id}`,
     requiredLogin: true,
-  }
+  },
+  imageEditor: {
+    path: '/editor',
+    component: MemeEditor,
+  },
 };
 
 export default privateRoute;
