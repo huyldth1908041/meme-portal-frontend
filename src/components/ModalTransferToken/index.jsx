@@ -114,25 +114,29 @@ const ModalTransferToken = ({ senderId, receiver, visible, handleOk, handleCance
       {
         showVerify ? (
           <div className='modal-content-otp'>
-            <div className='modal-title'>Please enter the verification OTP sent to your mobile</div>
-            <OtpInput
-              value={otp}
-              onChange={handleChange}
-              separator={
-                <span>
-                <strong></strong>
-              </span>
-              }
-              numInputs={6}
-              inputStyle={{
-                width: '3rem',
-                height: '3rem',
-                margin: '0 1rem',
-                fontSize: '2rem',
-                borderRadius: 4,
-                border: '1px solid rgba(0,0,0,0.3)',
-              }}
-            />
+            {
+              isLoading ? <Skeleton /> : error ? <p>Some error has occurred</p> : (
+                <>
+                  <div className='modal-title'>
+                    Please enter the verification OTP sent to your email: {sender.username}
+                  </div>
+                  <OtpInput
+                    value={otp}
+                    onChange={handleChange}
+                    separator={<span><strong></strong></span>}
+                    numInputs={6}
+                    inputStyle={{
+                      width: '3rem',
+                      height: '3rem',
+                      margin: '0 1rem',
+                      fontSize: '2rem',
+                      borderRadius: 4,
+                      border: '1px solid rgba(0,0,0,0.3)',
+                    }}
+                  />
+                </>
+              )
+            }
           </div>
         ) : (
           <>
@@ -143,7 +147,7 @@ const ModalTransferToken = ({ senderId, receiver, visible, handleOk, handleCance
                     <img src={receiver?.avatar || '/images/default-avatar.jpg'} alt='avatar' />
                   </div>
                   <div className='modal-user'>{receiver?.fullName || 'No name'}</div>
-                  <div className='modal-valid-token'>Your valid Token: {sender.tokenBalance}</div>
+                  <div className='modal-valid-token'>Your valid Token: {sender.tokenBalance.toLocaleString()}</div>
                   Insert tokens number you want to send
                   <Form
                     name='transferToken'

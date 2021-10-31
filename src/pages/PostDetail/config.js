@@ -1,6 +1,7 @@
 import { Avatar, Space } from 'antd';
 import { Link } from 'react-router-dom';
 import { privateRoute } from '../../routes';
+import moment from 'moment';
 
 export const pushedListTableColumns = [
   {
@@ -22,6 +23,15 @@ export const pushedListTableColumns = [
     dataIndex: 'amount',
     render: amount => (
       <div style={{ textAlign: 'right' }}>{amount.toLocaleString()}</div>
+    ),
+  },
+
+  {
+    title: 'Push at',
+    key: 'createdAt',
+    dataIndex: 'createdAt',
+    render: createdAt => (
+      <div>{moment(createdAt, 'YYYY-MM-DD[T]hh:mm:ssZ').fromNow()}</div>
     ),
   },
 

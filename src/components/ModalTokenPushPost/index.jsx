@@ -116,25 +116,29 @@ const ModalTokenPushPost = ({ postItem, pusherId, visible, handleOk, handleCance
     >
       {showVerify ? (
         <div className='modal-content-otp'>
-          <div className='modal-title'>Please enter the verification OTP sent to your mobile</div>
-          <OtpInput
-            value={otp}
-            onChange={handleChange}
-            separator={
-              <span>
-                <strong></strong>
-              </span>
-            }
-            numInputs={6}
-            inputStyle={{
-              width: '3rem',
-              height: '3rem',
-              margin: '0 1rem',
-              fontSize: '2rem',
-              borderRadius: 4,
-              border: '1px solid rgba(0,0,0,0.3)',
-            }}
-          />
+          {
+            isLoading ? <Skeleton /> : error ? <p>Some error has occurred</p> : (
+              <>
+                <div className='modal-title'>
+                  Please enter the verification OTP sent to your email: {pusher.username}
+                </div>
+                <OtpInput
+                  value={otp}
+                  onChange={handleChange}
+                  separator={<span><strong></strong></span>}
+                  numInputs={6}
+                  inputStyle={{
+                    width: '3rem',
+                    height: '3rem',
+                    margin: '0 1rem',
+                    fontSize: '2rem',
+                    borderRadius: 4,
+                    border: '1px solid rgba(0,0,0,0.3)',
+                  }}
+                />
+              </>
+            )
+          }
         </div>
       ) : (
         <>

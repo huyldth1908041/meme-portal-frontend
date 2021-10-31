@@ -29,7 +29,7 @@ const TopTokenItem = () => {
                 </div>
                 <div className='token-owner-detail'>
                   <div className='token-owner-name'>{item.user.fullName}</div>
-                  <div className='token-owner-token'>{item.tokenBalance}</div>
+                  <div className='token-owner-token'>{item.tokenBalance.toLocaleString()}</div>
                 </div>
               </Link>
             ))
