@@ -4,6 +4,7 @@ import { Profile } from '../pages/Profile';
 import { PostDetail } from '../pages/PostDetail';
 import { ProfileUpdate } from '../pages/ProfileUpdate';
 import { TokenHistoryPage } from '../pages/TokenHistory';
+import { TokenShop } from '../pages/TokenShop';
 
 const privateRoute = {
   home: {
@@ -43,6 +44,11 @@ const privateRoute = {
     path: '/token/history',
     requiredLogin: true,
     component: TokenHistoryPage,
+  },
+  tokenShop: {
+    path: '/token/shop',
+    requiredLogin: true,
+    component: TokenShop,
   },
   userProfile: {
     path: '/profile/:id',
