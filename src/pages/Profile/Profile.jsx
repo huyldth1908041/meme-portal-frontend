@@ -117,7 +117,7 @@ const Profile = () => {
           <div className='profile-activity'>
             <div className='profile-post'>{0} posts</div>
             <div className='profile-comment'>{apiUser?.comment || 0} comments</div>
-            <div className='profile-token'>{apiUser?.tokenBalance || 0} tokens</div>
+            <div className='profile-token'>{apiUser?.tokenBalance.toLocaleString() || 0} tokens</div>
           </div>
         </div>
       )}

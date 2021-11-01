@@ -9,7 +9,7 @@ import { BiExit, GrTransaction } from 'react-icons/all';
 import NotificationBar from '../../components/NotificationBar';
 import memeServices from '../../services/memeServices';
 import SelectDebounce from '../../components/SelectDebounce/SelectDebounce';
-import logo from "./logo.jpeg";
+import { Image } from 'antd';
 
 function Header() {
   const { user, logout } = useAuthentication();
@@ -47,8 +47,9 @@ function Header() {
   return (
     <div className='header-content'>
       <div className='logo'>
-        <Link to={privateRoute.home.path}>
-          <img src={logo} alt='' width="35" height="35"/>
+        <Link to={privateRoute.home.path} style={{ display: 'flex', alignItems: 'center' }}>
+          <Image src='/images/nobg-logo.png' alt='logo' width='75px' height='75px' preview={false}/>
+          <div>HÀI CODE</div>
         </Link>
       </div>
       <div className='search'>
