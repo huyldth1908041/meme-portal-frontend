@@ -23,6 +23,13 @@ const NotificationChip = styled.span`
   background: red;
   color: #fff;
 `;
+const ReadAllBtn = styled.div`
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  cursor: pointer;
+  color: #008EDE;
+`;
 const NotificationBar = () => {
   const { user } = useAuthentication();
   const notificationRef = Fire.create.fireStore.collection(user.username);
@@ -31,6 +38,12 @@ const NotificationBar = () => {
   const activeNotifications = notifications.filter(notification => notification.status > 0);
   const handleNotificationClicked = async (item) => {
     await notificationRef.doc(item.id).update({ ...item, status: -1 });
+  };
+  const handleMarkAsRead = async () => {
+    for (let i = 0; i < activeNotifications.length; i++) {
+      const item = activeNotifications[i];
+      await notificationRef.doc(item.id).update({ ...item, status: -1 });
+    }
   };
   const menu = (
     <StyledMenu>
@@ -44,6 +57,9 @@ const NotificationBar = () => {
             <p>You dont have any notification yet</p>
           </Menu.Item>
         )
+      }
+      {
+        activeNotifications.length > 0 && (<ReadAllBtn onClick={handleMarkAsRead}>Mark all as read</ReadAllBtn>)
       }
     </StyledMenu>
   );
