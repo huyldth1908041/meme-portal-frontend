@@ -17,12 +17,17 @@ const RegisterPage = () => {
     if (isLoggedIn) history.push(privateRoute.home.path);
   }, [isLoggedIn, history]);
   const validationSchema = Yup.object().shape({
-    phonenumber: Yup.string().required('Phone number is required'),
+    phonenumber: Yup.string()
+      .required('Phone number is required')
+      .matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/, 'Phone number is invalid'),
     fullname: Yup.string()
       .required('Full Name is required')
       .min(6, 'Name must be at least 6 characters')
-      .max(40, 'Name must not exceed 50 characters'),
-    email: Yup.string().required('Email is required').email('Email is invalid'),
+      .max(40, 'Name must not exceed 40 characters'),
+    email: Yup.string()
+      .required('Email is required')
+      .email('Email is invalid')
+      .matches(/^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/, 'Email is invalid'),
     password: Yup.string()
       .required('Password is required')
       .min(6, 'Password must be at least 6 characters')
