@@ -195,7 +195,10 @@ const CreatePost = () => {
                 <FormItemWrapper>
                   <Form.Item
                     name='title'
-                    rules={[{ required: true, message: 'Title is required' }]}
+                    rules={[
+                      { required: true, message: 'Title is required' },
+                      {type: 'string', max: 70, message: 'title must be as max 70 characters'}
+                    ]}
                   >
                     <StyledTextInput
                       type='text'
