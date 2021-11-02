@@ -11,6 +11,8 @@ import { useQuery } from 'react-query';
 import memeServices from '../../services/memeServices';
 import Fire from '../../services/fire';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
+import { privateRoute } from '../../routes';
 
 export const Wrapper = styled.div`
   width: 80%;
@@ -76,6 +78,11 @@ export const SubmitBtn = styled.button`
     background: #907F51;
   }
 
+`;
+const HelperText = styled(Link)`
+  display: block;
+  margin: 20px 0px;
+  font-size: 17px;
 `;
 
 const CreatePost = () => {
@@ -150,6 +157,7 @@ const CreatePost = () => {
   return (
     <Wrapper>
       <Text size='heading-xxxl'>Post meme</Text>
+      <HelperText to={privateRoute.imageEditor.path}>Want to create your own meme ? use our meme editor</HelperText>
       <Row gutter={24}>
         <Col span={12}>
           <Form
@@ -187,7 +195,10 @@ const CreatePost = () => {
                 <FormItemWrapper>
                   <Form.Item
                     name='title'
-                    rules={[{ required: true, message: 'Title is required' }]}
+                    rules={[
+                      { required: true, message: 'Title is required' },
+                      {type: 'string', max: 70, message: 'title must be as max 70 characters'}
+                    ]}
                   >
                     <StyledTextInput
                       type='text'
@@ -242,7 +253,7 @@ const CreatePost = () => {
           <div style={{ paddingLeft: 20 }}>
             <Text size='heading-m'>Preview</Text>
           </div>
-          <PostItem item={{ ...preview, image: image }} isPreview={true}/>
+          <PostItem item={{ ...preview, image: image }} isPreview={true} />
         </Col>
       </Row>
     </Wrapper>

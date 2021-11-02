@@ -53,11 +53,13 @@
       text-align: left;
       display: block;
       padding-top: 10px;
+      word-wrap: break-word;
       .post-title {
         text-align: left;
         font-weight: bold;
         margin-bottom: 10px;
         font-size: 18px;
+
       }
     }
     .post-image {

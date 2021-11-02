@@ -9,7 +9,7 @@ import { BiExit, GrTransaction } from 'react-icons/all';
 import NotificationBar from '../../components/NotificationBar';
 import memeServices from '../../services/memeServices';
 import SelectDebounce from '../../components/SelectDebounce/SelectDebounce';
-
+import { Image } from 'antd';
 
 function Header() {
   const { user, logout } = useAuthentication();
@@ -47,7 +47,10 @@ function Header() {
   return (
     <div className='header-content'>
       <div className='logo'>
-        <Link to={privateRoute.home.path}>HÀI CODE</Link>
+        <Link to={privateRoute.home.path} style={{ display: 'flex', alignItems: 'center' }}>
+          <Image src='/images/nobg-logo.png' alt='logo' width='75px' height='75px' preview={false}/>
+          <div>HÀI CODE</div>
+        </Link>
       </div>
       <div className='search'>
         {/*<input type='text' placeholder='Search' onChange={(e) => onSendSearch(e.target.value)} />*/}
@@ -82,7 +85,8 @@ function Header() {
                       <BsPersonCircle /> Profile
                     </Link>
                     <Link to={privateRoute.tokenHistory.path}>
-                      <GrTransaction />Token history
+                      <GrTransaction />
+                      Token history
                     </Link>
                     <button onClick={() => logout()}>
                       <BiExit className='button-icon' />

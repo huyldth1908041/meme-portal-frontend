@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Avatar, Button, Col, Form, Image, List, Row, Skeleton, Tabs } from 'antd';
 import { AiFillLike, BiComment, BiUpvote } from 'react-icons/all';
@@ -13,6 +13,7 @@ import CommentItem from '../../components/CommentItem';
 import { TextareaAutosize } from '@material-ui/core';
 import ModalTokenPushPost from '../../components/ModalTokenPushPost';
 import { LikeListTab, PushListTab } from './components';
+import { privateRoute } from '../../routes';
 
 const PageWrapper = styled.div`
   width: 70%;
@@ -180,7 +181,7 @@ const PostDetail = () => {
   const { id } = useParams();
   const commentBox = useRef(null);
   const [displayModal, setDisplayModal] = React.useState(false);
-
+  const history = useHistory();
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -190,6 +191,11 @@ const PostDetail = () => {
   const { data = {}, isLoading, error, refetch: reFetchPostDeail } = useQuery(['memeServices.postDetail', id],
     ({ queryKey }) => memeServices.postDetail(queryKey[1]));
   const { data: postItem = {} } = data;
+  useEffect(() => {
+    if (postItem.status < 0) {
+      history.push(privateRoute.home.path);
+    }
+  }, [postItem, history]);
   const {
     data: likeCountData = {},
     refetch,
