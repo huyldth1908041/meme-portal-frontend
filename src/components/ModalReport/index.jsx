@@ -29,11 +29,9 @@ const ModalReport = ({ postItem, pusherId, visible, handleOk, handleCancel }) =>
           <Button key='back' onClick={handleCancel} disabled={loading}>
             Cancel
           </Button>
-          ,
           <Button key='submit' type='primary' onClick={sendReport} disabled={loading}>
             Send
           </Button>
-          ,
         </>
       }
     >
