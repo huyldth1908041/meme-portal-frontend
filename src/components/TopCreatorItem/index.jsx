@@ -37,7 +37,6 @@ const TopCreatorItem = () => {
                     {item.user.fullName}
                   </Link>
                 </div>
-                <button className='follow'>Follow</button>
               </div>
               <div className='creator-follower'>Posts created {item.postCounts}</div>
             </div>

@@ -5,11 +5,12 @@ import './style.scss';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { privateRoute } from '../../routes';
-import { AiFillLike, BiComment, FaFacebook, BsArrowUpCircle } from 'react-icons/all';
+import { AiFillLike, BiComment, FaFacebook, BsArrowUpCircle, MdOutlineReportProblem } from 'react-icons/all';
 import memeServices from '../../services/memeServices';
 import { useAuthentication } from '../../hooks';
 import { toast } from 'react-hot-toast';
 import ModalTokenPushPost from '../../components/ModalTokenPushPost';
+import ModalReport from '../../components/ModalReport';
 
 const PostItem = ({ item, isPreview }) => {
   const { user } = useAuthentication();
@@ -18,6 +19,7 @@ const PostItem = ({ item, isPreview }) => {
   const [disableShareButton, setDisableShareButton] = useState(false);
   const [shareCount, setShareCount] = useState(item.shareCounts);
   const [displayModal, setDisplayModal] = React.useState(false);
+  const [displayModalReport, setDisplayModalReport] = React.useState(false);
 
   const fetchLikeCount = useCallback(async () => {
     if (isPreview) {
@@ -81,7 +83,7 @@ const PostItem = ({ item, isPreview }) => {
         name: 'Facebook Dialogs',
         link: `https://meme-portal-frontend.vercel.app/post/${item.id}`,
       },
-      function(response) {
+      function (response) {
         if (typeof response !== 'undefined') {
           memeServices
             .saveSharePost(item.id)
@@ -115,6 +117,9 @@ const PostItem = ({ item, isPreview }) => {
   const handleCancel = () => {
     setDisplayModal(false);
   };
+  const handleReport = () => {
+    setDisplayModalReport(true);
+  };
   return (
     <div className='post-controller'>
       <div className='post'>
@@ -132,12 +137,11 @@ const PostItem = ({ item, isPreview }) => {
               <div className='post-time'>{moment(item.createdAt, 'YYYY-MM-DD[T]hh:mm:ssZ').fromNow()}</div>
             </div>
           </div>
-          {
-            item.status === 1 && (
-              <div className='post-header-right'>
-                Need <b>{item.upHotTokenNeeded.toLocaleString()}</b> tokens more to be hot Post
-              </div>)
-          }
+          {item.status === 1 && (
+            <div className='post-header-right'>
+              Need <b>{item.upHotTokenNeeded.toLocaleString()}</b> tokens more to be hot Post
+            </div>
+          )}
         </div>
         <div className='post-detail'>
           <div className='post-title'>{item.title}</div>
@@ -173,28 +177,36 @@ const PostItem = ({ item, isPreview }) => {
               <BiComment />
               {item.commentCounts || 0}
             </div>
-            {
-              item.status === 1 && (
-                <>
-                  <button className='post-emotion-push' onClick={sendToken}>
-                    <BsArrowUpCircle /> Push
-                  </button>
-                  {
-                    user && (
-                      <div className='modal-token'>
-                        <ModalTokenPushPost
-                          visible={displayModal}
-                          handleCancel={handleCancel}
-                          handleOk={handleOk}
-                          pusherId={user.id}
-                          postItem={item}
-                        />
-                      </div>
-                    )
-                  }
-                </>
-              )
-            }
+            {item.status === 1 && (
+              <>
+                <button className='post-emotion-push' onClick={sendToken}>
+                  <BsArrowUpCircle /> Push
+                </button>
+                {user && (
+                  <div className='modal-token'>
+                    <ModalTokenPushPost
+                      visible={displayModal}
+                      handleCancel={handleCancel}
+                      handleOk={handleOk}
+                      pusherId={user.id}
+                      postItem={item}
+                    />
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+          <div className='post-emotion-share' onClick={handleReport}>
+            <MdOutlineReportProblem /> Report
+            <div className='modal-report'>
+              <ModalReport
+                visible={displayModalReport}
+                handleCancel={handleCancel}
+                handleOk={handleOk}
+                pusherId={user.id}
+                postItem={item}
+              />
+            </div>
           </div>
           <div className='post-emotion-share'>
             {isPreview ? (
