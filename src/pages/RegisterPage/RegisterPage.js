@@ -26,8 +26,7 @@ const RegisterPage = () => {
       .max(40, 'Name must not exceed 40 characters'),
     email: Yup.string()
       .required('Email is required')
-      .email('Email is invalid')
-      .matches(/^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/, 'Email is invalid'),
+      .matches(/^[a-z][a-z0-9_\\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/, 'Email is invalid'),
     password: Yup.string()
       .required('Password is required')
       .min(6, 'Password must be at least 6 characters')
