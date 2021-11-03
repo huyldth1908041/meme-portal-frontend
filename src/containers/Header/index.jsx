@@ -10,6 +10,8 @@ import NotificationBar from '../../components/NotificationBar';
 import memeServices from '../../services/memeServices';
 import SelectDebounce from '../../components/SelectDebounce/SelectDebounce';
 import { Image } from 'antd';
+import PostSearchLabel from '../../components/PostSearchLabel';
+import UserSearchLabel from '../../components/UserSearchLabel';
 
 function Header() {
   const { user, logout } = useAuthentication();
@@ -19,11 +21,25 @@ function Header() {
   const history = useHistory();
   const fetchPostList = async (title) => {
     try {
-      const res = await memeServices.searchMemes({ page: 1, limit: 10, title: title, status: 1 });
-      return res.data.content.map((post) => ({
-        label: `${post.title}`,
-        value: post.id,
-      }));
+      const res = await memeServices.searchMemes({ page: 1, limit: 5, title: title, status: 1 });
+      const userRes = await memeServices.getListUsers({ page: 1, limit: 5, fullName: title, status: 1 });
+      const listUsers = userRes.data.content.map(item => ({ ...item, type: 'user' }));
+      const listPosts = res.data.content.map(item => ({ ...item, type: 'post' }));
+      const listSearchRes = listUsers.concat(listPosts);
+
+      return listSearchRes.map(item => {
+        if (item.type === 'user') {
+          return {
+            label: <UserSearchLabel item={item} />,
+            value: `user-${item.id}`,
+          };
+        } else {
+          return {
+            label: <PostSearchLabel item={item} />,
+            value: `post-${item.id}`,
+          };
+        }
+      });
     } catch (err) {
       console.error(err.message);
     }
@@ -48,7 +64,7 @@ function Header() {
     <div className='header-content'>
       <div className='logo'>
         <Link to={privateRoute.home.path} style={{ display: 'flex', alignItems: 'center' }}>
-          <Image src='/images/nobg-logo.png' alt='logo' width='75px' height='75px' preview={false}/>
+          <Image src='/images/nobg-logo.png' alt='logo' width='75px' height='75px' preview={false} />
           <div>HÀI CODE</div>
         </Link>
       </div>
@@ -56,11 +72,16 @@ function Header() {
         {/*<input type='text' placeholder='Search' onChange={(e) => onSendSearch(e.target.value)} />*/}
         <SelectDebounce
           value={postId}
-          placeholder='Search post..'
+          placeholder='Search anything..'
           fetchOptions={fetchPostList}
           onChange={(newValue) => {
-            setPostId(newValue);
-            history.push(privateRoute.postDetail.url(newValue.value));
+            const [type, id] = newValue.value.split('-');
+            if(type === 'user') {
+              history.push(privateRoute.userProfile.url(id));
+            } else {
+              history.push(privateRoute.postDetail.url(id));
+            }
+            setPostId(null)
           }}
         />
       </div>

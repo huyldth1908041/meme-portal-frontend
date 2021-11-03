@@ -33,7 +33,7 @@ const SelectDebounce = ({ fetchOptions, debounceTimeout = 800, ...props }) => {
       notFoundContent={fetching ? <Spin size='small' /> : 'Not found'}
       {...props}
       options={options}
-      style={{ width: '300px' }}
+      style={{ width: '450px' }}
     />
   );
 };
