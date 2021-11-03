@@ -18,9 +18,15 @@ const RegisterPage = () => {
   }, [isLoggedIn, history]);
   const validationSchema = Yup.object().shape({
     phonenumber: Yup.string()
-      .required('Phone number is required'),
-    fullname: Yup.string().required('Full Name is required'),
-    email: Yup.string().required('Email is required').email('Email is invalid'),
+      .required('Phone number is required')
+      .matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/, 'Phone number is invalid'),
+    fullname: Yup.string()
+      .required('Full Name is required')
+      .min(6, 'Name must be at least 6 characters')
+      .max(40, 'Name must not exceed 40 characters'),
+    email: Yup.string()
+      .required('Email is required')
+      .matches(/^[a-z][a-z0-9_\\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/, 'Email is invalid'),
     password: Yup.string()
       .required('Password is required')
       .min(6, 'Password must be at least 6 characters')
@@ -52,7 +58,7 @@ const RegisterPage = () => {
         history.push(privateRoute.home.path);
         resolve(newUser);
       } catch (err) {
-        reject(err.message || "");
+        reject(err.message || '');
       } finally {
         setLoading(false);
       }
@@ -114,7 +120,6 @@ const RegisterPage = () => {
             <div className='invalid-feedback'>{errors.password?.message}</div>
           </div>
 
-
           <div className='form-group'>
             <label>Confirm Password</label>
             <input
@@ -125,7 +130,6 @@ const RegisterPage = () => {
             />
             <div className='invalid-feedback'>{errors.confirmPassword?.message}</div>
           </div>
-
 
           <div className='button-group'>
             <button type='submit' className='btn btn-primary' disabled={loading}>
