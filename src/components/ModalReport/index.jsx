@@ -10,7 +10,7 @@ const ModalReport = ({ postItem, pusherId, visible, handleOk, handleCancel }) =>
     memeServices.userDetail(queryKey[1]),
   );
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
 
   const sendReport = async (values) => {};
   const handleFinish = async (values) => {};
