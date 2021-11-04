@@ -6,6 +6,7 @@ import { ProfileUpdate } from '../pages/ProfileUpdate';
 import { TokenHistoryPage } from '../pages/TokenHistory';
 import { MemeEditor } from '../pages/MemeEditor';
 import { TokenPolicyPage } from '../pages/TokenPolicyPage';
+import { CreateAdvertisement } from '../pages/CreateAdvertisement';
 
 const privateRoute = {
   home: {
@@ -48,7 +49,6 @@ const privateRoute = {
   },
   tokenPolicy: {
     path: '/token/policy',
-    requiredLogin: true,
     component: TokenPolicyPage,
   },
   userProfile: {
@@ -61,6 +61,11 @@ const privateRoute = {
     path: '/editor',
     component: MemeEditor,
   },
+  createAdvertisement: {
+    path: '/token/createAdvertisement',
+    component: CreateAdvertisement,
+  },
+
 };
 
 export default privateRoute;

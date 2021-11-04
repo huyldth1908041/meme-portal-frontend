@@ -118,6 +118,10 @@ const memeServices = {
     const url = `/reports/posts`;
     return await axiosClient.post(url, body);
   },
+  createAdvertisement: async (body) => {
+    const url = `/advertisements`;
+    return await axiosClient.post(url, body);
+  },
 };
 
 export default memeServices;
