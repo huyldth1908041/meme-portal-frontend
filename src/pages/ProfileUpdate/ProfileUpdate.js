@@ -46,7 +46,7 @@ const ProfileUpdate = () => {
       setImage(apiUser.avatar);
     }, [apiUser]);
     const [form] = Form.useForm();
-    const [loading, setLoading] = useState(file);
+    const [loading, setLoading] = useState(false);
     const handleChooseFile = ({ file }) => {
       if (ALLOWED_TYPES.includes(file.type)) {
         setFile(file);

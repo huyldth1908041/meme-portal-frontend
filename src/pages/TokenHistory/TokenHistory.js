@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Avatar, Divider, Pagination, Skeleton } from 'antd';
+import { Avatar, Divider, Pagination, Skeleton, Button, Menu, Dropdown} from 'antd';
 import AppTable from '../../components/Table';
 import { AiOutlineInfoCircle } from 'react-icons/all';
 import { tokenHistoryColumns } from './config';
@@ -9,6 +9,7 @@ import memeServices from '../../services/memeServices';
 import { useAuthentication } from '../../hooks';
 import { useHistory } from 'react-router-dom';
 import { privateRoute } from '../../routes';
+import { Link } from 'react-router-dom';
 
 const Wrapper = styled.div`
   width: 800px;
@@ -32,11 +33,13 @@ const UserInformation = styled.div`
   div.user-token-content {
     display: flex;
     align-items: center;
+
     div.user-token {
       padding-top: 10px;
       font-size: 18px;
       padding-right: 20px;
     }
+
     svg {
       width: 20px;
       height: 20px;
@@ -80,6 +83,13 @@ const TokenHistory = () => {
   const goTokenPolicy = () => {
     history.push(privateRoute.tokenPolicy.path);
   };
+  const menu = (
+    <Menu>
+      <Menu.Item key='0'>
+        <Link to={privateRoute.createAdvertisement.path}>Create advertisement</Link>
+      </Menu.Item>
+    </Menu>
+  );
   return (
     <Wrapper>
       {isLoading ? (
@@ -93,9 +103,12 @@ const TokenHistory = () => {
             <div className='username'>{apiUser.fullName}</div>
 
             <div className='user-token-content'>
-              <div className='user-token'>Current token balance: {apiUser.tokenBalance}</div>
+              <div className='user-token'>Current token balance: {apiUser.tokenBalance.toLocaleString()}</div>
               <AiOutlineInfoCircle onClick={goTokenPolicy} />
             </div>
+            <Dropdown overlay={menu} trigger={['click']}>
+              <Button type='primary'>Use Token</Button>
+            </Dropdown>
           </UserInformation>
         </Header>
       )}

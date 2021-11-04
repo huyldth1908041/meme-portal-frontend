@@ -5,7 +5,7 @@ import './style.scss';
 import { privateRoute } from '../../routes';
 import { Link, useHistory } from 'react-router-dom';
 import { useAuthentication } from '../../hooks';
-import { BiExit, GrTransaction } from 'react-icons/all';
+import { BiExit, GrTransaction, RiAdvertisementFill } from 'react-icons/all';
 import NotificationBar from '../../components/NotificationBar';
 import memeServices from '../../services/memeServices';
 import SelectDebounce from '../../components/SelectDebounce/SelectDebounce';
@@ -108,6 +108,10 @@ function Header() {
                     <Link to={privateRoute.tokenHistory.path}>
                       <GrTransaction />
                       Token history
+                    </Link>
+                    <Link to={privateRoute.createAdvertisement.path}>
+                      <RiAdvertisementFill />
+                       Advertisement
                     </Link>
                     <button onClick={() => logout()}>
                       <BiExit className='button-icon' />
