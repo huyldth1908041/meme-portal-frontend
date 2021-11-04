@@ -5,6 +5,7 @@ import { PostDetail } from '../pages/PostDetail';
 import { ProfileUpdate } from '../pages/ProfileUpdate';
 import { TokenHistoryPage } from '../pages/TokenHistory';
 import { MemeEditor } from '../pages/MemeEditor';
+import { TokenPolicyPage } from '../pages/TokenPolicyPage';
 
 const privateRoute = {
   home: {
@@ -44,6 +45,11 @@ const privateRoute = {
     path: '/token/history',
     requiredLogin: true,
     component: TokenHistoryPage,
+  },
+  tokenPolicy: {
+    path: '/token/policy',
+    requiredLogin: true,
+    component: TokenPolicyPage,
   },
   userProfile: {
     path: '/profile/:id',
