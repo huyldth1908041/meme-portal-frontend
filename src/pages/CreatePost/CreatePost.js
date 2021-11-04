@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Text from '../../components/Text';
 import { Button, Col, Form, Image, Input, Row, Select, Upload } from 'antd';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { getBase64 } from '../../utils';
 import { toast } from 'react-hot-toast';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
@@ -104,6 +104,20 @@ const CreatePost = () => {
   const [file, setFile] = useState();
   const [image, setImage] = useState();
   const [preview, setPreview] = useState(emptyPreview);
+  const [showPreview, setShowPreview] = useState(true);
+  const handleResize = () => {
+    if (window.innerWidth < 992) {
+      setShowPreview(false);
+    } else {
+      setShowPreview(true);
+    }
+  };
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
   const [loading, setLoading] = useState(false);
   const { data = {} } = useQuery(['memeServices.getCategories'], () => memeServices.getCategories());
@@ -159,7 +173,7 @@ const CreatePost = () => {
       <Text size='heading-xxxl'>Post meme</Text>
       <HelperText to={privateRoute.imageEditor.path}>Want to create your own meme ? use our meme editor</HelperText>
       <Row gutter={24}>
-        <Col span={12}>
+        <Col xs={24} sm={24} md={24} lg={12} xl={12}>
           <Form
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
@@ -191,13 +205,13 @@ const CreatePost = () => {
             </FormItemWrapper>
             <Text size='heading-m'>Information</Text>
             <Row gutter={24}>
-              <Col span={16}>
+              <Col xs={24} sm={24} md={16} lg={16} xl={16}>
                 <FormItemWrapper>
                   <Form.Item
                     name='title'
                     rules={[
                       { required: true, message: 'Title is required' },
-                      {type: 'string', max: 70, message: 'title must be as max 70 characters'}
+                      { type: 'string', max: 70, message: 'title must be as max 70 characters' },
                     ]}
                   >
                     <StyledTextInput
@@ -209,7 +223,7 @@ const CreatePost = () => {
                   <FloatLabel>Title *</FloatLabel>
                 </FormItemWrapper>
               </Col>
-              <Col span={8}>
+              <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                 <FormItemWrapper>
                   <Form.Item
                     name='categoryId'
@@ -249,12 +263,16 @@ const CreatePost = () => {
             </FormItemWrapper>
           </Form>
         </Col>
-        <Col span={12}>
-          <div style={{ paddingLeft: 20 }}>
-            <Text size='heading-m'>Preview</Text>
-          </div>
-          <PostItem item={{ ...preview, image: image }} isPreview={true} />
-        </Col>
+        {
+          showPreview && (
+            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+              <div style={{ paddingLeft: 20 }}>
+                <Text size='heading-m'>Preview</Text>
+              </div>
+              <PostItem item={{ ...preview, image: image }} isPreview={true} />
+            </Col>
+          )
+        }
       </Row>
     </Wrapper>
   );
