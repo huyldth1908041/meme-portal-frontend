@@ -123,7 +123,7 @@ const CreateAdvertisement = () => {
 
   return (
     <Wrapper>
-      <Text size='heading-xxl'>Edit Profile</Text>
+      <Text size='heading-xxl'>Create advertisement</Text>
       <Form
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
@@ -209,7 +209,7 @@ const CreateAdvertisement = () => {
         </Form.Item>
       </Form>
       <Modal
-        title='Use tokens to push post'
+        title='Verify transaction code'
         visible={visible}
         onOk={handleOk}
         onCancel={handleCancel}
