@@ -109,9 +109,14 @@ const memeServices = {
     const url = `/posts/${id}/like`;
     return await axiosClient.get(url, { params });
   },
-  getListUsers: async ( params = {}) => {
+
+  getListUsers: async (params = {}) => {
     const url = `/users`;
     return await axiosClient.get(url, { params });
+  },
+  reportAPost: async (body) => {
+    const url = `/reports/posts`;
+    return await axiosClient.post(url, body);
   },
 };
 
