@@ -83,7 +83,7 @@ const PostItem = ({ item, isPreview }) => {
         name: 'Facebook Dialogs',
         link: `https://meme-portal-frontend.vercel.app/post/${item.id}`,
       },
-      function (response) {
+      function(response) {
         if (typeof response !== 'undefined') {
           memeServices
             .saveSharePost(item.id)
@@ -119,6 +119,12 @@ const PostItem = ({ item, isPreview }) => {
   };
   const handleReport = () => {
     setDisplayModalReport(true);
+  };
+  const handleCancelModalReport = () => {
+    setDisplayModalReport(false);
+  };
+  const handleOkModalReport = () => {
+    setDisplayModalReport(false);
   };
   return (
     <div className='post-controller'>
@@ -196,17 +202,16 @@ const PostItem = ({ item, isPreview }) => {
               </>
             )}
           </div>
-          <div className='post-emotion-share' onClick={handleReport}>
+          <button className='post-emotion-share' onClick={handleReport}>
             <MdOutlineReportProblem /> Report
-            <div className='modal-report'>
-              <ModalReport
-                visible={displayModalReport}
-                handleCancel={handleCancel}
-                handleOk={handleOk}
-                pusherId={user.id}
-                postItem={item}
-              />
-            </div>
+          </button>
+          <div className='modal-report'>
+            <ModalReport
+              visible={displayModalReport}
+              handleCancel={handleCancelModalReport}
+              handleOk={handleOkModalReport}
+              post={item}
+            />
           </div>
           <div className='post-emotion-share'>
             {isPreview ? (

@@ -109,6 +109,10 @@ const memeServices = {
     const url = `/posts/${id}/like`;
     return await axiosClient.get(url, { params });
   },
+  reportAPost: async (body) => {
+    const url = `/reports/posts`;
+    return await axiosClient.post(url, body);
+  },
 };
 
 export default memeServices;

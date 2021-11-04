@@ -45,6 +45,7 @@ const NotificationBar = () => {
       await notificationRef.doc(item.id).update({ ...item, status: -1 });
     }
   };
+
   const menu = (
     <StyledMenu>
       {
