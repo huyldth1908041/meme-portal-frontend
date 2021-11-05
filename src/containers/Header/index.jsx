@@ -19,6 +19,25 @@ function Header() {
   const ref = useRef();
   const [postId, setPostId] = useState();
   const history = useHistory();
+  const [isMobile, setIsMobile] = useState(false);
+  const handleResize = () => {
+    if (window.innerWidth < 992) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+  useEffect(() => {
+    if (window.innerWidth < 992) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   const fetchPostList = async (title) => {
     try {
       const res = await memeServices.searchMemes({ page: 1, limit: 5, title: title, status: 1 });
@@ -70,35 +89,35 @@ function Header() {
       </div>
       <div className='search'>
         {/*<input type='text' placeholder='Search' onChange={(e) => onSendSearch(e.target.value)} />*/}
-        <SelectDebounce
+        {!isMobile && (<SelectDebounce
           value={postId}
           placeholder='Search anything..'
           fetchOptions={fetchPostList}
           onChange={(newValue) => {
             const [type, id] = newValue.value.split('-');
-            if(type === 'user') {
+            if (type === 'user') {
               history.push(privateRoute.userProfile.url(id));
             } else {
               history.push(privateRoute.postDetail.url(id));
             }
-            setPostId(null)
+            setPostId(null);
           }}
-        />
+        />)}
       </div>
       <div className='list-icon'>
-        <Link to={privateRoute.home.path}>
+        {!isMobile && (<Link to={privateRoute.home.path}>
           <AiOutlineHome />
-        </Link>
+        </Link>)}
         {user ? (
           <>
-            <NotificationBar />
+            {!isMobile && (<NotificationBar />)}
             <div className='d-flex justify-content-center align-items-center'>
               <div ref={ref} className='header-content-container'>
                 <button onClick={toggleProfile}>
                   <div className='account'>
                     <img src={user.avatar || '/images/default-avatar.jpg'} height='100%' width='100%' alt='profile' />
                   </div>
-                  <div className='name'>{user.fullName}</div>
+                  {!isMobile && (<div className='name'>{user.fullName}</div>)}
                 </button>
                 {openProfile && (
                   <div className='dropdown-content' onClick={() => setOpenProfile(false)}>
@@ -111,7 +130,7 @@ function Header() {
                     </Link>
                     <Link to={privateRoute.createAdvertisement.path}>
                       <RiAdvertisementFill />
-                       Advertisement
+                      Advertisement
                     </Link>
                     <button onClick={() => logout()}>
                       <BiExit className='button-icon' />
