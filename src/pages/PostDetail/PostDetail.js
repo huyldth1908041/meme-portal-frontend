@@ -299,6 +299,25 @@ const PostDetail = () => {
   const handleCancel = () => {
     setDisplayModal(false);
   };
+  const [isMobile, setIsMobile] = useState(false);
+  const handleResize = () => {
+    if (window.innerWidth < 992) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+  useEffect(() => {
+    if (window.innerWidth < 992) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <PageWrapper>
@@ -310,8 +329,14 @@ const PostDetail = () => {
         ) : (
           <>
             <Row gutter={24}>
-              <Col span={16}>
-
+              <Col xs={24} md={24} lg={16} xl={16}>
+                {isMobile && (<CreatorBox>
+                  <Avatar src={postItem.creator.avatar || '/images/default-avatar.jpg'} size={50} />
+                  <div>
+                    <p>{postItem.creator.fullName}</p>
+                    <p>{moment(postItem.createdAt, 'YYYY-MM-DD[T]hh:mm:ssZ').fromNow()}</p>
+                  </div>
+                </CreatorBox>)}
                 <PostHeader>
                   <FlexBox>
                     <PostTitle>{postItem.title}</PostTitle>
@@ -324,14 +349,16 @@ const PostDetail = () => {
                 </PostContent>
 
               </Col>
-              <StyledCol span={8}>
-                <CreatorBox>
-                  <Avatar src={postItem.creator.avatar || '/images/default-avatar.jpg'} size={50} />
-                  <div>
-                    <p>{postItem.creator.fullName}</p>
-                    <p>{moment(postItem.createdAt, 'YYYY-MM-DD[T]hh:mm:ssZ').fromNow()}</p>
-                  </div>
-                </CreatorBox>
+              <StyledCol xs={24} md={24} lg={8} xl={8}>
+                {!isMobile && (
+                  <CreatorBox>
+                    <Avatar src={postItem.creator.avatar || '/images/default-avatar.jpg'} size={50} />
+                    <div>
+                      <p>{postItem.creator.fullName}</p>
+                      <p>{moment(postItem.createdAt, 'YYYY-MM-DD[T]hh:mm:ssZ').fromNow()}</p>
+                    </div>
+                  </CreatorBox>
+                )}
                 <EmotionContainer>
                   <PostEmotion>
                     {hasLikedYet ? <AiFillLike style={{ color: 'blue' }} /> : <AiOutlineLike />}

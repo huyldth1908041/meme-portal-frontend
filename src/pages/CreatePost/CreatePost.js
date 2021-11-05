@@ -113,6 +113,11 @@ const CreatePost = () => {
     }
   };
   useEffect(() => {
+    if (window.innerWidth < 992) {
+      setShowPreview(false);
+    } else {
+      setShowPreview(true);
+    }
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);

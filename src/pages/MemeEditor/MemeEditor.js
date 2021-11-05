@@ -6,10 +6,16 @@ import { Card, Image, List } from 'antd';
 
 const Wrapper = styled.div`
   padding: 20px 40px;
+  @media screen and (max-width: 992px) {
+    padding: 0px 40px;
+  }
 `;
 const ImageEditorWrapper = styled.div`
   width: 80%;
   margin: 30px auto;
+  @media screen and (max-width: 992px) {
+    width: 100%;
+  }
 `;
 const SampleImageWrapper = styled.div`
   width: 80%;

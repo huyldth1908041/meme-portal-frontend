@@ -131,7 +131,7 @@ const CreateAdvertisement = () => {
         form={form}
       >
         <Row gutter={24}>
-          <Col span={12}>
+          <Col xs={24} md={12} sm={24} lg={12} xl={12}>
             <Text size='heading-l'>Advertisement banner</Text>
             <FormItemWrapper>
               <Upload.Dragger
@@ -156,10 +156,10 @@ const CreateAdvertisement = () => {
               </Upload.Dragger>
             </FormItemWrapper>
           </Col>
-          <Col span={12}>
+          <Col xs={24} md={12} sm={24} lg={12} xl={12}>
             <Text size='heading-l'>Advertisement Information</Text>
             <Row gutter={24}>
-              <Col span={12}>
+              <Col xs={24} md={12} sm={24} lg={12} xl={12}>
                 <FormItemWrapper>
                   <Form.Item
                     name='title'
@@ -173,7 +173,7 @@ const CreateAdvertisement = () => {
                   <FloatLabel>Title *</FloatLabel>
                 </FormItemWrapper>
               </Col>
-              <Col span={12}>
+              <Col xs={24} md={12} sm={24} lg={12} xl={12}>
                 <FormItemWrapper>
                   <Form.Item
                     name='url'

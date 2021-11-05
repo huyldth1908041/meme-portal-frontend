@@ -1,5 +1,9 @@
 .profile-controller {
     width: 700px;
+    @media screen and (max-width: 992px) {
+        width: 100%;
+        overflow: hidden;
+    }
     margin: auto;
     .profile-header {
         width: 100%;
