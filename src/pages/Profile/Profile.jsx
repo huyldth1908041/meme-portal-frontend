@@ -25,7 +25,8 @@ const Profile = () => {
     data = {},
     isLoading,
     error,
-  } = useQuery(['memeServices.userDetail', userId], ({ queryKey }) => memeServices.userDetail(queryKey[1]));
+  } = useQuery(['memeServices.userDetail', userId],
+    ({ queryKey }) => memeServices.userDetail(queryKey[1]));
   const [counter, setCounter] = React.useState({});
   const { data: apiUser = {} } = data;
   const onUpdateVerifiedCounter = React.useCallback((num) => setCounter((cur) => ({ ...cur, verified: num })), []);
@@ -35,7 +36,21 @@ const Profile = () => {
   const paramsVerified = React.useMemo(() => ({ status: 1, creatorId: userId }), [userId]);
   const paramsPending = React.useMemo(() => ({ status: 0, creatorId: userId }), [userId]);
   const paramsHot = React.useMemo(() => ({ status: 2, creatorId: userId }), [userId]);
+  const {
+    data: commentCountData = {},
+    isLoading: isLoadingCommentCount,
+    error: commentCountError,
+  } = useQuery(['memeServices.getCommentCount', userId],
+    ({ queryKey }) => memeServices.getCommentCount(queryKey[1]));
+  const { data: commentCount = 0 } = commentCountData;
 
+  const {
+    data: postCountData = {},
+    isLoading: isLoadingPostCount,
+    error: postCountError,
+  } = useQuery(['memeServices.getPostCount', userId],
+    ({ queryKey }) => memeServices.getPostCount(queryKey[1]));
+  const { data: postCount = 0 } = postCountData;
   const tabs = [
     {
       id: 1,
@@ -115,8 +130,20 @@ const Profile = () => {
             </div>
           </div>
           <div className='profile-activity'>
-            <div className='profile-post'>{0} posts</div>
-            <div className='profile-comment'>{apiUser?.comment || 0} comments</div>
+            <div className='profile-post'>
+              {
+                isLoadingPostCount ? (<Skeleton />) : postCountError ? (<p>Some error has occurred</p>) : (
+                  <span>{postCount} posts</span>
+                )
+              }
+            </div>
+            <div className='profile-comment'>
+              {
+                isLoadingCommentCount ? (<Skeleton />) : commentCountError ? (<p>Some error has occurred</p>) : (
+                  <span>{commentCount} comments</span>
+                )
+              }
+            </div>
             <div className='profile-token'>{apiUser?.tokenBalance.toLocaleString() || 0} tokens</div>
           </div>
         </div>
