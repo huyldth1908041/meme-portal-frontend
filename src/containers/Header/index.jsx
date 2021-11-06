@@ -84,7 +84,7 @@ function Header() {
       <div className='logo'>
         <Link to={privateRoute.home.path} style={{ display: 'flex', alignItems: 'center' }}>
           <Image src='/images/nobg-logo.png' alt='logo' width='75px' height='75px' preview={false} />
-          <div>HÀI CODE</div>
+          {!isMobile && (<div>HÀI CODE</div>)}
         </Link>
       </div>
       <div className='search'>
@@ -110,7 +110,7 @@ function Header() {
         </Link>)}
         {user ? (
           <>
-            {!isMobile && (<NotificationBar />)}
+            <NotificationBar />
             <div className='d-flex justify-content-center align-items-center'>
               <div ref={ref} className='header-content-container'>
                 <button onClick={toggleProfile}>

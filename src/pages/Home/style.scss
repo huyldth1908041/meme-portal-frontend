@@ -4,15 +4,9 @@
   justify-content: center;
   background-color: #fafafa;
   padding-top: 15px;
-  @media screen and (max-width: 992px) {
-    display: block;
-  }
 
   .body-sideleft {
     width: 25%;
-    @media screen and (max-width: 992px) {
-      width: 100%;
-    }
   }
 
   .body-content {
@@ -28,8 +22,5 @@
     width: 25%;
     display: flex;
     justify-content: center;
-    @media screen and (max-width: 992px) {
-      width: 100%;
-    }
   }
 }

@@ -98,13 +98,10 @@ const Home = () => {
 
   return (
     <div className='home-body'>
-      <div className='body-sideleft'>
-        <TopTokenItem />
-      </div>
       {
-        isMobile && (
-          <div className='body-sideright'>
-            <TopCreatorItem />
+        !isMobile && (
+          <div className='body-sideleft'>
+            <TopTokenItem />
           </div>
         )
       }
@@ -168,6 +165,7 @@ const Home = () => {
           </div>
         )
       }
+
     </div>
   );
 };
