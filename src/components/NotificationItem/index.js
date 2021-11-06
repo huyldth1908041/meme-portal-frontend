@@ -36,21 +36,21 @@ const ActiveDote = styled.span`
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-`
+`;
 const NotificationItem = ({ item }) => {
   return (
     <Wrapper>
       {item.url ? (
         <StyledLink to={item.url}>
-          <Avatar src={item.thumbnail} size={50} />
+          <Avatar src={item.thumbnail || '/images/default-avatar.jpg'} size={50} />
           <NotificationContent>{item.content}</NotificationContent>
-          {item.status > 0 && <ActiveDote/>}
+          {item.status > 0 && <ActiveDote />}
         </StyledLink>
       ) : (
         <>
           <Avatar src={item.thumbnail} size={50} />
           <NotificationContent>{item.content}</NotificationContent>
-          {item.status > 0 && <ActiveDote/>}
+          {item.status > 0 && <ActiveDote />}
         </>
       )}
     </Wrapper>
