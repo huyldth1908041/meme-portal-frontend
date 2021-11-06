@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PostItem from '../../components/PostItem';
 import './style.scss';
 import { useInfiniteQuery, useQuery } from 'react-query';
@@ -76,12 +76,38 @@ const Home = () => {
     },
   );
   const listMemes = pages.reduce((previous, current) => previous.concat(current.data.content), []);
+  const [isMobile, setIsMobile] = useState(false);
+  const handleResize = () => {
+    if (window.innerWidth < 992) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+  useEffect(() => {
+    if (window.innerWidth < 992) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <div className='home-body'>
       <div className='body-sideleft'>
         <TopTokenItem />
       </div>
+      {
+        isMobile && (
+          <div className='body-sideright'>
+            <TopCreatorItem />
+          </div>
+        )
+      }
       <div className='body-content'>
         <ButtonWrapper>
           {tabs.map((item) => {
@@ -135,9 +161,13 @@ const Home = () => {
           }
         </>
       </div>
-      <div className='body-sideright'>
-        <TopCreatorItem />
-      </div>
+      {
+        !isMobile && (
+          <div className='body-sideright'>
+            <TopCreatorItem />
+          </div>
+        )
+      }
     </div>
   );
 };

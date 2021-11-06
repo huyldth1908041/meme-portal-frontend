@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Text from '../../components/Text';
 import { Button, Col, DatePicker, Form, Image, Row, Select, Skeleton, Upload } from 'antd';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { addItemToLocalStorage, getBase64, getLocalStorageObject } from '../../utils';
 import { toast } from 'react-hot-toast';
 import {
@@ -104,7 +104,7 @@ const ProfileUpdate = () => {
               form={form}
             >
               <Row gutter={24}>
-                <Col span={12}>
+                <Col xs={24} md={24} sm={24} lg={12} xl={12}>
                   <Text size='heading-l'>Avatar</Text>
                   <FormItemWrapper>
                     <Upload.Dragger
@@ -129,10 +129,10 @@ const ProfileUpdate = () => {
                     </Upload.Dragger>
                   </FormItemWrapper>
                 </Col>
-                <Col span={12}>
+                <Col xs={24} md={24} sm={24} lg={12} xl={12}>
                   <Text size='heading-l'>Profile</Text>
                   <Row gutter={24}>
-                    <Col span={16}>
+                    <Col xs={24} md={16} sm={24} lg={16} xl={16}>
                       <FormItemWrapper>
                         <Form.Item
                           name='fullName'
@@ -147,7 +147,7 @@ const ProfileUpdate = () => {
                         <FloatLabel>Full name *</FloatLabel>
                       </FormItemWrapper>
                     </Col>
-                    <Col span={8}>
+                    <Col xs={24} md={8} sm={24} lg={8} xl={8}>
                       <FormItemWrapper>
                         <Form.Item
                           name='gender'
@@ -164,7 +164,7 @@ const ProfileUpdate = () => {
                     </Col>
                   </Row>
                   <Row gutter={24}>
-                    <Col span={12}>
+                    <Col xs={24} md={12} sm={24} lg={12} xl={12}>
                       <FormItemWrapper>
                         <Form.Item
                           name='birthday'
@@ -176,7 +176,7 @@ const ProfileUpdate = () => {
                         <FloatLabel>Birthday *</FloatLabel>
                       </FormItemWrapper>
                     </Col>
-                    <Col span={12}>
+                    <Col xs={24} md={12} sm={24} lg={12} xl={12}>
                       <FormItemWrapper>
                         <Form.Item
                           name='phone'
