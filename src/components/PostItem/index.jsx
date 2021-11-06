@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { AiOutlineLike } from 'react-icons/ai';
 import './style.scss';
 import moment from 'moment';
@@ -20,6 +20,11 @@ const PostItem = ({ item, isPreview }) => {
   const [shareCount, setShareCount] = useState(item.shareCounts);
   const [displayModal, setDisplayModal] = React.useState(false);
   const [displayModalReport, setDisplayModalReport] = React.useState(false);
+  useEffect(() => {
+    if (item?.listLiked.includes(user.id)) {
+      setHasLikedYet(true);
+    }
+  }, [item, user]);
 
   const fetchLikeCount = useCallback(async () => {
     if (isPreview) {
