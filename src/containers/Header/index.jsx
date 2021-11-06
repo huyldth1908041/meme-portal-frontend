@@ -83,7 +83,7 @@ function Header() {
     <div className='header-content'>
       <div className='logo'>
         <Link to={privateRoute.home.path} style={{ display: 'flex', alignItems: 'center' }}>
-          <Image src='/images/nobg-logo.png' alt='logo' width='75px' height='75px' preview={false} />
+          <Image src='/images/nobg-logo.png' alt='logo' width='auto' height='75px' preview={false} />
           <div>HÀI CODE</div>
         </Link>
       </div>

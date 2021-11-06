@@ -25,8 +25,7 @@ const Profile = () => {
     data = {},
     isLoading,
     error,
-  } = useQuery(['memeServices.userDetail', userId],
-    ({ queryKey }) => memeServices.userDetail(queryKey[1]));
+  } = useQuery(['memeServices.userDetail', userId], ({ queryKey }) => memeServices.userDetail(queryKey[1]));
   const [counter, setCounter] = React.useState({});
   const { data: apiUser = {} } = data;
   const onUpdateVerifiedCounter = React.useCallback((num) => setCounter((cur) => ({ ...cur, verified: num })), []);
@@ -40,16 +39,14 @@ const Profile = () => {
     data: commentCountData = {},
     isLoading: isLoadingCommentCount,
     error: commentCountError,
-  } = useQuery(['memeServices.getCommentCount', userId],
-    ({ queryKey }) => memeServices.getCommentCount(queryKey[1]));
+  } = useQuery(['memeServices.getCommentCount', userId], ({ queryKey }) => memeServices.getCommentCount(queryKey[1]));
   const { data: commentCount = 0 } = commentCountData;
 
   const {
     data: postCountData = {},
     isLoading: isLoadingPostCount,
     error: postCountError,
-  } = useQuery(['memeServices.getPostCount', userId],
-    ({ queryKey }) => memeServices.getPostCount(queryKey[1]));
+  } = useQuery(['memeServices.getPostCount', userId], ({ queryKey }) => memeServices.getPostCount(queryKey[1]));
   const { data: postCount = 0 } = postCountData;
   const tabs = [
     {
@@ -102,7 +99,8 @@ const Profile = () => {
           receiver={apiUser}
           handleCancel={handleCancel}
           handleOk={handleOk}
-          senderId={user.id} />
+          senderId={user.id}
+        />
       </div>
       {isLoading ? (
         <Skeleton />
@@ -118,7 +116,7 @@ const Profile = () => {
               <div className='profile-fullname'>{apiUser?.fullName || 'No name'}</div>
               {!isOtherProfile ? (
                 <Link to={privateRoute.profileUpdate.path} style={{ color: '#fff' }}>
-                  <button className='btn btn-primary'>
+                  <button className='btn btn-primary' style={{ fontSize: '12px' }}>
                     <MdModeEditOutline /> Edit Profile
                   </button>
                 </Link>
@@ -131,18 +129,22 @@ const Profile = () => {
           </div>
           <div className='profile-activity'>
             <div className='profile-post'>
-              {
-                isLoadingPostCount ? (<Skeleton />) : postCountError ? (<p>Some error has occurred</p>) : (
-                  <span>{postCount} posts</span>
-                )
-              }
+              {isLoadingPostCount ? (
+                <Skeleton />
+              ) : postCountError ? (
+                <p>Some error has occurred</p>
+              ) : (
+                <span>{postCount} posts</span>
+              )}
             </div>
             <div className='profile-comment'>
-              {
-                isLoadingCommentCount ? (<Skeleton />) : commentCountError ? (<p>Some error has occurred</p>) : (
-                  <span>{commentCount} comments</span>
-                )
-              }
+              {isLoadingCommentCount ? (
+                <Skeleton />
+              ) : commentCountError ? (
+                <p>Some error has occurred</p>
+              ) : (
+                <span>{commentCount} comments</span>
+              )}
             </div>
             <div className='profile-token'>{apiUser?.tokenBalance.toLocaleString() || 0} tokens</div>
           </div>

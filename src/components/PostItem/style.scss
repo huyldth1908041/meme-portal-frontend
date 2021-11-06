@@ -43,7 +43,7 @@
       .post-header-right {
         width: 150px;
         font-size: 16px;
-        b{
+        b {
           font-size: 18px;
         }
       }
@@ -59,7 +59,6 @@
         font-weight: bold;
         margin-bottom: 10px;
         font-size: 18px;
-
       }
     }
     .post-image {
@@ -111,6 +110,70 @@
         display: flex;
         justify-content: center;
         align-items: center;
+      }
+    }
+  }
+}
+@media screen and (max-width: 768px) {
+  .post-controller {
+    .post {
+      padding: 13px 10px 10px;
+      .post-header {
+        .post-header-left {
+          .post-logo {
+            width: 40px;
+            height: 40px;
+            img {
+              width: 100%;
+              height: 100%;
+            }
+          }
+          .post-name-time {
+            .post-name {
+              font-size: 16px;
+            }
+            .post-time {
+              font-size: 12px;
+            }
+          }
+        }
+      }
+      .post-detail {
+        .post-title {
+          font-size: 16px;
+        }
+      }
+      .post-image {
+        img {
+          min-height: inherit;
+          max-height: inherit;
+        }
+      }
+      .post-emotion {
+        justify-content: space-between;
+        .post-emotion-up {
+          display: flex;
+          .post-emotion-like,
+          .post-emotion-vote,
+          .post-emotion-push {
+            font-size: 14px;
+            margin-right: 0;
+            button {
+              padding: 0;
+            }
+            svg {
+              margin-right: 5px;
+            }
+          }
+        }
+        .post-emotion-up {
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          .post-emotion-like {
+            padding-right: 20px;
+          }
+        }
       }
     }
   }
