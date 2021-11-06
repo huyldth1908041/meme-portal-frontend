@@ -21,7 +21,7 @@ const PostItem = ({ item, isPreview }) => {
   const [displayModal, setDisplayModal] = React.useState(false);
   const [displayModalReport, setDisplayModalReport] = React.useState(false);
   useEffect(() => {
-    if (item?.listLiked.includes(user.id)) {
+    if (user && item?.listLiked.includes(user.id)) {
       setHasLikedYet(true);
     }
   }, [item, user]);

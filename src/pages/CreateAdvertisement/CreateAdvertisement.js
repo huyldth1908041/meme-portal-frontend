@@ -7,15 +7,37 @@ import {
 } from '../CreatePost/CreatePost';
 import Text from '../../components/Text';
 import { Button, Col, Form, Image, Input, Modal, notification, Row, Upload } from 'antd';
-import { AiOutlineCloudUpload } from 'react-icons/ai';
+import { AiFillInfoCircle, AiOutlineCloudUpload } from 'react-icons/ai';
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { getBase64 } from '../../utils';
 import Fire from '../../services/fire';
 import memeServices from '../../services/memeServices';
 import OtpInput from 'react-otp-input';
+import styled from 'styled-components';
 
 const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
+const HelperArea = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  width: 100%;
+  flex-wrap: wrap;
+  margin: 20px 0;
+  background: #efefef;
+  font-size: 16px;
+
+  div.icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #cfb675;
+    font-size: 70px;
+    @media screen and (max-width: 992px) {
+      width: 100%;
+    }
+  }
+`;
 const CreateAdvertisement = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
@@ -42,7 +64,7 @@ const CreateAdvertisement = () => {
         form.resetFields();
         setImage('');
         setFile({});
-        setVisible(true)
+        setVisible(true);
         resolve();
       } catch (err) {
         console.error(err);
@@ -99,7 +121,7 @@ const CreateAdvertisement = () => {
           duration: 2,
         };
         notification.success(args);
-        setOtp('')
+        setOtp('');
         resolve();
       } catch (err) {
         reject(err);
@@ -124,6 +146,19 @@ const CreateAdvertisement = () => {
   return (
     <Wrapper>
       <Text size='heading-xxl'>Create advertisement</Text>
+      <HelperArea>
+        <div className='icon'>
+          <AiFillInfoCircle />
+        </div>
+        <div>
+          <ul>
+            <li>You need <b>1,000 tokens</b> to create an advertisement.</li>
+            <li>Your advertisement <b>need to be verified</b> by admin before showing to homepage.</li>
+            <li>If your advertisement is <b>not approved we'll return tokens</b> back to you.</li>
+            <li>You can only run <b>one advertisement per month</b> and your advertisement will expire after one day.</li>
+          </ul>
+        </div>
+      </HelperArea>
       <Form
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}

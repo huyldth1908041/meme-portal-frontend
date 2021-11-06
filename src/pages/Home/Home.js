@@ -18,6 +18,7 @@ const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  flex-wrap: wrap;
 `;
 const StyledButton = styled(Button)`
   margin: 0 10px;
@@ -25,6 +26,7 @@ const StyledButton = styled(Button)`
   height: 40px;
   font-weight: 600;
   text-transform: capitalize;
+  margin-bottom: 10px;
 
   &.active {
     background: black;
