@@ -179,10 +179,17 @@ const PostItem = ({ item, isPreview }) => {
                 </>
               )}
             </div>
-            <div className='post-emotion-vote'>
-              <BiComment />
-              {item.commentCounts || 0}
-            </div>
+            {isPreview ? (
+              <div className='post-emotion-vote'>
+                <BiComment />
+                {item.commentCounts || 0}
+              </div>
+            ) : (
+              <Link className='post-emotion-vote' to={privateRoute.postDetail.url(item.id)}>
+                <BiComment />
+                {item.commentCounts || 0}
+              </Link>
+            )}
             {item.status === 1 && (
               <>
                 <button className='post-emotion-push' onClick={sendToken}>
@@ -202,17 +209,21 @@ const PostItem = ({ item, isPreview }) => {
               </>
             )}
           </div>
-          <button className='post-emotion-share' onClick={handleReport}>
-            <MdOutlineReportProblem /> Report
-          </button>
-          <div className='modal-report'>
-            <ModalReport
-              visible={displayModalReport}
-              handleCancel={handleCancelModalReport}
-              handleOk={handleOkModalReport}
-              post={item}
-            />
-          </div>
+          {!isPreview && (
+            <>
+              <button className='post-emotion-share' onClick={handleReport}>
+                <MdOutlineReportProblem /> Report
+              </button>
+              <div className='modal-report'>
+                <ModalReport
+                  visible={displayModalReport}
+                  handleCancel={handleCancelModalReport}
+                  handleOk={handleOkModalReport}
+                  post={item}
+                />
+              </div>
+            </>
+          )}
           <div className='post-emotion-share'>
             {isPreview ? (
               <button>
