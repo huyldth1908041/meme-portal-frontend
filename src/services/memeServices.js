@@ -122,6 +122,14 @@ const memeServices = {
     const url = `/advertisements`;
     return await axiosClient.post(url, body);
   },
+  getCommentCount: async (id) => {
+    const url = `/users/${id}/commentCount`;
+    return await axiosClient.get(url);
+  },
+  getPostCount: async (id) => {
+    const url = `/users/${id}/postCreated`;
+    return await axiosClient.get(url);
+  },
 };
 
 export default memeServices;
