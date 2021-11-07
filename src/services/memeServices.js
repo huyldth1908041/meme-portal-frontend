@@ -130,6 +130,10 @@ const memeServices = {
     const url = `/users/${id}/postCreated`;
     return await axiosClient.get(url);
   },
+  getAdvertisement: async () => {
+    const url = `/advertisements/active`;
+    return await axiosClient.get(url);
+  },
 };
 
 export default memeServices;
