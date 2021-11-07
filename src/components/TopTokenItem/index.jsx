@@ -6,7 +6,7 @@ import { Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
 import { privateRoute } from '../../routes';
 
-const TopTokenItem = () => {
+const TopTokenItem = ({ showHeader = true }) => {
   const {
     isLoading,
     data = {},
@@ -15,7 +15,11 @@ const TopTokenItem = () => {
   const { data: topTokenOwners = [] } = data;
   return (
     <div className='token-owner-controller'>
-      <div className='token-owner-header'>Top Token Holder</div>
+      {
+        showHeader && (
+          <div className='token-owner-header'>Top Token Holder</div>
+        )
+      }
       <>
         {
           isLoading ? (<Skeleton />) : error ? (<p>Sone error has occurred</p>) : (

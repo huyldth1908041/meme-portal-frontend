@@ -7,15 +7,19 @@ import { Link } from 'react-router-dom';
 import { privateRoute } from '../../routes';
 
 
-const TopCreatorItem = () => {
+const TopCreatorItem = ({ showHeader = true }) => {
   const { isLoading, data = {} } = useQuery(['memeServices.topCreator'], () => memeServices.topCreator());
   const { data: topCreators = [] } = data;
   return (
     <div className='creator-controller'>
-      <div className='creator-header'>
-        <div className='creator-top'>Top Creator</div>
-        {/*<button>See all</button>*/}
-      </div>
+      {
+        showHeader && (
+          <div className='creator-header'>
+            <div className='creator-top'>Top Creator</div>
+            {/*<button>See all</button>*/}
+          </div>
+        )
+      }
       <>
         {
           isLoading && (<Skeleton />)
