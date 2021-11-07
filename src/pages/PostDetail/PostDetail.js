@@ -19,6 +19,10 @@ const PageWrapper = styled.div`
   width: 70%;
   margin: 0 auto;
   padding: 10px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    padding: 10px 5px;
+  }
 `;
 const PostHeader = styled.div`
   width: 100%;
@@ -32,6 +36,7 @@ const FlexBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 `;
 const StyledCol = styled(Col)`
   padding-top: 20px;
@@ -110,6 +115,10 @@ const StyledButton = styled(Button)`
   width: 100px;
   font-size: 16px;
   font-weight: 600;
+  @media screen and (max-width: 220px) {
+    margin: 20px auto;
+  }
+
 
   > svg {
     margin-right: 10px;
@@ -330,7 +339,7 @@ const PostDetail = () => {
           <>
             <Row gutter={24}>
               <Col xs={24} md={24} lg={16} xl={16}>
-                {isMobile && (<CreatorBox>
+                {isMobile && (<CreatorBox style={{marginTop: '20px'}}>
                   <Avatar src={postItem.creator.avatar || '/images/default-avatar.jpg'} size={50} />
                   <div>
                     <p>{postItem.creator.fullName}</p>

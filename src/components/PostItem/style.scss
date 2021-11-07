@@ -46,6 +46,9 @@
         b {
           font-size: 18px;
         }
+        @media screen and (max-width: 768px) {
+          font-size: 12px;
+        }
       }
     }
     .post-detail {
@@ -156,13 +159,14 @@
           .post-emotion-like,
           .post-emotion-vote,
           .post-emotion-push {
-            font-size: 14px;
+            font-size: 20px;
             margin-right: 0;
             button {
               padding: 0;
             }
             svg {
               margin-right: 5px;
+              font-size: 27px;
             }
           }
         }
@@ -172,6 +176,12 @@
           justify-content: space-around;
           .post-emotion-like {
             padding-right: 20px;
+          }
+        }
+        .post-emotion-share {
+          svg {
+            margin-right: 5px;
+            font-size: 20px;
           }
         }
       }
