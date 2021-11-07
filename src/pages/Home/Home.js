@@ -13,6 +13,7 @@ import { privateRoute } from '../../routes';
 import TopCreatorItem from '../../components/TopCreatorItem';
 import TopTokenItem from '../../components/TopTokenItem';
 import { AiOutlineFire, MdOutlineGeneratingTokens } from 'react-icons/all';
+import AdvertisementItem from '../../components/AdvertisementItem';
 
 const ButtonWrapper = styled.div`
   width: 100%;
@@ -157,6 +158,7 @@ const Home = () => {
               </StyledButton>
             ))}
           </ButtonWrapper>
+          <AdvertisementItem />
           <>
             {
               isFetching ? (

@@ -15,6 +15,7 @@ import Fire from '../../services/fire';
 import memeServices from '../../services/memeServices';
 import OtpInput from 'react-otp-input';
 import styled from 'styled-components';
+import { useAuthentication } from '../../hooks';
 
 const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
 const HelperArea = styled.div`
@@ -39,6 +40,7 @@ const HelperArea = styled.div`
   }
 `;
 const CreateAdvertisement = () => {
+  const { user } = useAuthentication();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState();
@@ -155,7 +157,8 @@ const CreateAdvertisement = () => {
             <li>You need <b>1,000 tokens</b> to create an advertisement.</li>
             <li>Your advertisement <b>need to be verified</b> by admin before showing to homepage.</li>
             <li>If your advertisement is <b>not approved we'll return tokens</b> back to you.</li>
-            <li>You can only run <b>one advertisement per month</b> and your advertisement will expire after one day.</li>
+            <li>You can only run <b>one advertisement per month</b> and your advertisement will expire after one day.
+            </li>
           </ul>
         </div>
       </HelperArea>
@@ -255,7 +258,7 @@ const CreateAdvertisement = () => {
         ]}>
         <>
           <div className='modal-title'>
-            Please enter the verification OTP sent to your email:
+            Please enter the verification OTP sent to your email {user.username}
           </div>
           <OtpInput
             value={otp}
