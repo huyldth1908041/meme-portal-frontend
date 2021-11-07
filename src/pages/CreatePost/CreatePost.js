@@ -99,6 +99,7 @@ const CreatePost = () => {
     image:
       '',
     likeCounts: 0,
+    listLiked: [],
   }), [user]);
   const [form] = Form.useForm();
   const [file, setFile] = useState();

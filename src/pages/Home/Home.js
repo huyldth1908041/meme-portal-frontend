@@ -151,7 +151,7 @@ const Home = () => {
             ) : isError ? (<p>Some error has occured</p>) : (
               listMemes.length > 0 ? (
                 <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
-                  <List dataSource={listMemes} renderItem={(item) => <PostItem item={item} isPreview={false} />} />
+                  <List dataSource={listMemes} renderItem={(item) => <PostItem item={item} isPreview={false} isPhone={isMobile}/>} />
                 </InfiniteScroll>
               ) : (
                 <p>No post found</p>

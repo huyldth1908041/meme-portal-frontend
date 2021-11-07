@@ -12,7 +12,7 @@ import { toast } from 'react-hot-toast';
 import ModalTokenPushPost from '../../components/ModalTokenPushPost';
 import ModalReport from '../../components/ModalReport';
 
-const PostItem = ({ item, isPreview }) => {
+const PostItem = ({ item, isPreview, isPhone = false }) => {
   const { user } = useAuthentication();
   const [likeCount, setLikeCount] = useState(item.likeCounts);
   const [hasLikedYet, setHasLikedYet] = useState(false);
@@ -190,7 +190,7 @@ const PostItem = ({ item, isPreview }) => {
                 {item.commentCounts || 0}
               </div>
             ) : (
-              <Link className='post-emotion-vote' to={privateRoute.postDetail.url(item.id)}>
+              <Link className='post-emotion-vote' to={privateRoute.postDetail.url(item.id)} style={{marginRight: '20px'}}>
                 <BiComment />
                 {item.commentCounts || 0}
               </Link>
@@ -198,7 +198,7 @@ const PostItem = ({ item, isPreview }) => {
             {item.status === 1 && (
               <>
                 <button className='post-emotion-push' onClick={sendToken}>
-                  <BsArrowUpCircle /> Push
+                  <BsArrowUpCircle /> {!isPhone && `Push`}
                 </button>
                 {user && (
                   <div className='modal-token'>
@@ -217,7 +217,7 @@ const PostItem = ({ item, isPreview }) => {
           {!isPreview && (
             <>
               <button className='post-emotion-share' onClick={handleReport}>
-                <MdOutlineReportProblem /> Report
+                <MdOutlineReportProblem style={{fontSize: '27px'}}/> {!isPhone && `Report`}
               </button>
               <div className='modal-report'>
                 <ModalReport
@@ -232,12 +232,12 @@ const PostItem = ({ item, isPreview }) => {
           <div className='post-emotion-share'>
             {isPreview ? (
               <button>
-                <FaFacebook />0 Share
+                <FaFacebook />{item.shareCounts} Share
               </button>
             ) : (
               <button onClick={handleSharePost} disabled={disableShareButton}>
                 <FaFacebook />
-                {shareCount} Share
+                {shareCount} {!isPhone && 'Share'}
               </button>
             )}
           </div>
