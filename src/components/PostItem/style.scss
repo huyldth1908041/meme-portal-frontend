@@ -163,6 +163,7 @@
             }
             svg {
               margin-right: 5px;
+              font-size: 20px;
             }
           }
         }
@@ -172,6 +173,12 @@
           justify-content: space-around;
           .post-emotion-like {
             padding-right: 20px;
+          }
+        }
+        .post-emotion-share {
+          svg {
+            margin-right: 5px;
+            font-size: 20px;
           }
         }
       }
