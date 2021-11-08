@@ -99,6 +99,10 @@ const Home = () => {
         window.removeEventListener('resize', handleResize);
       };
     }, []);
+    const { data: advertisementData = {}, isLoadingAd, errorAd } = useQuery([memeServices.getAdvertisement],
+      () => memeServices.getAdvertisement());
+
+    const { data: advertisement = {} } = advertisementData;
 
     return (
       <div className='home-body'>
@@ -158,7 +162,13 @@ const Home = () => {
               </StyledButton>
             ))}
           </ButtonWrapper>
-          <AdvertisementItem />
+          {
+            isLoadingAd ? <Skeleton /> : errorAd ? '' : (
+              advertisement.id && (
+                <AdvertisementItem item={advertisement} />
+              )
+            )
+          }
           <>
             {
               isFetching ? (
