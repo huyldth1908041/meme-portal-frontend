@@ -142,12 +142,13 @@ const CreatePost = () => {
       toast.error('Please upload image!');
       return;
     }
+
     const createPostPromise = new Promise(async (resolve, reject) => {
       try {
         setLoading(true);
         //avoid same filename and firestore will replace the old one -> rename file before upload
-        const fileType = file.type.replace('image/', '');
-        const newFileName = file.name.replace('.'.concat(fileType), '').concat(new Date().getTime()).concat(fileType)
+        const fileType = file.name.split('.').pop();
+        const newFileName = file.name.replace('.'.concat(fileType), '').concat(new Date().getTime()).concat('.').concat(fileType);
         const myNewFile = new File([file], newFileName, { type: file.type });
         const uploadedImageUrl = await Fire.create.uploadImage(myNewFile);
         const res = await memeServices.createPost({ ...values, image: uploadedImageUrl });
