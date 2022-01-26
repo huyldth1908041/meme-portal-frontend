@@ -8,7 +8,7 @@ import { privateRoute } from '../../routes';
 
 
 const TopCreatorItem = ({ showHeader = true }) => {
-  const { isLoading, data = {} } = useQuery(['memeServices.topCreator'], () => memeServices.topCreator());
+  const { isLoading, data = {}, error } = useQuery(['memeServices.topCreator'], () => memeServices.topCreator());
   const { data: topCreators = [] } = data;
   return (
     <div className='creator-controller'>
@@ -25,7 +25,10 @@ const TopCreatorItem = ({ showHeader = true }) => {
           isLoading && (<Skeleton />)
 
         }
-        {topCreators.length && topCreators.map((item) => (
+        {
+          error && <div>Some error has occurred</div>
+        }
+        {topCreators.length > 0 ? (topCreators.map((item) => (
           <div className='creator' key={item.user.id}>
             <div className='creator-logo'>
               <Link to={privateRoute.userProfile.url(item.user.id)}>
@@ -45,7 +48,9 @@ const TopCreatorItem = ({ showHeader = true }) => {
               <div className='creator-follower'>Posts created {item.postCounts}</div>
             </div>
           </div>
-        ))}
+        ))) : (
+          <div>No body on top yet</div>
+        )}
       </>
     </div>
   );

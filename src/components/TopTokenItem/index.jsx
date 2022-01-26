@@ -22,8 +22,8 @@ const TopTokenItem = ({ showHeader = true }) => {
       }
       <>
         {
-          isLoading ? (<Skeleton />) : error ? (<p>Sone error has occurred</p>) : (
-            topTokenOwners.length && topTokenOwners.map((item, id) => (
+          isLoading ? (<Skeleton />) : error ? (<p>Some error has occurred</p>) : (
+            topTokenOwners.length > 0 ? (topTokenOwners.map((item, id) => (
               <Link className='token-owner' key={item.user.id} to={privateRoute.userProfile.url(item.user.id)}>
                 <div className='token-owner-left'>
                   <div className='token-owner-position'>{id + 1}</div>
@@ -36,7 +36,9 @@ const TopTokenItem = ({ showHeader = true }) => {
                   <div className='token-owner-token'>{item.tokenBalance.toLocaleString()}</div>
                 </div>
               </Link>
-            ))
+            ))) : (
+              <div>No body on top yet</div>
+            )
           )
         }
       </>

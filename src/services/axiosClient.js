@@ -30,9 +30,8 @@ axiosClient.interceptors.response.use(
 
     if (originalConfig.url !== '/login' && err.response) {
       // Access Token was expired
-      if (err.response.status === 403 && !originalConfig._retry) {
+      if (err.response.status === 403 && !originalConfig._retry && err.response.data.message.includes("expired")) {
         originalConfig._retry = true;
-
         try {
           const refreshToken = getLocalStorageObject(PROFILE_STORAGE_KEY).refreshToken;
           console.log("refresh token");
@@ -45,7 +44,7 @@ axiosClient.interceptors.response.use(
           const newUser = rs.data;
           const { data: { accessToken, refreshToken: refresh, user } } = newUser;
           addItemToLocalStorage(PROFILE_STORAGE_KEY, { ...user, accessToken, refreshToken: refresh });
-          window.location.reload();
+         window.location.reload();
           return axiosClient(originalConfig);
         } catch (_error) {
           return Promise.reject(_error);
