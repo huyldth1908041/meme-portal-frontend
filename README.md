@@ -4,3 +4,6 @@
 ## Run project in local
 
 `yarn start`
+
+## build 
+`yarn build`
