@@ -14,6 +14,8 @@ import { TextareaAutosize } from '@material-ui/core';
 import ModalTokenPushPost from '../../components/ModalTokenPushPost';
 import { LikeListTab, PushListTab } from './components';
 import { privateRoute } from '../../routes';
+import { Helmet } from 'react-helmet';
+
 
 const PageWrapper = styled.div`
   width: 70%;
@@ -330,6 +332,9 @@ const PostDetail = () => {
 
   return (
     <PageWrapper>
+      <Helmet>
+        <title>{postItem.title}</title>
+      </Helmet>
       {
         isLoading ? (
           <Skeleton />
