@@ -23,7 +23,7 @@ const PageWrapper = styled.div`
 `;
 
 const PrivateLayout = () => {
-  const { isLoggedIn } = !!getLocalStorageObject(PROFILE_STORAGE_KEY);
+  const isLoggedIn = !!getLocalStorageObject(PROFILE_STORAGE_KEY);
   return (
     <div>
       <AppHeader />

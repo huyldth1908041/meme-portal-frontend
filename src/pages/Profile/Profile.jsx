@@ -14,7 +14,7 @@ import ModalTransferToken from '../../components/ModalTransferToken';
 const Profile = () => {
   const { user } = useAuthentication();
   const [displayModal, setDisplayModal] = React.useState(false);
-  let userId = user.id;
+  let userId = user  ? user.id : 0;
   const { id } = useParams();
   let isOtherProfile = false;
   if (id && +userId !== +id) {
@@ -99,7 +99,7 @@ const Profile = () => {
           receiver={apiUser}
           handleCancel={handleCancel}
           handleOk={handleOk}
-          senderId={user.id}
+          senderId={userId}
         />
       </div>
       {isLoading ? (

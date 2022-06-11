@@ -108,7 +108,7 @@ function Header() {
         {!isMobile && (<Link to={privateRoute.home.path}>
           <AiOutlineHome />
         </Link>)}
-        {user ? (
+        {user.id > 0 ? (
           <>
             <NotificationBar />
             <div className='d-flex justify-content-center align-items-center'>

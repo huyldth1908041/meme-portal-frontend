@@ -7,7 +7,6 @@ import { useUser } from '../states/user';
 const useAuthentication = () => {
   const history = useHistory();
   const { user, onSetUser, onClearUser } = useUser();
-
   const logout = () => {
     removeItemFromLocalStorage(PROFILE_STORAGE_KEY);
     onClearUser();
@@ -23,9 +22,8 @@ const useAuthentication = () => {
   const registerUser = async (registerData) => {
     return await memeServices.register(registerData);
   };
-  const isLoggedIn = user && user.id > 0
-  console.log(user);
-  console.log(isLoggedIn);
+  const isLoggedIn = user.id > 0;
+
   return {
     user,
     logout,
