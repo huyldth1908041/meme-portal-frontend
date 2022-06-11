@@ -11,7 +11,16 @@ import { initFacebookSdk } from './utils';
 
 const queryClient = new QueryClient();
 initFacebookSdk().then(App);
+
+import ReactGA from 'react-ga';
+import { useEffect } from 'react';
+const TRACKING_ID = "UA-199508261-1"; // OUR_TRACKING_ID
+ReactGA.initialize(TRACKING_ID);
+
 function App() {
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, []);
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
