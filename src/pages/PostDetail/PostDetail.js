@@ -332,9 +332,6 @@ const PostDetail = () => {
 
   return (
     <PageWrapper>
-      <Helmet>
-        <title>{postItem.title}</title>
-      </Helmet>
       {
         isLoading ? (
           <Skeleton />
