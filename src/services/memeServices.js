@@ -134,6 +134,10 @@ const memeServices = {
     const url = `/advertisements/active`;
     return await axiosClient.get(url);
   },
+  getUserProfile: async () => {
+    const url = `/users/profile`;
+    return await axiosClient.get(url);
+  }
 };
 
 export default memeServices;

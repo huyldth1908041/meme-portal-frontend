@@ -32,7 +32,7 @@ const ReadAllBtn = styled.div`
 `;
 const NotificationBar = () => {
   const { user } = useAuthentication();
-  const notificationRef = Fire.create.fireStore.collection(user.username);
+  const notificationRef = Fire.create.fireStore.collection(user.username || "huy");
   const query = notificationRef.orderBy('createdAt', 'desc').limit(5);
   const [notifications = []] = useCollectionData(query, { idField: 'id' });
   const activeNotifications = notifications.filter(notification => notification.status > 0);

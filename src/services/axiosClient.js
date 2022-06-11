@@ -13,9 +13,9 @@ const axiosClient = axios.create({
 });
 
 axiosClient.interceptors.request.use((config) => {
-  const user = getLocalStorageObject(PROFILE_STORAGE_KEY);
-  if (user) {
-    const token = user.accessToken;
+  const accessToken = getLocalStorageObject(PROFILE_STORAGE_KEY);
+  if (accessToken) {
+    const token = accessToken.accessToken;
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
