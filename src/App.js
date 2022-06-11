@@ -8,13 +8,14 @@ import { Toaster } from 'react-hot-toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import ScrollToTopButton from './components/ScrollToTopButton/ScrollToTopButton';
 import { initFacebookSdk } from './utils';
+import ReactGA from 'react-ga';
+import { useEffect } from 'react';
 
 const queryClient = new QueryClient();
 initFacebookSdk().then(App);
 
-import ReactGA from 'react-ga';
-import { useEffect } from 'react';
-const TRACKING_ID = "UA-199508261-1"; // OUR_TRACKING_ID
+
+const TRACKING_ID = 'UA-199508261-1'; // OUR_TRACKING_ID
 ReactGA.initialize(TRACKING_ID);
 
 function App() {
