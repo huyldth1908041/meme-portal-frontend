@@ -12,6 +12,10 @@ const PaginationContainer = styled.div`
   justify-content: center;
   margin-top: 20px;
 `;
+const ScrollDiv = styled.div`
+  overflow-y: auto;
+  height: 400px;
+`;
 
 const LikeListTab = ({ postId }) => {
   const [dataSearch, setDataSearch] = useState({ page: 1, limit: 10 });
@@ -34,20 +38,21 @@ const LikeListTab = ({ postId }) => {
       {
         isLoading ? (<Skeleton />) : error ? <p>Somme error has occurred</p> : (
           <>
-            <List
-              bordered
-              dataSource={likeList}
-              style={{ width: 500 }}
-              renderItem={item => (
-                <List.Item>
-                  <Link to={privateRoute.userProfile.url(item.id)} style={{ color: '#111' }}>
-                    <Avatar size={50} src={item.avatar || '/images/default-avatar.jpg'} alt='avatar'
-                            style={{ marginRight: 10 }} />
-                    <b>{item.fullName}</b>
-                  </Link>
-                </List.Item>
-              )}
-            />
+            <ScrollDiv>
+              <List
+                bordered
+                dataSource={likeList}
+                renderItem={item => (
+                  <List.Item>
+                    <Link to={privateRoute.userProfile.url(item.id)} style={{ color: '#111' }}>
+                      <Avatar size={50} src={item.avatar || '/images/default-avatar.jpg'} alt='avatar'
+                              style={{ marginRight: 10 }} />
+                      <b>{item.fullName}</b>
+                    </Link>
+                  </List.Item>
+                )}
+              />
+            </ScrollDiv>
             <PaginationContainer>
               <Pagination defaultCurrent={1} total={totalElements} onChange={handlePageChanged}
                           pageSize={dataSearch.limit} />

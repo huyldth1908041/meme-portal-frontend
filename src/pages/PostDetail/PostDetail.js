@@ -1,6 +1,6 @@
 import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { Avatar, Button, Col, Form, Image, List, Row, Skeleton, Tabs } from 'antd';
+import { Avatar, Button, Col, Form, Image, List, Modal, Row, Skeleton, Tabs } from 'antd';
 import { AiFillLike, BiComment, BiUpvote } from 'react-icons/all';
 import { toast } from 'react-hot-toast';
 import { useInfiniteQuery, useQuery } from 'react-query';
@@ -17,7 +17,7 @@ import { privateRoute } from '../../routes';
 
 
 const PageWrapper = styled.div`
-  width: 70%;
+  width: 90%;
   margin: 0 auto;
   padding: 10px;
   @media screen and (max-width: 768px) {
@@ -139,7 +139,7 @@ const EmotionContainer = styled.div`
 const PostEmotion = styled.div`
   margin: 0 10px;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 20px;
 
   > svg {
     margin-bottom: 2px;
@@ -191,6 +191,7 @@ const PostDetail = () => {
   const { id } = useParams();
   const commentBox = useRef(null);
   const [displayModal, setDisplayModal] = React.useState(false);
+  const [isOpenPostReactionModal, setIsOpenReactionModal] = useState(false);
   const history = useHistory();
   useEffect(() => {
     window.scrollTo({
@@ -329,6 +330,10 @@ const PostDetail = () => {
     };
   }, []);
 
+
+  const handClosePostReactionModal = () => {
+    setIsOpenReactionModal(false);
+  };
   return (
     <PageWrapper>
       {
@@ -340,7 +345,7 @@ const PostDetail = () => {
           <>
             <Row gutter={24}>
               <Col xs={24} md={24} lg={16} xl={16}>
-                {isMobile && (<CreatorBox style={{marginTop: '20px'}}>
+                {isMobile && (<CreatorBox style={{ marginTop: '20px' }}>
                   <Avatar src={postItem.creator.avatar || '/images/default-avatar.jpg'} size={50} />
                   <div>
                     <p>{postItem.creator.fullName}</p>
@@ -370,7 +375,7 @@ const PostDetail = () => {
                   </CreatorBox>
                 )}
                 <EmotionContainer>
-                  <PostEmotion>
+                  <PostEmotion onClick={() => setIsOpenReactionModal(true)} style={{ cursor: 'pointer' }}>
                     {hasLikedYet ? <AiFillLike style={{ color: 'blue' }} /> : <AiOutlineLike />}
                     {likeCount}
                   </PostEmotion>
@@ -456,18 +461,26 @@ const PostDetail = () => {
                 </CommentBox>
               </StyledCol>
             </Row>
-            <Tabs defaultActiveKey='1'>
-              <Tabs.TabPane tab='Likes' key='1'>
-                <TabContainer>
-                  <LikeListTab postId={postItem.id} />
-                </TabContainer>
-              </Tabs.TabPane>
-              <Tabs.TabPane tab='Push' key='3'>
-                <TabContainer>
-                  <PushListTab postId={postItem.id} />
-                </TabContainer>
-              </Tabs.TabPane>
-            </Tabs>
+            <Modal
+              title='Post Reactions'
+              visible={isOpenPostReactionModal}
+              onOk={handClosePostReactionModal}
+              onCancel={handClosePostReactionModal}
+              footer={[]}
+            >
+              <Tabs defaultActiveKey='1'>
+                <Tabs.TabPane tab='Likes' key='1'>
+                  <TabContainer>
+                    <LikeListTab postId={postItem.id} likeCount={likeCount} />
+                  </TabContainer>
+                </Tabs.TabPane>
+                <Tabs.TabPane tab='Push' key='3'>
+                  <TabContainer>
+                    <PushListTab postId={postItem.id} />
+                  </TabContainer>
+                </Tabs.TabPane>
+              </Tabs>
+            </Modal>
           </>
         )}
 

@@ -2,7 +2,7 @@ import React from 'react';
 import './style.scss';
 import { useQuery } from 'react-query';
 import memeServices from '../../services/memeServices';
-import { Skeleton } from 'antd';
+import { Avatar, Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
 import { privateRoute } from '../../routes';
 
@@ -32,9 +32,9 @@ const TopCreatorItem = ({ showHeader = true }) => {
           <div className='creator' key={item.user.id}>
             <div className='creator-logo'>
               <Link to={privateRoute.userProfile.url(item.user.id)}>
-                <img
+                <Avatar
                   src={(!item.user.avatar || item.user.avatar === 'null') ? '/images/default-avatar.jpg' : item.user.avatar}
-                  alt='' />
+                  alt='user-avatar' size={50} />
               </Link>
             </div>
             <div className='creator-detail'>

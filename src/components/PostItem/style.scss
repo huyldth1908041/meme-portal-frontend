@@ -1,15 +1,14 @@
 .post-controller {
   .post {
-    border-radius: 15px;
     padding: 15px 20px 20px;
     background-color: white;
-    border: 1px solid #dbdbdb;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 15px;
-    .post-header {
+    margin-bottom: 30px;
+    box-shadow: 0 1px 15px 0 rgba(0, 0, 0, .4);
+  .post-header {
       width: 100%;
       display: flex;
       align-items: center;
@@ -74,7 +73,7 @@
         width: 100%;
         height: auto;
         min-height: 450px;
-        max-height: 600px;
+        max-height: 500px;
       }
     }
     .post-emotion {

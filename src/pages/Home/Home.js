@@ -29,12 +29,17 @@ const StyledButton = styled(Button)`
   font-weight: 600;
   text-transform: capitalize;
   margin-bottom: 10px;
+  box-shadow: 0 1px 15px 0 rgba(0, 0, 0, .4);
 
   &.active {
     background: black;
     color: #fff;
     border: none;
   }
+`;
+
+const FullWidthBackground = styled.div`
+  background: #F1F1F1;
 `;
 const Home = () => {
     const history = useHistory();
@@ -105,96 +110,98 @@ const Home = () => {
     const { data: advertisement = {} } = advertisementData;
 
     return (
-      <div className='home-body'>
-        {
-          !isMobile && (
-            <div className='body-sideleft'>
-              <TopTokenItem />
-            </div>
-          )
-        }
-        <div className='body-content'>
+      <FullWidthBackground>
+        <div className='home-body'>
           {
-            isMobile && (
-              <Menu mode='inline' style={{ marginBottom: '20px' }}>
-                <Menu.SubMenu key='sub1' title='Top Creators' icon={<AiOutlineFire />}>
-                  <TopCreatorItem showHeader={false} />
-                </Menu.SubMenu>
-                <Menu.SubMenu key='sub2' title='Top Tokens Owners' icon={<MdOutlineGeneratingTokens />}>
-                  <TopTokenItem showHeader={false} />
-                </Menu.SubMenu>
-              </Menu>
+            !isMobile && (
+              <div className='body-sideleft'>
+                <TopTokenItem />
+              </div>
             )
           }
-          <ButtonWrapper>
-            {tabs.map((item) => {
-              return (
-                <StyledButton
-                  key={item.postStatus}
-                  onClick={() => {
-                    history.push(item.url);
-                  }}
-                  className={item.code === tab && 'active'}
-                >
-                  {item.label}
-                </StyledButton>
-              );
-            })}
-          </ButtonWrapper>
-          <ButtonWrapper>
-            <StyledButton
-              onClick={() => {
-                window.history.replaceState(null, null, window.location.href.split('?')[0]);
-                setDataSearch((prevState) => ({ ...prevState, categoryId: null }));
-              }}
-              className={!category && 'active'}
-            >
-              All
-            </StyledButton>
-            {categories.length > 0 &&
-              categories.map((cat) => (
-                <StyledButton
-                  onClick={() => handleChangeCategory(cat)}
-                  key={cat.id}
-                  className={category === cat.name && 'active'}
-                >
-                  {cat.name}
-                </StyledButton>
-              ))}
-          </ButtonWrapper>
-          {
-            isLoadingAd ? <Skeleton /> : errorAd ? '' : (
-              advertisement.id && (
-                <AdvertisementItem item={advertisement} />
-              )
-            )
-          }
-          <>
+          <div className='body-content'>
             {
-              isFetching ? (
-                Array.from(Array(5).keys()).map((i) => <Skeleton avatar paragraph={{ rows: 4 }} key={i} />)
-              ) : isError ? (<p>Some error has occured</p>) : (
-                listMemes.length > 0 ? (
-                  <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
-                    <List dataSource={listMemes}
-                          renderItem={(item) => <PostItem item={item} isPreview={false} isPhone={isMobile} />} />
-                  </InfiniteScroll>
-                ) : (
-                  <p>No post found</p>
+              isMobile && (
+                <Menu mode='inline' style={{ marginBottom: '20px' }}>
+                  <Menu.SubMenu key='sub1' title='Top Creators' icon={<AiOutlineFire />}>
+                    <TopCreatorItem showHeader={false} />
+                  </Menu.SubMenu>
+                  <Menu.SubMenu key='sub2' title='Top Tokens Owners' icon={<MdOutlineGeneratingTokens />}>
+                    <TopTokenItem showHeader={false} />
+                  </Menu.SubMenu>
+                </Menu>
+              )
+            }
+            <ButtonWrapper>
+              {tabs.map((item) => {
+                return (
+                  <StyledButton
+                    key={item.postStatus}
+                    onClick={() => {
+                      history.push(item.url);
+                    }}
+                    className={item.code === tab && 'active'}
+                  >
+                    {item.label}
+                  </StyledButton>
+                );
+              })}
+            </ButtonWrapper>
+            <ButtonWrapper>
+              <StyledButton
+                onClick={() => {
+                  window.history.replaceState(null, null, window.location.href.split('?')[0]);
+                  setDataSearch((prevState) => ({ ...prevState, categoryId: null }));
+                }}
+                className={!category && 'active'}
+              >
+                All
+              </StyledButton>
+              {categories.length > 0 &&
+                categories.map((cat) => (
+                  <StyledButton
+                    onClick={() => handleChangeCategory(cat)}
+                    key={cat.id}
+                    className={category === cat.name && 'active'}
+                  >
+                    {cat.name}
+                  </StyledButton>
+                ))}
+            </ButtonWrapper>
+            {
+              isLoadingAd ? <Skeleton /> : errorAd ? '' : (
+                advertisement.id && (
+                  <AdvertisementItem item={advertisement} />
                 )
               )
             }
-          </>
-        </div>
-        {
-          !isMobile && (
-            <div className='body-sideright'>
-              <TopCreatorItem />
-            </div>
-          )
-        }
+            <>
+              {
+                isFetching ? (
+                  Array.from(Array(5).keys()).map((i) => <Skeleton avatar paragraph={{ rows: 4 }} key={i} />)
+                ) : isError ? (<p>Some error has occured</p>) : (
+                  listMemes.length > 0 ? (
+                    <InfiniteScroll loadMore={fetchNextPage} hasMore={hasNextPage}>
+                      <List dataSource={listMemes}
+                            renderItem={(item) => <PostItem item={item} isPreview={false} isPhone={isMobile} />} />
+                    </InfiniteScroll>
+                  ) : (
+                    <p>No post found</p>
+                  )
+                )
+              }
+            </>
+          </div>
+          {
+            !isMobile && (
+              <div className='body-sideright'>
+                <TopCreatorItem />
+              </div>
+            )
+          }
 
-      </div>
+        </div>
+      </FullWidthBackground>
     );
   }
 ;

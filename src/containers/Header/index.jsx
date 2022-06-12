@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { AiOutlineHome, AiOutlineLogin, AiOutlineCloudUpload } from 'react-icons/ai';
+import { AiOutlineHome, AiOutlineLogin, AiOutlineCloudUpload, AiFillDollarCircle } from 'react-icons/ai';
 import { BsPersonCircle } from 'react-icons/bs';
 import './style.scss';
 import { privateRoute } from '../../routes';
@@ -9,10 +9,31 @@ import { BiExit, GrTransaction, RiAdvertisementFill } from 'react-icons/all';
 import NotificationBar from '../../components/NotificationBar';
 import memeServices from '../../services/memeServices';
 import SelectDebounce from '../../components/SelectDebounce/SelectDebounce';
-import { Image } from 'antd';
+import { Divider, Image } from 'antd';
 import PostSearchLabel from '../../components/PostSearchLabel';
 import UserSearchLabel from '../../components/UserSearchLabel';
+import styled from 'styled-components';
 
+const StyledDiv = styled.div`
+  width: 100%;
+  div:first-child {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  svg {
+    font-size: 24px;
+    margin-right: 6px;
+  }
+
+  border-bottom: 1px solid #e8e8e8;
+  padding-bottom: 10px;
+  padding-left: 3px;
+`;
+const Logo = styled.div`
+  font-weight: bold;
+  font-size: 26px;
+  color: #111;
+`
 function Header() {
   const { user, logout } = useAuthentication();
   const [openProfile, setOpenProfile] = useState(false);
@@ -84,7 +105,7 @@ function Header() {
       <div className='logo'>
         <Link to={privateRoute.home.path} style={{ display: 'flex', alignItems: 'center' }}>
           <Image src='/images/nobg-logo.png' alt='logo' width='75px' height='75px' preview={false} />
-          {!isMobile && (<div>HÀI CODE</div>)}
+          {!isMobile && (<Logo>HÀI CODE</Logo>)}
         </Link>
       </div>
       <div className='search'>
@@ -121,6 +142,15 @@ function Header() {
                 </button>
                 {openProfile && (
                   <div className='dropdown-content' onClick={() => setOpenProfile(false)}>
+                    <StyledDiv>
+                      <div>
+                        {user.username}
+                      </div>
+                      <div>
+                        <AiFillDollarCircle />
+                        {user.tokenBalance} tokens
+                      </div>
+                    </StyledDiv>
                     <Link to={privateRoute.profile.path}>
                       <BsPersonCircle /> Profile
                     </Link>
