@@ -15,6 +15,7 @@ import ModalTokenPushPost from '../../components/ModalTokenPushPost';
 import { LikeListTab, PushListTab } from './components';
 import { privateRoute } from '../../routes';
 
+
 const PageWrapper = styled.div`
   width: 70%;
   margin: 0 auto;
