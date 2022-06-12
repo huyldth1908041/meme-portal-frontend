@@ -21,6 +21,7 @@ import { useHistory } from 'react-router-dom';
 import { privateRoute } from '../../routes';
 import moment from 'moment';
 import { useQuery } from 'react-query';
+import { useUser } from '../../states/user';
 
 const StyledDatePicker = styled(DatePicker)`
   border: 1px solid #111;
@@ -34,6 +35,7 @@ const StyledDatePicker = styled(DatePicker)`
 const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
 
 const ProfileUpdate = () => {
+    const { onSetUser } = useUser();
     const history = useHistory();
     const { user } = useAuthentication();
     const userId = user.id;
@@ -69,9 +71,7 @@ const ProfileUpdate = () => {
           }
           const birthday = values.birthday.format('DD-MM-YYYY');
           const res = await memeServices.updateProfile(user.id, { ...values, avatar, birthday });
-          const inLocalStr = getLocalStorageObject(PROFILE_STORAGE_KEY);
-          const newProfile = { ...inLocalStr, ...res.data };
-          addItemToLocalStorage(PROFILE_STORAGE_KEY, newProfile);
+          onSetUser(res.data);
           history.push(privateRoute.profile.path);
           window.location.reload();
           resolve();

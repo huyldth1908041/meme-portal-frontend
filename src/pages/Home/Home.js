@@ -152,15 +152,15 @@ const Home = () => {
               All
             </StyledButton>
             {categories.length > 0 &&
-            categories.map((cat) => (
-              <StyledButton
-                onClick={() => handleChangeCategory(cat)}
-                key={cat.id}
-                className={category === cat.name && 'active'}
-              >
-                {cat.name}
-              </StyledButton>
-            ))}
+              categories.map((cat) => (
+                <StyledButton
+                  onClick={() => handleChangeCategory(cat)}
+                  key={cat.id}
+                  className={category === cat.name && 'active'}
+                >
+                  {cat.name}
+                </StyledButton>
+              ))}
           </ButtonWrapper>
           {
             isLoadingAd ? <Skeleton /> : errorAd ? '' : (

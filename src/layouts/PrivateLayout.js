@@ -4,6 +4,8 @@ import { privateRoute } from '../routes';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useAuthentication } from '../hooks';
 import styled from 'styled-components';
+import { getLocalStorageObject } from '../utils';
+import { PROFILE_STORAGE_KEY } from '../constants';
 
 function PrivateRoute({ component: Component, authed, requiredLogin, ...rest }) {
   return (
@@ -21,7 +23,7 @@ const PageWrapper = styled.div`
 `;
 
 const PrivateLayout = () => {
-  const { isLoggedIn } = useAuthentication();
+  const isLoggedIn = !!getLocalStorageObject(PROFILE_STORAGE_KEY);
   return (
     <div>
       <AppHeader />

@@ -59,7 +59,7 @@ const PaginationContainer = styled.div`
 const TokenHistory = () => {
   const [dataSearch, setDataSearch] = useState({ page: 1, limit: 10 });
   const { user } = useAuthentication();
-  const userId = user.id;
+  const userId = user ? user.id : 0;
   const {
     data = {},
     isLoading,

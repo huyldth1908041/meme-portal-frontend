@@ -404,7 +404,7 @@ const PostDetail = () => {
                       <>
                         <StyledButton type='primary' icon={<BiUpvote />} onClick={handlePush}>Push</StyledButton>
                         {
-                          user && (
+                          user.id > 0 && (
                             <ModalTokenPushPost
                               visible={displayModal}
                               handleCancel={handleCancel}

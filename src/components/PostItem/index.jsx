@@ -21,7 +21,7 @@ const PostItem = ({ item, isPreview, isPhone = false }) => {
   const [displayModal, setDisplayModal] = React.useState(false);
   const [displayModalReport, setDisplayModalReport] = React.useState(false);
   useEffect(() => {
-    if (user && item?.listLiked.includes(user.id)) {
+    if (user.id > 0 && item?.listLiked.includes(user.id)) {
       setHasLikedYet(true);
     }
   }, [item, user]);
@@ -200,7 +200,7 @@ const PostItem = ({ item, isPreview, isPhone = false }) => {
                 <button className='post-emotion-push' onClick={sendToken}>
                   <BsArrowUpCircle /> {!isPhone && `Push`}
                 </button>
-                {user && (
+                {user.id > 0 && (
                   <div className='modal-token'>
                     <ModalTokenPushPost
                       visible={displayModal}

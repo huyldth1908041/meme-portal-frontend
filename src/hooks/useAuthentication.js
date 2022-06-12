@@ -1,44 +1,35 @@
-import { addItemToLocalStorage, getLocalStorageObject, removeItemFromLocalStorage } from '../utils';
+import { addItemToLocalStorage, removeItemFromLocalStorage } from '../utils';
 import { PROFILE_STORAGE_KEY } from '../constants';
-import { useMemo, useState } from 'react';
 import memeServices from '../services/memeServices';
 import { useHistory } from 'react-router-dom';
+import { useUser } from '../states/user';
 
 const useAuthentication = () => {
   const history = useHistory();
-  const getUser = () => {
-    return getLocalStorageObject(PROFILE_STORAGE_KEY);
-  };
-
-  const [user, setUser] = useState(getUser());
-
-  const saveUser = user => {
-    addItemToLocalStorage(PROFILE_STORAGE_KEY, user);
-    setUser(user);
-  };
-
+  const { user, onSetUser, onClearUser } = useUser();
   const logout = () => {
     removeItemFromLocalStorage(PROFILE_STORAGE_KEY);
+    onClearUser();
     history.push('/login');
   };
   //call api then save
   const login = async (username, password) => {
     const { data: { accessToken, refreshToken, user } } = await memeServices.login({ username, password });
-    saveUser({ ...user, accessToken, refreshToken });
+    addItemToLocalStorage(PROFILE_STORAGE_KEY, { accessToken });
+    onSetUser(user);
   };
   //register
   const registerUser = async (registerData) => {
     return await memeServices.register(registerData);
   };
-  const isLoggedIn = useMemo(() => !!user, [user]);
+  const isLoggedIn = user.id > 0;
 
   return {
-    setUser: saveUser,
     user,
     logout,
     login,
     isLoggedIn,
-    registerUser
+    registerUser,
   };
 };
 
